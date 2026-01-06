@@ -35,21 +35,45 @@
                         <a href="/" class="nav-item nav-link active">Trang chủ</a>
                         <a href="/san-pham" class="nav-item nav-link">Sản phẩm</a>
                         <a href="/chi-tiet" class="nav-item nav-link me-2">Chi tiết</a>
-                        <div class="nav-item dropdown ms-2">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                                <i class="fa fa-user me-1"></i> My Dashboard
-                            </a>
 
-                            <div class="dropdown-menu dropdown-menu-end rounded shadow-sm">
-                                <a href="#" class="dropdown-item">Đăng nhập</a>
-                                <a href="/thong-tin-ca-nhan" class="dropdown-item">Thông tin cá nhân</a>
-                                <a href="/don-hang" class="dropdown-item">Đơn hàng</a>
-                                <a href="#" class="dropdown-item">Lịch sử mua hàng</a>
-                                <a href="#" class="dropdown-item">Đổi mật khẩu</a>
-                                <div class="dropdown-divider"></div>
-                                <a href="#" class="dropdown-item text-danger">Log Out</a>
+                        @auth
+                            {{-- Khi đã đăng nhập --}}
+                            <div class="nav-item dropdown ms-2">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                    <i class="fa fa-user me-1"></i> {{ Auth::user()->name }}
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end rounded shadow-sm">
+                                    <a href="/thong-tin-ca-nhan" class="dropdown-item">
+                                        <i class="fas fa-user-circle me-2"></i>Thông tin cá nhân
+                                    </a>
+                                    <a href="/don-hang" class="dropdown-item">
+                                        <i class="fas fa-shopping-cart me-2"></i>Đơn hàng của tôi
+                                    </a>
+                                    <a href="#" class="dropdown-item">
+                                        <i class="fas fa-history me-2"></i>Lịch sử mua hàng
+                                    </a>
+                                    <a href="#" class="dropdown-item">
+                                        <i class="fas fa-key me-2"></i>Đổi mật khẩu
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <form action="{{ route('auth.logout') }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item text-danger w-100 text-start">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
+                        @else
+                            {{-- Khi chưa đăng nhập --}}
+                            <a href="{{ route('auth.login') }}" class="nav-item nav-link ms-2">
+                                <i class="fa fa-sign-in-alt me-1"></i>Đăng Nhập
+                            </a>
+                            <a href="{{ route('auth.register') }}" class="nav-item nav-link">
+                                <i class="fa fa-user-plus me-1"></i>Đăng Ký
+                            </a>
+                        @endauth
 
                     </div>
                 </div>
