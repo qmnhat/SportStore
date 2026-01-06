@@ -32,12 +32,26 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="shop.html" class="nav-item nav-link">Shop</a>
-                        <a href="contact.html" class="nav-item nav-link me-2">Contact</a>
+                        <a href="/" class="nav-item nav-link active">Trang chủ</a>
+                        <a href="/san-pham" class="nav-item nav-link">Sản phẩm</a>
+                        <a href="/chi-tiet" class="nav-item nav-link me-2">Chi tiết</a>
+                        <div class="nav-item dropdown ms-2">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="fa fa-user me-1"></i> My Dashboard
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-end rounded shadow-sm">
+                                <a href="#" class="dropdown-item">Đăng nhập</a>
+                                <a href="/thong-tin-ca-nhan" class="dropdown-item">Thông tin cá nhân</a>
+                                <a href="/don-hang" class="dropdown-item">Đơn hàng</a>
+                                <a href="#" class="dropdown-item">Lịch sử mua hàng</a>
+                                <a href="#" class="dropdown-item">Đổi mật khẩu</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item text-danger">Log Out</a>
+                            </div>
+                        </div>
+
                     </div>
-                    <a href="" class="btn btn-secondary rounded-pill py-2 px-4 px-lg-3 mb-3 mb-md-3 mb-lg-0"><i
-                            class="fa fa-mobile-alt me-2"></i> +0123 456 7890</a>
                 </div>
             </nav>
         </div>

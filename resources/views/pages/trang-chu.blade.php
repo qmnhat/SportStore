@@ -17,7 +17,7 @@
                                 Laptops & Desktop Or Smartphone</h1>
                             <p class="text-dark wow fadeInRight" data-wow-delay="0.5s">Terms and Condition Apply</p>
                             <a class="btn btn-primary rounded-pill py-3 px-5 wow fadeInRight" data-wow-delay="0.7s"
-                                href="#">Shop Now</a>
+                                href="/trang-chu">Mua ngay</a>
                         </div>
                     </div>
                     <div class="row g-0 header-carousel-item align-items-center">
@@ -31,7 +31,7 @@
                                 Laptops & Desktop Or Smartphone</h1>
                             <p class="text-dark wow fadeInRight" data-wow-delay="0.5s">Terms and Condition Apply</p>
                             <a class="btn btn-primary rounded-pill py-3 px-5 wow fadeInRight" data-wow-delay="0.7s"
-                                href="#">Shop Now</a>
+                                href="/trang-chu">Mua ngay</a>
                         </div>
                     </div>
                 </div>
