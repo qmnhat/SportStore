@@ -44,7 +44,8 @@
                                 <a href="#" class="dropdown-item">Đăng nhập</a>
                                 <a href="/thong-tin-ca-nhan" class="dropdown-item">Thông tin cá nhân</a>
                                 <a href="/don-hang" class="dropdown-item">Đơn hàng</a>
-                                <a href="#" class="dropdown-item">Lịch sử mua hàng</a>
+                                <a href="/lich-su-mua-hang" class="dropdown-item">Lịch sử mua hàng</a>
+                                <a href="/gio-hang" class="dropdown-item">Giỏ hàng</a>
                                 <a href="#" class="dropdown-item">Đổi mật khẩu</a>
                                 <div class="dropdown-divider"></div>
                                 <a href="#" class="dropdown-item text-danger">Log Out</a>

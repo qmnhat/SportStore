@@ -20,3 +20,9 @@ Route::get('/don-hang', function () {
 Route::get('/don-hang/{id}', function ($id) {
     return view('pages.chi-tiet-don-hang');
 });
+Route::get('/gio-hang', function () {
+    return view('pages.gio-hang');
+});
+Route::get('/lich-su-mua-hang', function () {
+    return view('pages.lich-su-mua-hang');
+});
