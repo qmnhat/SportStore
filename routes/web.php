@@ -20,3 +20,13 @@ Route::get('/don-hang', function () {
 Route::get('/don-hang/{id}', function ($id) {
     return view('pages.chi-tiet-don-hang');
 });
+Route::prefix('admin')->group(function () {
+    Route::view('/dashboard', 'admin.dashboard');
+
+    Route::view('/CSanPham', 'admin.CSanPham.index');
+    Route::view('/CDanhMuc', 'admin.CDanhMuc.index');
+    Route::view('/CThuongHieu', 'admin.CThuongHieu.index');
+    Route::view('/CDonHang', 'admin.CDonHang.index');
+    Route::view('/CKhachHang', 'admin.CKhachHang.index');
+    Route::view('/CKhuyenMai', 'admin.CKhuyenMai.index');
+});
