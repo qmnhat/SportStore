@@ -1,0 +1,187 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class SanPhamController extends Controller
+{
+    public function index(Request $request)
+    {
+        $tuKhoa = (string) $request->get('q', '');
+        $maDM = $request->get('dm');   // MaDM
+        $maTH = $request->get('th');   // MaTH
+        $gia = $request->get('gia');   // 1 | 2 | 3
+
+        // ===== DANH MUC + SO LUONG SAN PHAM =====
+        $danhMucs = DB::table('DanhMuc as dm')
+            ->leftJoin('SanPham as sp', function ($join) {
+                $join->on('sp.MaDM', '=', 'dm.MaDM')
+                    ->where('sp.IsDeleted', 0);
+            })
+            ->where('dm.IsDeleted', 0)
+            ->groupBy('dm.MaDM', 'dm.TenDM')
+            ->select('dm.MaDM', 'dm.TenDM', DB::raw('COUNT(sp.MaSP) as soLuong'))
+            ->orderBy('dm.MaDM')
+            ->get();
+
+        // ===== THUONG HIEU + SO LUONG SAN PHAM =====
+        $thuongHieus = DB::table('ThuongHieu as th')
+            ->leftJoin('SanPham as sp', function ($join) {
+                $join->on('sp.MaTH', '=', 'th.MaTH')
+                    ->where('sp.IsDeleted', 0);
+            })
+            ->where('th.IsDeleted', 0)
+            ->groupBy('th.MaTH', 'th.TenTH')
+            ->select('th.MaTH', 'th.TenTH', DB::raw('COUNT(sp.MaSP) as soLuong'))
+            ->orderBy('th.MaTH')
+            ->get();
+
+        // ===== SAN PHAM LIST =====
+        $sanPhams = DB::table('SanPham as sp')
+            ->leftJoin('DanhMuc as dm', 'dm.MaDM', '=', 'sp.MaDM')
+            ->leftJoin('ThuongHieu as th', 'th.MaTH', '=', 'sp.MaTH')
+            ->leftJoin('BienTheSanPham as bt', function ($join) {
+                $join->on('bt.MaSP', '=', 'sp.MaSP')
+                    ->where('bt.IsDeleted', 0)
+                    ->where('bt.TrangThai', 1);
+            })
+            ->leftJoin('HinhAnhSanPham as ha', 'ha.MaSP', '=', 'sp.MaSP')
+            ->where('sp.IsDeleted', 0)
+
+            // filter danh muc
+            ->when($maDM, function ($q) use ($maDM) {
+                $q->where('sp.MaDM', $maDM);
+            })
+
+            // filter thuong hieu
+            ->when($maTH, function ($q) use ($maTH) {
+                $q->where('sp.MaTH', $maTH);
+            })
+
+            // search ten
+            ->when($tuKhoa !== '', function ($q) use ($tuKhoa) {
+                $q->where('sp.TenSP', 'like', '%' . $tuKhoa . '%');
+            })
+
+            ->groupBy('sp.MaSP', 'sp.TenSP', 'sp.MoTa', 'dm.TenDM', 'th.TenTH')
+            ->select(
+                'sp.MaSP',
+                'sp.TenSP',
+                'sp.MoTa',
+                'dm.TenDM as tenDanhMuc',
+                'th.TenTH as tenThuongHieu',
+                DB::raw('MIN(bt.GiaGoc) as giaMin'),
+                DB::raw('MIN(ha.DuongDan) as anhDauTien')
+            )
+
+            // filter gia: dua theo MIN(bt.GiaGoc)
+            ->when($gia, function ($q) use ($gia) {
+                if ($gia == '1') {
+                    $q->havingRaw('MIN(bt.GiaGoc) < 1000000');
+                } elseif ($gia == '2') {
+                    $q->havingRaw('MIN(bt.GiaGoc) < 2000000');
+                } elseif ($gia == '3') {
+                    $q->havingRaw('MIN(bt.GiaGoc) >= 2000000');
+                }
+            })
+
+            ->orderBy('sp.MaSP', 'desc')
+            ->paginate(9)
+            ->withQueryString();
+
+        return view('products.san-pham', compact(
+            'sanPhams',
+            'danhMucs',
+            'thuongHieus',
+            'tuKhoa',
+            'maDM',
+            'maTH',
+            'gia'
+        ));
+    }
+
+    public function show($maSP)
+    {
+        // San pham
+        $sanPham = DB::table('SanPham as sp')
+            ->leftJoin('DanhMuc as dm', 'dm.MaDM', '=', 'sp.MaDM')
+            ->leftJoin('ThuongHieu as th', 'th.MaTH', '=', 'sp.MaTH')
+            ->leftJoin('BienTheSanPham as bt', function ($join) {
+                $join->on('bt.MaSP', '=', 'sp.MaSP')
+                    ->where('bt.IsDeleted', 0)
+                    ->where('bt.TrangThai', 1);
+            })
+            ->where('sp.MaSP', $maSP)
+            ->where('sp.IsDeleted', 0)
+            ->groupBy(
+                'sp.MaSP',
+                'sp.TenSP',
+                'sp.MoTa',
+                'dm.TenDM',
+                'th.TenTH'
+            )
+            ->select(
+                'sp.MaSP',
+                'sp.TenSP',
+                'sp.MoTa',
+                'dm.TenDM as tenDanhMuc',
+                'th.TenTH as tenThuongHieu',
+                DB::raw('MIN(bt.GiaGoc) as giaMin'),
+                DB::raw('MAX(bt.GiaGoc) as giaMax')
+            )
+            ->first();
+
+        // Nếu không tồn tại SP
+        if (!$sanPham) {
+            abort(404);
+        }
+
+        // Hình ảnh
+        $hinhAnhs = DB::table('HinhAnhSanPham')
+            ->where('MaSP', $maSP)
+            ->pluck('DuongDan')
+            ->toArray();
+
+        // Biến thể (size)
+        $bienThes = DB::table('BienTheSanPham as bt')
+            ->join('KichThuoc as kt', 'kt.MaKT', '=', 'bt.MaKT')
+            ->where('bt.MaSP', $maSP)
+            ->where('bt.IsDeleted', 0)
+            ->where('bt.TrangThai', 1)
+            ->select(
+                'bt.MaBT',
+                'kt.TenKT',
+                'bt.SoLuong',
+                'bt.GiaGoc'
+            )
+            ->get();
+
+        // Đánh giá
+        $danhGias = DB::table('DanhGia as dg')
+            ->join('KhachHang as kh', 'kh.MaKH', '=', 'dg.MaKH')
+            ->where('dg.MaSP', $maSP)
+            ->orderByDesc('dg.NgayDanhGia')
+            ->select(
+                'kh.HoTen',
+                'dg.SoSao',
+                'dg.NoiDung',
+                'dg.NgayDanhGia'
+            )
+            ->paginate(5);
+
+        // Sao trung bình
+        $sanPham->soLuotDanhGia = $danhGias->total();
+        $sanPham->saoTrungBinh = DB::table('DanhGia')
+            ->where('MaSP', $maSP)
+            ->avg('SoSao') ?? 0;
+
+        return view('products.chi-tiet', compact(
+            'sanPham',
+            'hinhAnhs',
+            'bienThes',
+            'danhGias'
+        ));
+    }
+}
