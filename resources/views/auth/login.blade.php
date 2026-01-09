@@ -14,17 +14,31 @@
                             <i class="fa fa-sign-in-alt me-2"></i>Đăng nhập
                         </h4>
 
-                        <form method="POST" action="#">
-                            {{-- sau này đổi thành route login --}}
+                        {{-- Hiển thị lỗi chung --}}
+                        @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+
+                        <form method="POST" action="/dang-nhap">
+                            @csrf
 
                             <div class="mb-3">
                                 <label class="form-label">Email</label>
-                                <input type="email" class="form-control" placeholder="Nhập email" required>
+                                <input type="email" name="Email" class="form-control" value="{{ old('Email') }}"
+                                    required>
+                                @error('Email')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Mật khẩu</label>
-                                <input type="password" class="form-control" placeholder="Nhập mật khẩu" required>
+                                <input type="password" name="MatKhau" class="form-control" required>
+                                @error('MatKhau')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
 
                             <div class="d-grid mb-3">

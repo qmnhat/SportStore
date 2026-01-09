@@ -1,11 +1,11 @@
 @extends('layouts.app')
-
+@section('title', 'Trang chủ')
 @section('content')
     <!-- Carousel Start -->
     <div class="container-fluid carousel bg-light px-0">
         <div class="row g-0 justify-content-end">
             <div class="col-12 col-lg-7 col-xl-9">
-                <div class="header-carousel owl-carousel bg-light ">
+                <div class="header-carousel owl-carousel bg-light py-5">
                     <div class="row g-0 header-carousel-item align-items-center">
                         <div class="col-xl-6 carousel-img wow fadeInLeft" data-wow-delay="0.1s">
                             <img src="img/ao/ao_3.jpg" class="img-fluid w-100" alt="Image">

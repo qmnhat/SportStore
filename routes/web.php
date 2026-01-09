@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-// routes/web.php
 use App\Http\Controllers\SanPhamController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/san-pham', [SanPhamController::class, 'index'])->name('shop.index');
 Route::get('/san-pham/{maSP}', [SanPhamController::class, 'show'])->name('shop.show');
@@ -13,9 +14,7 @@ Route::get('/', function () {
 Route::get('/chi-tiet', function () {
     return view('products.chi-tiet');
 });
-Route::get('/thong-tin-ca-nhan', function () {
-    return view('pages.profile');
-});
+
 Route::get('/don-hang', function () {
     return view('pages.don-hang');
 });
@@ -28,6 +27,22 @@ Route::get('/gio-hang', function () {
 Route::get('/lich-su-mua-hang', function () {
     return view('pages.lich-su-mua-hang');
 });
-Route::view('/dang-nhap', 'auth.login');
-Route::view('/dang-ky', 'auth.register');
-Route::view('/doi-mat-khau', 'auth.change-password');
+Route::get('/dang-nhap', function () {
+    return view('auth.login');
+});
+Route::get('/dang-ky', function () {
+    return view('auth.register');
+});
+Route::get('/dang-xuat', function () {
+    session()->forget('khachhang');
+    return redirect('/');
+});
+Route::get('/doi-mat-khau', function () {
+    return view('auth.doi-mat-khau');
+});
+Route::get('/thong-tin-ca-nhan', [ProfileController::class, 'index']);
+Route::post('/thong-tin-ca-nhan', [ProfileController::class, 'update']);
+
+Route::post('/dang-nhap', [AuthController::class, 'loginKhachHang']);
+Route::post('/dang-ky', [AuthController::class, 'registerKhachHang']);
+Route::post('/doi-mat-khau', [AuthController::class, 'doiMatKhau']);

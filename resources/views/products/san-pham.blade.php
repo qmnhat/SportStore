@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Sản phẩm')
 @section('content')
     <!-- Single Page Header start -->
     <div class="container-fluid page-header py-5">
