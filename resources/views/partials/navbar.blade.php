@@ -46,7 +46,6 @@
                                 <a href="/don-hang" class="dropdown-item">Đơn hàng</a>
                                 <a href="#" class="dropdown-item">Lịch sử mua hàng</a>
                                 <a href="#" class="dropdown-item">Đổi mật khẩu</a>
-                                <a href="/admin/dashboard" class="dropdown-item">Admin</a>
                                 <div class="dropdown-divider"></div>
                                 <a href="#" class="dropdown-item text-danger">Log Out</a>
                             </div>
