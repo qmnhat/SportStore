@@ -21,28 +21,13 @@ Route::get('/don-hang', function () {
 Route::get('/don-hang/{id}', function ($id) {
     return view('pages.chi-tiet-don-hang');
 });
-Route::get('/gio-hang', function () {
-    return view('pages.gio-hang');
-});
-Route::get('/lich-su-mua-hang', function () {
-    return view('pages.lich-su-mua-hang');
-});
-Route::get('/dang-nhap', function () {
-    return view('auth.login');
-});
-Route::get('/dang-ky', function () {
-    return view('auth.register');
-});
-Route::get('/dang-xuat', function () {
-    session()->forget('khachhang');
-    return redirect('/');
-});
-Route::get('/doi-mat-khau', function () {
-    return view('auth.doi-mat-khau');
-});
-Route::get('/thong-tin-ca-nhan', [ProfileController::class, 'index']);
-Route::post('/thong-tin-ca-nhan', [ProfileController::class, 'update']);
+Route::prefix('admin')->group(function () {
+    Route::view('/dashboard', 'admin.dashboard');
 
-Route::post('/dang-nhap', [AuthController::class, 'loginKhachHang']);
-Route::post('/dang-ky', [AuthController::class, 'registerKhachHang']);
-Route::post('/doi-mat-khau', [AuthController::class, 'doiMatKhau']);
+    Route::view('/CSanPham', 'admin.CSanPham.index');
+    Route::view('/CDanhMuc', 'admin.CDanhMuc.index');
+    Route::view('/CThuongHieu', 'admin.CThuongHieu.index');
+    Route::view('/CDonHang', 'admin.CDonHang.index');
+    Route::view('/CKhachHang', 'admin.CKhachHang.index');
+    Route::view('/CKhuyenMai', 'admin.CKhuyenMai.index');
+});
