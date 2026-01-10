@@ -100,7 +100,6 @@
                                 <i class="fa fa-sign-in-alt me-1"></i> Đăng nhập
                             </a>
                         @endif
-
                     </div>
                 </div>
             </nav>
