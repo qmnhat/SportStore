@@ -60,9 +60,10 @@ class SanPhamController extends Controller
                 $q->where('sp.MaTH', $maTH);
             })
 
-            // search ten
+            // search ten va mo ta san pham
             ->when($tuKhoa !== '', function ($q) use ($tuKhoa) {
-                $q->where('sp.TenSP', 'like', '%' . $tuKhoa . '%');
+                $q->where('sp.TenSP', 'like', '%' . $tuKhoa . '%')
+                  ->orWhere('sp.MoTa','like','%'.$tuKhoa.'%');
             })
 
             ->groupBy('sp.MaSP', 'sp.TenSP', 'sp.MoTa', 'dm.TenDM', 'th.TenTH')
