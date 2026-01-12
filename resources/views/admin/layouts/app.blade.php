@@ -1,40 +1,59 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
-    <title>Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background: #f4f6f9; }
-        .sidebar {
-            width: 220px;
-            min-height: 100vh;
-            background: #c6540dff;
-            position: fixed;
-        }
-        .sidebar a {
-            display: block;
-            padding: 10px 15px;
-            color: #000000ff;
-            text-decoration: none;
-        }
-        .sidebar a:hover {
-            background: #495057;
-        }
-        .content {
-            margin-left: 230px;
-            padding: 20px;
-        }
-    </style>
+    <title>@yield('title', 'Admin')</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {{-- Fonts --}}
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    {{-- CSS --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/iconly/bold.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap-icons/bootstrap-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
+
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.svg') }}" type="image/x-icon">
 </head>
+
 <body>
+    <div id="app">
 
-@include('admin.partials.header')
-@include('admin.partials.sidebar')
+        {{-- Sidebar --}}
+        <div id="sidebar" class="active">
+            @include('admin.partials.sidebar')
+        </div>
 
-<div class="content">
-    @yield('content')
-</div>
+        {{-- Main --}}
+        <div id="main">
 
+            {{-- Header --}}
+            <header class="mb-3">
+                @include('admin.partials.header')
+            </header>
+
+            {{-- Content --}}
+            <div class="page-content">
+                @yield('content')
+            </div>
+
+        </div>
+    </div>
+
+    {{-- JS --}}
+    <script src="{{ asset('assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+
+    {{-- chart (làm sau) --}}
+    <script src="{{ asset('assets/vendors/apexcharts/apexcharts.js') }}"></script>
+
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+
+    @stack('scripts')
 </body>
+
 </html>
