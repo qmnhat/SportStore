@@ -1,0 +1,14 @@
+[33m257f117[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: checkout: moving from main to main
+[33m257f117[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{1}: checkout: moving from MinhNhat to main
+[33mc221059[m[33m ([m[1;31morigin/MinhNhat[m[33m, [m[1;32mmaster[m[33m, [m[1;32mMinhNhat[m[33m)[m HEAD@{2}: checkout: moving from main to MinhNhat
+[33m257f117[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{3}: commit: Quan ly them xoa sua khach hang
+[33mf191191[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{4}: commit (merge): fix loi
+[33meb8b587[m HEAD@{5}: checkout: moving from main to main
+[33meb8b587[m HEAD@{6}: commit (merge): giao dien quan ly
+[33m71d47fc[m HEAD@{7}: checkout: moving from MinhNhat to main
+[33mc221059[m[33m ([m[1;31morigin/MinhNhat[m[33m, [m[1;32mmaster[m[33m, [m[1;32mMinhNhat[m[33m)[m HEAD@{8}: reset: moving to HEAD
+[33mc221059[m[33m ([m[1;31morigin/MinhNhat[m[33m, [m[1;32mmaster[m[33m, [m[1;32mMinhNhat[m[33m)[m HEAD@{9}: checkout: moving from 1157a950b6b10d36c90f89e586b8a01fe5ce1b65 to MinhNhat
+[33m1157a95[m[33m ([m[1;32msave-detached[m[33m)[m HEAD@{10}: commit: Hoan tat auth, profile, lien he
+[33m3906c61[m HEAD@{11}: pull origin MinhNhat --rebase (start): checkout 3906c61db218bd98312641e41d712ccfce8b3b1d
+[33mc221059[m[33m ([m[1;31morigin/MinhNhat[m[33m, [m[1;32mmaster[m[33m, [m[1;32mMinhNhat[m[33m)[m HEAD@{12}: checkout: moving from master to MinhNhat
+[33mc221059[m[33m ([m[1;31morigin/MinhNhat[m[33m, [m[1;32mmaster[m[33m, [m[1;32mMinhNhat[m[33m)[m HEAD@{13}: commit (initial): login, register, logout, doi mat khau, layoutz, lien-he

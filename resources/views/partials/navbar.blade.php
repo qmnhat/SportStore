@@ -90,7 +90,7 @@
                                     <div class="dropdown-divider"></div>
 
                                     <a href="/dang-xuat" class="dropdown-item text-danger">
-                                        Log out
+                                        Đăng xuất
                                     </a>
                                 </div>
                             </div>
