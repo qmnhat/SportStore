@@ -6,12 +6,16 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\KhachHangController;
 
+use App\Http\Controllers\PageController;
+
+Route::get('/gioi-thieu', [PageController::class, 'about'])->name('pages.about');
+
 Route::get('/san-pham', [SanPhamController::class, 'index'])->name('shop.index');
 Route::get('/san-pham/{maSP}', [SanPhamController::class, 'show'])->name('shop.show');
 Route::get('/', function () {
     return view('pages.trang-chu');
 });
-
+Route::Get('/tim-kiem', [SanPhamController::class, 'search'])->name('search');
 Route::get('/chi-tiet', function () {
     return view('products.chi-tiet');
 });
