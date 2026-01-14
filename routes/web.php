@@ -6,6 +6,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\KhachHangController;
 
+use App\Http\Controllers\Admin\Auth\AdminAuthController;
+use App\Http\Controllers\PageController;
+
+
 Route::get('/san-pham', [SanPhamController::class, 'index'])->name('shop.index');
 Route::get('/san-pham/{maSP}', [SanPhamController::class, 'show'])->name('shop.show');
 Route::get('/', function () {
@@ -25,15 +29,6 @@ Route::get('/don-hang/{id}', function ($id) {
     return view('pages.chi-tiet-don-hang');
 });
 
-Route::prefix('admin')->group(function () {
-    Route::view('/dashboard', 'admin.dashboard');
-
-    Route::view('/CSanPham', 'admin.CSanPham.index');
-    Route::view('/CDanhMuc', 'admin.CDanhMuc.index');
-    Route::view('/CThuongHieu', 'admin.CThuongHieu.index');
-    Route::view('/CDonHang', 'admin.CDonHang.index');
-    Route::view('/CKhuyenMai', 'admin.CKhuyenMai.index');
-});
 
 Route::get('/gio-hang', function () {
     return view('pages.gio-hang');
@@ -75,4 +70,32 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/khach-hang/edit/{id}', [KhachHangController::class, 'edit'])->name('khachhang.edit');
     Route::put('/khach-hang/update/{id}', [KhachHangController::class, 'update'])
         ->name('khachhang.update');
+});
+
+Route::get('/login', function () {
+    return redirect()->route('admin.login.form');
+})->name('login');
+
+Route::prefix('admin')->group(function () {
+
+    Route::get('/login', [AdminAuthController::class, 'showLoginForm'])
+        ->name('admin.login.form');
+
+    Route::post('/login', [AdminAuthController::class, 'login'])
+        ->name('admin.login');
+
+    Route::post('/logout', [AdminAuthController::class, 'logout'])
+        ->name('admin.logout');
+
+    // 🔒 PHẢI LOGIN MỚI VÀO ĐƯỢC
+    Route::middleware('auth:admin')->group(function () {
+
+        Route::get('/', function () {
+            return redirect()->route('admin.dashboard');
+        });
+
+        // /admin/dashboard
+        Route::view('/dashboard', 'admin.dashboard')
+            ->name('admin.dashboard');
+    });
 });

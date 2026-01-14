@@ -1,3 +1,7 @@
+@php
+    $admin = Auth::guard('admin')->user();
+@endphp
+
 <nav class="navbar navbar-expand navbar-light bg-white shadow-sm">
     <div class="container-fluid">
 
@@ -20,11 +24,16 @@
                             <i class="bi bi-person-circle fs-4"></i>
                         </div>
                         <div class="text-start d-none d-md-block">
-                            <div class="fw-bold">Admin</div>
-                            <small class="text-muted">Quản trị viên</small>
+                            <div class="fw-bold">
+                                {{ $admin->HoTen ?? 'Admin' }}
+                            </div>
+                            <small class="text-muted">
+                                {{ $admin->VaiTro == 1 ? 'Quản trị viên' : 'Quản lý' }}
+                            </small>
                         </div>
                     </div>
                 </a>
+
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
                         <a class="dropdown-item" href="#">
@@ -32,11 +41,15 @@
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="#">
-                            <i class="bi bi-box-arrow-right me-2"></i> Đăng xuất
-                        </a>
+                        <form method="POST" action="{{ route('admin.logout') }}">
+                            @csrf
+                            <button type="submit" class="dropdown-item">
+                                <i class="bi bi-box-arrow-right me-2"></i> Đăng xuất
+                            </button>
+                        </form>
                     </li>
                 </ul>
+
             </li>
         </ul>
 
