@@ -43,7 +43,7 @@
             </li>
 
             <li class="sidebar-item">
-                <a href="{{ url('/admin/CThuongHieu') }}" class="sidebar-link">
+                <a href="{{ url('/admin/thuong-hieu') }}" class="sidebar-link">
                     <i class="bi bi-building"></i>
                     <span>Thương hiệu</span>
                 </a>
@@ -64,7 +64,7 @@
             </li>
 
             <li class="sidebar-item">
-                <a href="{{ url('/admin/CKhuyenMai') }}" class="sidebar-link">
+                <a href="{{ url('/admin/khuyen-mai') }}" class="sidebar-link">
                     <i class="bi bi-tags"></i>
                     <span>Khuyến mãi</span>
                 </a>

@@ -20,6 +20,7 @@ class KhachHangController extends Controller
         $request->validate([
             'HoTen'   => 'required|string|max:120',
             'Email'   => 'required|email|unique:KhachHang,Email',
+            'GioiTinh' => 'nullable|in:0,1',
             'MatKhau' => 'required|min:6|confirmed',
             'SDT'     => 'nullable|string|max:20',
             'DiaChi'  => 'nullable|string|max:255',
@@ -32,6 +33,7 @@ class KhachHangController extends Controller
             'MatKhau'   => Hash::make($request->MatKhau), // ⚠️ bắt buộc hash
             'SDT'       => $request->SDT,
             'DiaChi'    => $request->DiaChi,
+            'GioiTinh' => $request->GioiTinh,
             'NgaySinh'  => $request->NgaySinh,
             'TrangThai' => 1,
             'IsDeleted' => 0,
@@ -124,6 +126,7 @@ class KhachHangController extends Controller
             'HoTen' => 'required|string|max:255',
             'Email' => 'required|email|max:255',
             'DiaChi' => 'nullable|string|max:255',
+            'GioiTinh' => 'nullable|in:0,1',
             'SDT' => 'nullable|string|max:20',
             'NgaySinh' => 'nullable|date',
             'TrangThai' => 'required|boolean',
@@ -131,13 +134,15 @@ class KhachHangController extends Controller
 
         $kh = KhachHang::findOrFail($id);
         $kh->update([
-            'HoTen' => $request->HoTen,
-            'Email' => $request->Email,
-            'DiaChi' => $request->DiaChi,
-            'SDT' => $request->SDT,
-            'NgaySinh' => $request->NgaySinh,
-            'TrangThai' => $request->TrangThai,
+            'HoTen'      => $request->HoTen,
+            'Email'      => $request->Email,
+            'DiaChi'     => $request->DiaChi,
+            'SDT'        => $request->SDT,
+            'NgaySinh'   => $request->NgaySinh,
+            'GioiTinh'   => $request->GioiTinh, // ✅ BỔ SUNG
+            'TrangThai'  => $request->TrangThai,
         ]);
+
 
         return redirect()->route('admin.khachhang.index')->with('success', 'Cập nhật khách hàng thành công!');
     }

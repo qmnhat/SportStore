@@ -20,18 +20,25 @@ class AuthController extends Controller
 
         $kh = DB::table('KhachHang')
             ->where('Email', $request->Email)
-            ->where('TrangThai', 1)
             ->where('IsDeleted', 0)
             ->first();
 
+        // ❌ email không tồn tại
         if (!$kh) {
             return back()->with('error', 'Email không tồn tại');
         }
 
+        // ❌ tài khoản bị khóa
+        if ($kh->TrangThai == 0) {
+            return back()->with('error', 'Tài khoản đã bị khóa');
+        }
+
+        // ❌ mật khẩu sai
         if (!Hash::check($request->MatKhau, $kh->MatKhau)) {
             return back()->with('error', 'Mật khẩu không đúng');
         }
 
+        // ✅ đăng nhập thành công
         session([
             'khachhang' => [
                 'MaKH'  => $kh->MaKH,
@@ -43,11 +50,12 @@ class AuthController extends Controller
         return redirect('/');
     }
 
+
     public function registerKhachHang(Request $request)
     {
         // kiểm tra mật khẩu nhập lại
         if ($request->MatKhau !== $request->MatKhau_confirm) {
-            return back();
+            return back()->with('error', 'Mật khẩu nhập lại không khớp');
         }
 
         DB::table('KhachHang')->insert([
