@@ -55,6 +55,16 @@
                                     <textarea name="DiaChi" class="form-control" rows="3">{{ $kh->DiaChi }}</textarea>
                                 </div>
                             </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label">Giới tính</label>
+                                <div class="col-sm-9">
+                                    <select name="GioiTinh" class="form-select">
+                                        <option value="">-- Chọn giới tính --</option>
+                                        <option value="1" {{ (int) $kh->GioiTinh === 1 ? 'selected' : '' }}>Nam</option>
+                                        <option value="0" {{ (int) $kh->GioiTinh === 0 ? 'selected' : '' }}>Nữ</option>
+                                    </select>
+                                </div>
+                            </div>
 
                             <div class="text-end">
                                 <button type="button" class="btn btn-outline-secondary me-2" onclick="history.back()">

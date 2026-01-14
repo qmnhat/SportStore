@@ -29,11 +29,13 @@ class ProfileController extends Controller
         DB::table('KhachHang')
             ->where('MaKH', session('khachhang.MaKH'))
             ->update([
-                'HoTen'    => $request->HoTen,
-                'NgaySinh' => $request->NgaySinh,
-                'SDT'      => $request->SDT,
-                'DiaChi'   => $request->DiaChi,
+                'HoTen'     => $request->HoTen,
+                'NgaySinh'  => $request->NgaySinh,
+                'SDT'       => $request->SDT,
+                'DiaChi'    => $request->DiaChi,
+                'GioiTinh'  => $request->GioiTinh, // ✅ CHỈ LẤY GIÁ TRỊ
             ]);
+
 
         // cập nhật lại session cho đồng bộ tên
         session()->put('khachhang.HoTen', $request->HoTen);

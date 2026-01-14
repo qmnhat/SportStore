@@ -21,6 +21,14 @@
                                     <label class="form-label">Họ và tên</label>
                                     <input type="text" name="HoTen" class="form-control" required>
                                 </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Giới tính</label>
+                                    <select name="GioiTinh" class="form-select">
+                                        <option value="">-- Chọn --</option>
+                                        <option value="1">Nam</option>
+                                        <option value="0">Nữ</option>
+                                    </select>
+                                </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Số điện thoại</label>
