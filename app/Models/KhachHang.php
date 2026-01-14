@@ -18,6 +18,7 @@ class KhachHang extends Model
         'DiaChi',
         'SDT',
         'NgaySinh',
+        'GioiTinh',
         'TrangThai',
         'NgayTao',
         'IsDeleted',

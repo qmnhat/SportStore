@@ -13,6 +13,20 @@ use App\Http\Controllers\Admin\ThuongHieuController;
 |--------------------------------------------------------------------------
 */
 
+Route::middleware('khachhang.auth')->group(function () {
+
+    Route::get('/gio-hang', fn() => view('pages.gio-hang'));
+    Route::get('/lich-su-mua-hang', fn() => view('pages.lich-su-mua-hang'));
+    Route::get('/don-hang', fn() => view('pages.don-hang'));
+    Route::get('/don-hang/{id}', fn($id) => view('pages.chi-tiet-don-hang'));
+
+    Route::get('/thong-tin-ca-nhan', [ProfileController::class, 'index']);
+    Route::post('/thong-tin-ca-nhan', [ProfileController::class, 'update']);
+
+    Route::get('/doi-mat-khau', fn() => view('auth.doi-mat-khau'));
+    Route::post('/doi-mat-khau', [AuthController::class, 'doiMatKhau']);
+});
+
 Route::get('/', function () {
     return view('pages.trang-chu');
 });
@@ -21,14 +35,7 @@ Route::get('/san-pham', [SanPhamController::class, 'index'])->name('shop.index')
 Route::get('/san-pham/{maSP}', [SanPhamController::class, 'show'])->name('shop.show');
 
 Route::get('/lien-he', fn() => view('pages.lien-he'));
-Route::get('/gio-hang', fn() => view('pages.gio-hang'));
-Route::get('/lich-su-mua-hang', fn() => view('pages.lich-su-mua-hang'));
-Route::get('/don-hang', fn() => view('pages.don-hang'));
-Route::get('/don-hang/{id}', fn($id) => view('pages.chi-tiet-don-hang'));
 
-Route::get('/dang-nhap', fn() => view('auth.login'));
-Route::get('/dang-ky', fn() => view('auth.register'));
-Route::get('/doi-mat-khau', fn() => view('auth.doi-mat-khau'));
 
 Route::get('/dang-xuat', function () {
     session()->forget('khachhang');
@@ -37,10 +44,9 @@ Route::get('/dang-xuat', function () {
 
 Route::post('/dang-nhap', [AuthController::class, 'loginKhachHang']);
 Route::post('/dang-ky', [AuthController::class, 'registerKhachHang']);
-Route::post('/doi-mat-khau', [AuthController::class, 'doiMatKhau']);
+Route::get('/dang-nhap', fn() => view('auth.login'))->name('dang-nhap');
 
-Route::get('/thong-tin-ca-nhan', [ProfileController::class, 'index']);
-Route::post('/thong-tin-ca-nhan', [ProfileController::class, 'update']);
+
 
 /*
 |--------------------------------------------------------------------------
