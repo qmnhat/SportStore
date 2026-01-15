@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Trang chủ')
 @section('content')
     <!-- Carousel Start -->
     <div class="container-fluid carousel bg-light px-0">
@@ -8,7 +8,7 @@
                 <div class="header-carousel owl-carousel bg-light py-5">
                     <div class="row g-0 header-carousel-item align-items-center">
                         <div class="col-xl-6 carousel-img wow fadeInLeft" data-wow-delay="0.1s">
-                            <img src="img/carousel-1.png" class="img-fluid w-100" alt="Image">
+                            <img src="img/ao/ao_3.jpg" class="img-fluid w-100" alt="Image">
                         </div>
                         <div class="col-xl-6 carousel-content p-4">
                             <h4 class="text-uppercase fw-bold mb-4 wow fadeInRight" data-wow-delay="0.1s"
@@ -22,7 +22,7 @@
                     </div>
                     <div class="row g-0 header-carousel-item align-items-center">
                         <div class="col-xl-6 carousel-img wow fadeInLeft" data-wow-delay="0.1s">
-                            <img src="img/carousel-2.png" class="img-fluid w-100" alt="Image">
+                            <img src="img/giay/giay_2.jpg" class="img-fluid w-100" alt="Image">
                         </div>
                         <div class="col-xl-6 carousel-content p-4">
                             <h4 class="text-uppercase fw-bold mb-4 wow fadeInRight" data-wow-delay="0.1s"
@@ -38,7 +38,7 @@
             </div>
             <div class="col-12 col-lg-5 col-xl-3 wow fadeInRight" data-wow-delay="0.1s">
                 <div class="carousel-header-banner h-100">
-                    <img src="img/header-img.jpg" class="img-fluid w-100 h-100" style="object-fit: cover;" alt="Image">
+                    <img src="img/nghia.jpg" class="img-fluid w-100 h-100" style="object-fit: cover;" alt="Image">
                     <div class="carousel-banner-offer">
                         <p class="bg-primary text-white rounded fs-5 py-2 px-4 mb-0 me-3">Save $48.00</p>
                         <p class="text-primary fs-5 fw-bold mb-0">Special Offer</p>
@@ -132,38 +132,6 @@
     </div>
     <!-- Searvices End -->
 
-    <!-- Products Offer Start -->
-    <div class="container-fluid bg-light py-5">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-6 wow fadeInLeft" data-wow-delay="0.2s">
-                    <a href="#"
-                        class="d-flex align-items-center justify-content-between border bg-white rounded p-4">
-                        <div>
-                            <p class="text-muted mb-3">Find The Best Camera for You!</p>
-                            <h3 class="text-primary">Smart Camera</h3>
-                            <h1 class="display-3 text-secondary mb-0">40% <span class="text-primary fw-normal">Off</span>
-                            </h1>
-                        </div>
-                        <img src="img/product-1.png" class="img-fluid" alt="">
-                    </a>
-                </div>
-                <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.3s">
-                    <a href="#"
-                        class="d-flex align-items-center justify-content-between border bg-white rounded p-4">
-                        <div>
-                            <p class="text-muted mb-3">Find The Best Whatches for You!</p>
-                            <h3 class="text-primary">Smart Whatch</h3>
-                            <h1 class="display-3 text-secondary mb-0">20% <span class="text-primary fw-normal">Off</span>
-                            </h1>
-                        </div>
-                        <img src="img/product-2.png" class="img-fluid" alt="">
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Products Offer End -->
 
 
     <!-- Our Products Start -->
@@ -1164,8 +1132,7 @@
                             <div class="d-flex">
                                 <a href="#"
                                     class="text-primary d-flex align-items-center justify-content-center me-3"><span
-                                        class="rounded-circle btn-sm-square border"><i
-                                            class="fas fa-random"></i></i></a>
+                                        class="rounded-circle btn-sm-square border"><i class="fas fa-random"></i></i></a>
                                 <a href="#"
                                     class="text-primary d-flex align-items-center justify-content-center me-0"><span
                                         class="rounded-circle btn-sm-square border"><i class="fas fa-heart"></i></a>
