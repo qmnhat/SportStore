@@ -62,7 +62,12 @@
                     <span>Khách hàng</span>
                 </a>
             </li>
-
+            <li class="sidebar-item">
+                <a href="{{ url('/admin/contacts') }}" class="sidebar-link">
+                    <i class="bi bi-envelope"></i>
+                    <span>Liên hệ</span>
+                </a>
+            </li>
             <li class="sidebar-item">
                 <a href="{{ url('/admin/khuyen-mai') }}" class="sidebar-link">
                     <i class="bi bi-tags"></i>

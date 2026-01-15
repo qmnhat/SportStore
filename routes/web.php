@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\Auth\AdminAuthController;
 use App\Http\Controllers\Admin\ThuongHieuController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Admin\AdminContactController;
 //route contact
 Route::post('/contact',[ContactController::class, 'store'])->name('contact.store');
 
@@ -76,7 +77,7 @@ Route::get('/dang-xuat', function () {
 Route::post('/dang-nhap', [AuthController::class, 'loginKhachHang']);
 Route::post('/dang-ky', [AuthController::class, 'registerKhachHang']);
 Route::get('/dang-nhap', fn() => view('auth.login'))->name('dang-nhap');
-
+Route::get('/dang-ky', fn() => view('auth.register'))->name('dang-ky');
 
 
 /*
@@ -161,4 +162,10 @@ Route::prefix('admin')
         Route::put('/thuong-hieu/update/{id}', [ThuongHieuController::class, 'update'])->name('thuonghieu.update');
         Route::post('/thuong-hieu/destroy/{id}', [ThuongHieuController::class, 'destroy'])->name('thuonghieu.destroy');
         Route::post('/thuong-hieu/restore/{id}', [ThuongHieuController::class, 'restore'])->name('thuonghieu.restore');
+
+        //route quản lý liên hệ
+        Route::get('/contacts',[AdminContactController::class,'index'])->name('admin.contacts.index');
+        Route::get('/contacts/{id}',[AdminContactController::class,'show'])->name('admin.contacts.show');
+        Route::put('/contacts/{id}',[AdminContactController::class,'update'])->name('admin.contacts.update');
+        Route::delete('/contacts/{id}',[AdminContactController::class,'destroy'])->name('admin.contacts.destroy');
     });

@@ -53,11 +53,21 @@ class AuthController extends Controller
 
     public function registerKhachHang(Request $request)
     {
-        // kiểm tra mật khẩu nhập lại
-        if ($request->MatKhau !== $request->MatKhau_confirm) {
-            return back()->with('error', 'Mật khẩu nhập lại không khớp');
-        }
+        // 1. VALIDATE: Chặn ngay nếu Email trùng hoặc Mật khẩu không khớp
+        $request->validate([
+            'HoTen'           => 'required|string|max:255',
+            'Email'           => 'required|email|unique:KhachHang,Email', // <-- QUAN TRỌNG: Chặn trùng Email ở đây
+            'MatKhau'         => 'required|min:6',
+            'MatKhau_confirm' => 'required|same:MatKhau', // <-- Kiểm tra khớp mật khẩu
+            'SoDienThoai'     => 'nullable|numeric',
+        ], [
+            'Email.unique'         => 'Email này đã được sử dụng. Vui lòng chọn email khác.',
+            'MatKhau_confirm.same' => 'Mật khẩu nhập lại không khớp.',
+            'MatKhau.min'          => 'Mật khẩu phải có ít nhất 6 ký tự.',
+            'HoTen.required'       => 'Vui lòng nhập họ tên.',
+        ]);
 
+        // 2. INSERT: Chỉ chạy khi validate phía trên không có lỗi
         DB::table('KhachHang')->insert([
             'HoTen'     => $request->HoTen,
             'Email'     => $request->Email,
@@ -70,7 +80,7 @@ class AuthController extends Controller
             'NgayTao'   => now(),
         ]);
 
-        return redirect('/dang-nhap');
+        return redirect('/dang-nhap')->with('success', 'Đăng ký thành công! Vui lòng đăng nhập.');
     }
     public function doiMatKhau(Request $request)
     {
