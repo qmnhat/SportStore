@@ -10,6 +10,10 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\Admin\KhachHangController;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
 use App\Http\Controllers\Admin\ThuongHieuController;
+//begin phat
+use App\Http\Controllers\GioHangController;
+use App\Http\Controllers\SanPhamApiController;
+//end phat
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +26,15 @@ Route::get('/gioi-thieu', [PageController::class, 'about'])->name('pages.about')
 
 Route::get('/san-pham', [SanPhamController::class, 'index'])->name('shop.index');
 Route::get('/san-pham/{maSP}', [SanPhamController::class, 'show'])->name('shop.show');
+
+//begin phat
+// (15) Them vao gio hang
+Route::post('/gio-hang/them', [GioHangController::class, 'them'])->name('cart.add');
+// (17) Thong ke realtime: view/yeu thich/rating
+Route::get('/api/san-pham/{maSP}/thong-ke', [SanPhamApiController::class, 'thongKe']);
+Route::post('/api/san-pham/{maSP}/yeu-thich', [SanPhamApiController::class, 'yeuThich']);
+//end phat
+
 Route::get('/tim-kiem', [SanPhamController::class, 'search'])->name('search');
 
 Route::get('/lien-he', fn() => view('pages.lien-he'));
@@ -34,6 +47,9 @@ Route::get('/lien-he', fn() => view('pages.lien-he'));
 Route::get('/dang-nhap', fn() => view('auth.login'))->name('dang-nhap');
 Route::post('/dang-nhap', [AuthController::class, 'loginKhachHang']);
 Route::post('/dang-ky', [AuthController::class, 'registerKhachHang']);
+Route::get('/dang-ky', function () {
+    return view('auth.register');
+});
 
 Route::get('/dang-xuat', function () {
     session()->forget('khachhang');
@@ -46,6 +62,10 @@ Route::get('/dang-xuat', function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware('khachhang.auth')->group(function () {
+    //begin phat
+    // (12) Gui danh gia san pham
+    Route::post('/san-pham/{maSP}/danh-gia', [SanPhamController::class, 'guiDanhGia'])->name('shop.review');
+    //end phat
 
     Route::get('/gio-hang', fn() => view('pages.gio-hang'));
     Route::get('/lich-su-mua-hang', fn() => view('pages.lich-su-mua-hang'));
