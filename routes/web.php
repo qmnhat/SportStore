@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\ThuongHieuController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\AdminContactController;
-use App\Http\Controllers\Admin\CompanyInfoController;
+use App\Http\Controllers\Admin\AdminCompanyInfoController;
 use Faker\Provider\Company;
 
 //route liên hệ(nghia)
@@ -168,13 +168,30 @@ Route::prefix('admin')
         Route::post('/thuong-hieu/restore/{id}', [ThuongHieuController::class, 'restore'])->name('thuonghieu.restore');
 
         //route quản lý liên hệ(nghia)
-        Route::get('/contacts',[AdminContactController::class,'index'])->name('admin.contacts.index');
-        Route::get('/contacts/{id}',[AdminContactController::class,'show'])->name('admin.contacts.show');
-        Route::put('/contacts/{id}',[AdminContactController::class,'update'])->name('admin.contacts.update');
-        Route::delete('/contacts/{id}',[AdminContactController::class,'destroy'])->name('admin.contacts.destroy');
+        Route::get('/contacts',[AdminContactController::class,'index'])->name('contacts.index');
+        Route::get('/contacts/{id}',[AdminContactController::class,'show'])->name('contacts.show');
+        Route::put('/contacts/{id}',[AdminContactController::class,'update'])->name('contacts.update');
+        Route::delete('/contacts/{id}',[AdminContactController::class,'destroy'])->name('contacts.destroy');
+
         // route Thong tin công ty (nghia)
-        Route::get('/company-info',[CompanyInfoController::class,'edit'])->name('admin.company_info.edit');
-        Route::put('/company-info/{id}',[CompanyInfoController::class,'update'])->name('admin.company_info.update');
+        Route::get('/company-info',[AdminCompanyInfoController::class,'edit'])->name('company-info.edit');
+        Route::put('/company-info',[AdminCompanyInfoController::class,'update'])->name('company-info.update');
+
+        // route Chính sách
+        Route::get('/policies',[AdminCompanyInfoController::class,'policiesIndex'])->name('policies.index');
+        Route::get('/policies/create',[AdminCompanyInfoController::class,'policiesCreate'])->name('policies.create');
+        Route::post('/policies',[AdminCompanyInfoController::class,'policiesStore'])->name('policies.store');
+        Route::get('/policies/{id}/edit',[AdminCompanyInfoController::class,'policiesEdit'])->name('policies.edit');
+        Route::put('/policies/{id}',[AdminCompanyInfoController::class,'policiesUpdate'])->name('policies.update');
+        Route::delete('/policies/{id}',[AdminCompanyInfoController::class,'policiesDestroy'])->name('policies.destroy');
+
+        // route FAQ
+        Route::get('/faqs',[AdminCompanyInfoController::class,'faqsIndex'])->name('faqs.index');
+        Route::get('/faqs/create',[AdminCompanyInfoController::class,'faqsCreate'])->name('faqs.create');
+        Route::post('/faqs',[AdminCompanyInfoController::class,'faqsStore'])->name('faqs.store');
+        Route::get('/faqs/{id}/edit',[AdminCompanyInfoController::class,'faqsEdit'])->name('faqs.edit');
+        Route::put('/faqs/{id}',[AdminCompanyInfoController::class,'faqsUpdate'])->name('faqs.update');
+        Route::delete('/faqs/{id}',[AdminCompanyInfoController::class,'faqsDestroy'])->name('faqs.destroy');
 
 
     });

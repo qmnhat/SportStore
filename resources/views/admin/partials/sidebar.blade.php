@@ -75,6 +75,33 @@
                 </a>
             </li>
 
+            {{-- <li class="sidebar-item">
+                <a href="{{ route('admin.company-info.edit') }}" class="sidebar-link">
+                    <i class="bi bi-gear"></i>
+                    <span>Thông tin công ty</span>
+                </a>
+            </li> --}}
+            <li class="sidebar-item">
+                <a href="{{ url('admin/company-info') }}" class="sidebar-link">
+                    <i class="bi bi-gear"></i>
+                    <span>Thông tin công ty</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a href="{{ route('admin.policies.index') }}" class="sidebar-link">
+                    <i class="bi bi-file-earmark-check"></i>
+                    <span>Chính sách</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a href="{{ route('admin.faqs.index') }}" class="sidebar-link">
+                    <i class="bi bi-question-circle"></i>
+                    <span>Câu hỏi thường gặp</span>
+                </a>
+            </li>
+
             <li class="sidebar-title">Khác</li>
 
             <li class="sidebar-item">

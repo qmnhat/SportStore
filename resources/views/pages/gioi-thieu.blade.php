@@ -11,7 +11,7 @@
             {{-- 1. GIỚI THIỆU CHUNG --}}
             <div class="mb-5 text-center">
                 <h1 class="display-4 fw-bold text-primary">Giới thiệu về SportStore</h1>
-                <p class="lead text-muted">Đồng hành cùng đam mê thể thao của bạn từ năm 2025</p>
+                <p class="lead text-muted">{{ $company->description }}</p>
             </div>
 
             {{-- 2. HỒ SƠ DOANH NGHIỆP --}}
@@ -177,43 +177,29 @@
                         <i class="bi bi-file-earmark-check"></i> Chính sách & Cam kết
                     </h3>
 
-                    <div class="mt-4">
-                        <h5 class="fw-bold text-dark"><i class="bi bi-truck"></i> Chính sách vận chuyển</h5>
-                        <ul class="mt-2">
-                            <li>Miễn phí giao hàng cho đơn hàng từ <strong>500.000đ</strong> trở lên.</li>
-                            <li>Giao hàng hỏa tốc 2H trong nội thành TP.HCM và Hà Nội.</li>
-                            <li>Giao hàng tiêu chuẩn (3-5 ngày) cho các tỉnh khác.</li>
-                            <li>Được kiểm tra hàng trước khi thanh toán (COD).</li>
-                            <li>Bảo hiểm vận chuyển toàn bộ hàng hoá.</li>
-                        </ul>
-                    </div>
+                    @php
+                        $policies = \App\Models\CompanyPolicy::get();
+                    @endphp
 
+                    @foreach($policies as $policy)
                     <div class="mt-4">
-                        <h5 class="fw-bold text-dark"><i class="bi bi-cash-coin"></i> Chính sách thanh toán</h5>
-                        <ul class="mt-2">
-                            <li><strong>Thanh toán khi nhận hàng (COD):</strong> Không tính phí, miễn phí.</li>
-                            <li><strong>Chuyển khoản ngân hàng:</strong> Không tính phí, miễn phí.</li>
-                            <li><strong>Ví điện tử:</strong> Momo, Zalo Pay, AirPay.</li>
-                            {{-- <li><strong>Thẻ tín dụng/ghi nợ:</strong> Linh hoạt, không lãi suất.</li>
-                            <li><strong>Mua trả góp:</strong> Qua ứng dụng tài chính (0% lãi).</li> --}}
-                        </ul>
+                        <h5 class="fw-bold text-dark">
+                            @if($policy->type == 'shipping')
+                                <i class="bi bi-truck"></i>
+                            @elseif($policy->type == 'payment')
+                                <i class="bi bi-cash-coin"></i>
+                            @elseif($policy->type == 'return')
+                                <i class="bi bi-arrow-repeat"></i>
+                            @elseif($policy->type == 'security')
+                                <i class="bi bi-shield-lock"></i>
+                            @endif
+                            {{ $policy->title }}
+                        </h5>
+                        <div class="mt-2">
+                            {!! $policy->content !!}
+                        </div>
                     </div>
-
-                    <div class="mt-4">
-                        <h5 class="fw-bold text-dark"><i class="bi bi-arrow-repeat"></i> Chính sách đổi trả - Bảo hành</h5>
-                        <ul class="mt-2">
-                            <li><strong>Đổi trả 1-1 trong 30 ngày:</strong> Nếu sản phẩm có lỗi từ nhà sản xuất hoặc không vừa size.</li>
-                            <li><strong>Bảo hành chính hãng:</strong> Từ 6 tháng đến 24 tháng tùy loại dụng cụ.</li>
-                            <li><strong>Bảo hành mở rộng:</strong> Có thể mua bảo hành thêm 12 tháng.</li>
-                            <li>Hoàn tiền 200% nếu phát hiện hàng giả, hàng nhái (không cần lý do).</li>
-                            <li>Dịch vụ bảo trì miễn phí cho thiết bị thể thao trong 1 năm.</li>
-                        </ul>
-                    </div>
-
-                    <div class="mt-4">
-                        <h5 class="fw-bold text-dark"><i class="bi bi-shield-lock"></i> Chính sách bảo mật</h5>
-                        <p class="small text-muted mt-2">Chúng tôi cam kết bảo mật tuyệt đối thông tin cá nhân của khách hàng theo quy định của pháp luật Việt Nam. Thông tin của quý khách chỉ được sử dụng cho mục đích xử lý đơn hàng, chăm sóc khách hàng và gửi thông tin khuyến mãi (có thể hủy bất cứ lúc nào). Chúng tôi sử dụng mã hóa SSL 256-bit cho tất cả giao dịch trực tuyến.</p>
-                    </div>
+                    @endforeach
 
                     {{-- <div class="mt-4">
                         <h5 class="fw-bold text-dark"><i class="bi bi-percent"></i> Chính sách khách hàng thân thiết</h5>
@@ -307,20 +293,30 @@
                         <div class="col-md-6 mb-3">
                             <h6 class="fw-bold">Thông tin liên hệ</h6>
                             <ul class="list-unstyled small">
-                                <li><strong>Hotline:</strong> <a href="tel:1900888999" class="text-decoration-none">1900 888 999</a></li>
-                                <li><strong>Email:</strong> <a href="mailto:support@sportstore.vn" class="text-decoration-none">support@sportstore.vn</a></li>
-                                <li><strong>Zalo:</strong> <a href="https://www.facebook.com/" class="text-decoration-none">+84 123 456 789</a></li>
-                                <li><strong>Facebook Chat:</strong> <a href="https://www.facebook.com/messenger" class="text-decoration-none">SportStore Vietnam</a></li>
+                                <li><strong>Hotline:</strong> <a href="tel:{{ str_replace(' ', '', $company->hotline) }}" class="text-decoration-none">{{ $company->hotline }}</a></li>
+                                <li><strong>Email:</strong> <a href="mailto:{{ $company->email }}" class="text-decoration-none">{{ $company->email }}</a></li>
+                                @if($company->zalo_phone)
+                                <li><strong>Zalo:</strong> <a href="tel:{{ str_replace(' ', '', $company->zalo_phone) }}" class="text-decoration-none">{{ $company->zalo_phone }}</a></li>
+                                @endif
+                                <li><strong>Facebook Chat:</strong> <a href="{{ $company->facebook_url }}" class="text-decoration-none">SportStore Vietnam</a></li>
                             </ul>
                         </div>
                         <div class="col-md-6 mb-3">
                             <h6 class="fw-bold">Theo dõi chúng tôi trên mạng xã hộ</h6>
                             <div class="mt-2">
-                                <a href="https://www.facebook.com/" class="btn btn-sm btn-outline-primary me-2"><i class="bi bi-facebook"></i> Facebook</a>
-                                <a href="https://www.instagram.com/" class="btn btn-sm btn-outline-danger"><i class="bi bi-instagram"></i> Instagram</a>
+                                @if($company->facebook_url)
+                                <a href="{{ $company->facebook_url }}" class="btn btn-sm btn-outline-primary me-2"><i class="bi bi-facebook"></i> Facebook</a>
+                                @endif
+                                @if($company->instagram_url)
+                                <a href="{{ $company->instagram_url }}" class="btn btn-sm btn-outline-danger"><i class="bi bi-instagram"></i> Instagram</a>
+                                @endif
                                 <br>
-                                <a href="https://x.com/home?lang=vi" class="btn btn-sm btn-outline-info mt-2 me-2"><i class="bi bi-twitter"></i> Twitter</a>
-                                <a href="https://www.youtube.com/" class="btn btn-sm btn-outline-dark"><i class="bi bi-youtube"></i> YouTube</a>
+                                @if($company->twitter_url)
+                                <a href="{{ $company->twitter_url }}" class="btn btn-sm btn-outline-info mt-2 me-2"><i class="bi bi-twitter"></i> Twitter</a>
+                                @endif
+                                @if($company->youtube_url)
+                                <a href="{{ $company->youtube_url }}" class="btn btn-sm btn-outline-dark"><i class="bi bi-youtube"></i> YouTube</a>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -333,57 +329,26 @@
                     <h3 class="card-title h4 text-uppercase border-bottom pb-2">
                         <i class="bi bi-question-circle"></i> Câu hỏi thường gặp (FAQ)
                     </h3>
+
+                    @php
+                        $faqs = \App\Models\CompanyFaq::get();
+                    @endphp
+
                     <div class="accordion mt-3" id="faqAccordion">
+                        @foreach($faqs as $index => $faq)
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                                    Làm sao tôi có thể biết sản phẩm là hàng chính hãng?
+                                <button class="accordion-button {{ $index !== 0 ? 'collapsed' : '' }}" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ $index }}">
+                                    {{ $faq->question }}
                                 </button>
                             </h2>
-                            <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div id="faq{{ $index }}" class="accordion-collapse collapse {{ $index === 0 ? 'show' : '' }}" data-bs-parent="#faqAccordion">
                                 <div class="accordion-body small text-muted">
-                                    Tất cả sản phẩm của SportStore đều có giấy chứng nhận chính hãng, phiếu bảo hành từ nhà sản xuất. Nếu phát hiện hàng giả, chúng tôi hoàn tiền 200% và không cần lý do.
+                                    {!! $faq->answer !!}
                                 </div>
                             </div>
                         </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                                    Thời gian giao hàng mất bao lâu?
-                                </button>
-                            </h2>
-                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body small text-muted">
-                                    - Nội thành TP.HCM & Hà Nội: 2 giờ (giao hàng hỏa tốc)<br>
-                                    - Các tỉnh khác: 3-5 ngày làm việc<br>
-                                    - Bạn có thể theo dõi đơn hàng real-time qua website.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                                    Tôi có thể đổi trả hàng được không nếu sản phẩm không vừa size?
-                                </button>
-                            </h2>
-                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body small text-muted">
-                                    Có, bạn có thể đổi hoặc trả hàng trong vòng 30 ngày nếu sản phẩm chưa sử dụng hoặc có lỗi. Chúng tôi sẽ hoàn tiền 100% nếu đơn hàng chưa qua sử dụng.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
-                                    Có chương trình khuyến mãi nào cho khách hàng mới không?
-                                </button>
-                            </h2>
-                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body small text-muted">
-                                    Có! Khách hàng mới được giảm 10% khi mua hàng lần đầu tiên. Ngoài ra, bạn cũng có thể tham gia chương trình tích điểm và nhập mã khuyến mãi.
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
