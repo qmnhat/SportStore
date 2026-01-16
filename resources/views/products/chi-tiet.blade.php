@@ -41,7 +41,7 @@
         $soDanhGia = (int) ($sanPham->soLuotDanhGia ?? 0);
     @endphp
     //begin phat
-        <div class="tab-pane fade" id="tab-spec">
+    <div class="tab-pane fade" id="tab-spec">
         <div class="bg-light rounded p-4">
             @if (($thongSos->count() ?? 0) == 0)
                 <div class="text-muted">Chua co thong so ky thuat.</div>
@@ -103,8 +103,7 @@
                             <span class="text-muted">({{ $soDanhGia }} luot)</span>
                         </div>
                     </div>
-                    
-                    //begin phat
+
                     <div class="small text-muted mb-1 mt-3">Trang thai</div>
                     <div class="fw-bold mb-3">
                         <span class="badge bg-{{ $sanPham->trangThaiText == 'Con hang' ? 'success' : 'secondary' }}">
@@ -114,11 +113,10 @@
 
                     <div class="small text-muted mb-1">Thong ke</div>
                     <div class="d-flex gap-3 small">
-                        <span>View: <strong id="viewCount">{{ (int)($thongKe->LuotXem ?? 0) }}</strong></span>
-                        <span>Yeu thich: <strong id="favCount">{{ (int)($thongKe->LuotYeuThich ?? 0) }}</strong></span>
+                        <span>View: <strong id="viewCount">{{ (int) ($thongKe->LuotXem ?? 0) }}</strong></span>
+                        <span>Yeu thich: <strong id="favCount">{{ (int) ($thongKe->LuotYeuThich ?? 0) }}</strong></span>
                     </div>
 
-                    //end phat
 
                     {{-- Sizes (bien the) --}}
                     <div class="bg-light rounded p-4 mb-4">
@@ -241,265 +239,265 @@
                             </div>
 
                             {{-- Add to cart (placeholder) --}}
-                            //begin phat
+
                             <!-- <button class="btn btn-primary border border-secondary rounded-pill px-4 py-2 mb-4"
-                                type="button" onclick="alert('Chua lam cart')">
-                                <i class="fa fa-shopping-bag me-2 text-white"></i> Add to cart
-                            </button>
-                        </div> -->
-                            <form method="POST" action="{{ route('cart.add') }}" class="mb-4" onsubmit="return beforeAddCart();">
+                                                type="button" onclick="alert('Chua lam cart')">
+                                                <i class="fa fa-shopping-bag me-2 text-white"></i> Add to cart
+                                            </button>
+                                        </div> -->
+                            <form method="POST" action="{{ route('cart.add') }}" class="mb-4"
+                                onsubmit="return beforeAddCart();">
                                 @csrf
                                 <input type="hidden" name="MaBT" id="maBTInput" value="">
                                 <input type="hidden" name="SoLuong" id="soLuongHidden" value="1">
 
-                                <button class="btn btn-primary border border-secondary rounded-pill px-4 py-2" type="submit">
+                                <button class="btn btn-primary border border-secondary rounded-pill px-4 py-2"
+                                    type="submit">
                                     <i class="fa fa-shopping-bag me-2 text-white"></i> Add to cart
                                 </button>
 
-                                <button class="btn btn-outline-danger rounded-pill px-4 py-2 ms-2" type="button" onclick="yeuThich()">
+                                <button class="btn btn-outline-danger rounded-pill px-4 py-2 ms-2" type="button"
+                                    onclick="yeuThich()">
                                     <i class="fa fa-heart me-2"></i> Yeu thich
                                 </button>
                             </form>
-                            //end phat
 
-                        {{-- Tabs: Description / Reviews --}}
-                        <div class="col-lg-12">
-                            <nav>
-                                <div class="nav nav-tabs mb-3">
-                                    <button class="nav-link active border-white border-bottom-0" type="button"
-                                        data-bs-toggle="tab" data-bs-target="#tab-desc">
-                                        Description
-                                    </button>
-                                    <button class="nav-link border-white border-bottom-0" type="button"
-                                        data-bs-toggle="tab" data-bs-target="#tab-rev">
-                                        Reviews ({{ $soDanhGia }})
-                                    </button>
-                                    //begin phat
-                                    <button class="nav-link border-white border-bottom-0" type="button"
-                                        data-bs-toggle="tab" data-bs-target="#tab-spec">
-                                        Thong so ky thuat
-                                    </button>
-                                    //end phat
-                                </div>
-                            </nav>
+                            {{-- Tabs: Description / Reviews --}}
+                            <div class="col-lg-12">
+                                <nav>
+                                    <div class="nav nav-tabs mb-3">
+                                        <button class="nav-link active border-white border-bottom-0" type="button"
+                                            data-bs-toggle="tab" data-bs-target="#tab-desc">
+                                            Description
+                                        </button>
+                                        <button class="nav-link border-white border-bottom-0" type="button"
+                                            data-bs-toggle="tab" data-bs-target="#tab-rev">
+                                            Reviews ({{ $soDanhGia }})
+                                        </button>
+                                        <button class="nav-link border-white border-bottom-0" type="button"
+                                            data-bs-toggle="tab" data-bs-target="#tab-spec">
+                                            Thong so ky thuat
+                                        </button>
+                                    </div>
+                                </nav>
 
-                            <div class="tab-content mb-5">
-                                {{-- Description --}}
-                                <div class="tab-pane fade show active" id="tab-desc">
-                                    <div class="bg-light rounded p-4">
-                                        <div style="white-space:pre-line">
-                                            {{ $sanPham->MoTa ?? 'Chua co mo ta' }}
+                                <div class="tab-content mb-5">
+                                    {{-- Description --}}
+                                    <div class="tab-pane fade show active" id="tab-desc">
+                                        <div class="bg-light rounded p-4">
+                                            <div style="white-space:pre-line">
+                                                {{ $sanPham->MoTa ?? 'Chua co mo ta' }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- Reviews --}}
+                                    <div class="tab-pane fade" id="tab-rev">
+                                        <div class="bg-light rounded p-4">
+
+                                            @if (($danhGias->count() ?? 0) == 0)
+                                                <div class="text-muted">Chua co danh gia nao.</div>
+                                            @else
+                                                @foreach ($danhGias as $dg)
+                                                    <div class="d-flex border-bottom pb-3 mb-3">
+                                                        <img src="{{ asset('img/avatar.jpg') }}"
+                                                            class="img-fluid rounded-circle p-2"
+                                                            style="width: 80px; height: 80px; object-fit:cover"
+                                                            alt="">
+                                                        <div class="ms-3 w-100">
+                                                            <div class="d-flex justify-content-between">
+                                                                <h6 class="mb-0">{{ $dg->HoTen }}</h6>
+                                                                <small class="text-muted">
+                                                                    {{ \Carbon\Carbon::parse($dg->NgayDanhGia)->format('d/m/Y H:i') }}
+                                                                </small>
+                                                            </div>
+
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                @for ($i = 1; $i <= 5; $i++)
+                                                                    <i
+                                                                        class="fa fa-star {{ $i <= (int) $dg->SoSao ? 'text-secondary' : '' }}"></i>
+                                                                @endfor
+                                                                <span class="badge bg-warning text-dark ms-2 badge-star">
+                                                                    {{ (int) $dg->SoSao }} sao
+                                                                </span>
+                                                            </div>
+
+                                                            <div class="text-dark" style="white-space:pre-line">
+                                                                {{ $dg->NoiDung ?? 'Khong co noi dung' }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+
+                                                <div class="d-flex justify-content-center">
+                                                    {{ $danhGias->links() }}
+                                                </div>
+                                            @endif
+                                            @if (session()->has('khachhang'))
+                                                <form method="POST"
+                                                    action="{{ route('shop.review', ['maSP' => $sanPham->MaSP]) }}"
+                                                    class="mb-4">
+                                                    @csrf
+                                                    <div class="row g-2">
+                                                        <div class="col-md-3">
+                                                            <label class="form-label">So sao (1-5)</label>
+                                                            <select name="SoSao" class="form-select" required>
+                                                                <option value="5">5</option>
+                                                                <option value="4">4</option>
+                                                                <option value="3">3</option>
+                                                                <option value="2">2</option>
+                                                                <option value="1">1</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <label class="form-label">Noi dung</label>
+                                                            <input name="NoiDung" class="form-control"
+                                                                placeholder="Viet nhan xet..." />
+                                                        </div>
+                                                    </div>
+                                                    <button class="btn btn-primary mt-3" type="submit">Gui danh
+                                                        gia</button>
+                                                </form>
+                                            @else
+                                                <div class="alert alert-warning">
+                                                    Ban can <a href="/dang-nhap">dang nhap</a> de danh gia san pham.
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                {{-- Reviews --}}
-                                <div class="tab-pane fade" id="tab-rev">
-                                    <div class="bg-light rounded p-4">
-
-                                        @if (($danhGias->count() ?? 0) == 0)
-                                            <div class="text-muted">Chua co danh gia nao.</div>
-                                        @else
-                                            @foreach ($danhGias as $dg)
-                                                <div class="d-flex border-bottom pb-3 mb-3">
-                                                    <img src="{{ asset('img/avatar.jpg') }}"
-                                                        class="img-fluid rounded-circle p-2"
-                                                        style="width: 80px; height: 80px; object-fit:cover"
-                                                        alt="">
-                                                    <div class="ms-3 w-100">
-                                                        <div class="d-flex justify-content-between">
-                                                            <h6 class="mb-0">{{ $dg->HoTen }}</h6>
-                                                            <small class="text-muted">
-                                                                {{ \Carbon\Carbon::parse($dg->NgayDanhGia)->format('d/m/Y H:i') }}
-                                                            </small>
-                                                        </div>
-
-                                                        <div class="d-flex align-items-center mb-2">
-                                                            @for ($i = 1; $i <= 5; $i++)
-                                                                <i
-                                                                    class="fa fa-star {{ $i <= (int) $dg->SoSao ? 'text-secondary' : '' }}"></i>
-                                                            @endfor
-                                                            <span class="badge bg-warning text-dark ms-2 badge-star">
-                                                                {{ (int) $dg->SoSao }} sao
-                                                            </span>
-                                                        </div>
-
-                                                        <div class="text-dark" style="white-space:pre-line">
-                                                            {{ $dg->NoiDung ?? 'Khong co noi dung' }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-
-                                            <div class="d-flex justify-content-center">
-                                                {{ $danhGias->links() }}
+                            {{-- Related products (placeholder: sau m lam truy van lay sp lien quan) --}}
+                            <!-- <div class="col-12">
+                                            <div class="mx-auto text-center pb-4" style="max-width: 700px;">
+                                                <h4
+                                                    class="text-primary mb-3 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">
+                                                    Related Products
+                                                </h4>
+                                                <p class="text-muted mb-0">Tam thoi de placeholder. Can thi tao viet query related theo
+                                                    DanhMuc.</p>
                                             </div>
-                                        @endif
-                                        //begin phat
-                                        @if (session()->has('khachhang'))
-                                            <form method="POST" action="{{ route('shop.review', ['maSP' => $sanPham->MaSP]) }}" class="mb-4">
-                                                @csrf
-                                                <div class="row g-2">
-                                                    <div class="col-md-3">
-                                                        <label class="form-label">So sao (1-5)</label>
-                                                        <select name="SoSao" class="form-select" required>
-                                                            <option value="5">5</option>
-                                                            <option value="4">4</option>
-                                                            <option value="3">3</option>
-                                                            <option value="2">2</option>
-                                                            <option value="1">1</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-9">
-                                                        <label class="form-label">Noi dung</label>
-                                                        <input name="NoiDung" class="form-control" placeholder="Viet nhan xet..." />
-                                                    </div>
-                                                </div>
-                                                <button class="btn btn-primary mt-3" type="submit">Gui danh gia</button>
-                                            </form>
-                                        @else
-                                            <div class="alert alert-warning">
-                                                Ban can <a href="/dang-nhap">dang nhap</a> de danh gia san pham.
+
+                                            <div class="alert alert-info mb-0">
+                                                Related Products chua noi DB. Muon tao query thi noi tao.
                                             </div>
-                                        @endif
-                                        //end phat
+                                        </div> -->
+                            <div class="row g-4">
+                                @if (($related->count() ?? 0) == 0)
+                                    <div class="col-12">
+                                        <div class="alert alert-info mb-0">Chua co san pham lien quan.</div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- Related products (placeholder: sau m lam truy van lay sp lien quan) --}}
-                        <!-- <div class="col-12">
-                            <div class="mx-auto text-center pb-4" style="max-width: 700px;">
-                                <h4
-                                    class="text-primary mb-3 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius">
-                                    Related Products
-                                </h4>
-                                <p class="text-muted mb-0">Tam thoi de placeholder. Can thi tao viet query related theo
-                                    DanhMuc.</p>
-                            </div>
-
-                            <div class="alert alert-info mb-0">
-                                Related Products chua noi DB. Muon tao query thi noi tao.
-                            </div>
-                        </div> -->
-                        //begin phat
-                        <div class="row g-4">
-                            @if (($related->count() ?? 0) == 0)
-                                <div class="col-12">
-                                    <div class="alert alert-info mb-0">Chua co san pham lien quan.</div>
-                                </div>
-                            @else
-                                @foreach ($related as $r)
-                                    @php
-                                        $anh = $r->anhDauTien ? asset('img/' . $r->anhDauTien) : asset('img/no-image.png');
-                                    @endphp
-                                    <div class="col-6 col-md-4 col-lg-3">
-                                        <div class="border rounded p-3 h-100 bg-light">
-                                            <a href="{{ route('shop.show', ['maSP' => $r->MaSP]) }}" class="text-decoration-none">
-                                                <img src="{{ $anh }}" class="img-fluid rounded mb-2" style="height:160px; object-fit:contain; width:100%;" />
-                                                <div class="fw-bold text-dark">{{ $r->TenSP }}</div>
-                                                <div class="text-primary fw-bold mt-1">
-                                                    {{ number_format((float)($r->giaMin ?? 0), 0, ',', '.') }} d
-                                                </div>
-                                            </a>
+                                @else
+                                    @foreach ($related as $r)
+                                        @php
+                                            $anh = $r->anhDauTien
+                                                ? asset('img/' . $r->anhDauTien)
+                                                : asset('img/no-image.png');
+                                        @endphp
+                                        <div class="col-6 col-md-4 col-lg-3">
+                                            <div class="border rounded p-3 h-100 bg-light">
+                                                <a href="{{ route('shop.show', ['maSP' => $r->MaSP]) }}"
+                                                    class="text-decoration-none">
+                                                    <img src="{{ $anh }}" class="img-fluid rounded mb-2"
+                                                        style="height:160px; object-fit:contain; width:100%;" />
+                                                    <div class="fw-bold text-dark">{{ $r->TenSP }}</div>
+                                                    <div class="text-primary fw-bold mt-1">
+                                                        {{ number_format((float) ($r->giaMin ?? 0), 0, ',', '.') }} d
+                                                    </div>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                @endforeach
-                            @endif
-                        </div>
-                        //end phat
+                                    @endforeach
+                                @endif
+                            </div>
 
+                        </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        function qtyUp() {
-            const el = document.getElementById('qtyInput');
-            let v = parseInt(el.value || '1');
-            el.value = (v + 1);
-        }
+        <script>
+            function qtyUp() {
+                const el = document.getElementById('qtyInput');
+                let v = parseInt(el.value || '1');
+                el.value = (v + 1);
+            }
 
-        function qtyDown() {
-            const el = document.getElementById('qtyInput');
-            let v = parseInt(el.value || '1');
-            el.value = Math.max(1, v - 1);
-        }
+            function qtyDown() {
+                const el = document.getElementById('qtyInput');
+                let v = parseInt(el.value || '1');
+                el.value = Math.max(1, v - 1);
+            }
 
-        // Click size -> doi gia + ton kho (UI)
-        document.querySelectorAll('.size-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
 
-                const gia = parseFloat(btn.getAttribute('data-gia') || '0');
-                const ton = parseInt(btn.getAttribute('data-ton') || '0');
+                    const gia = parseFloat(btn.getAttribute('data-gia') || '0');
+                    const ton = parseInt(btn.getAttribute('data-ton') || '0');
 
-                document.getElementById('giaHienThi').innerText = gia.toLocaleString('vi-VN') + ' d';
-                document.getElementById('tonKho').innerText = ton + ' items';
+                    document.getElementById('giaHienThi').innerText = gia.toLocaleString('vi-VN') + ' d';
+                    document.getElementById('tonKho').innerText = ton + ' items';
+                });
             });
-        });
-        //begin phat
-         function beforeAddCart() {
-        const maBT = document.getElementById('maBTInput').value;
-        if (!maBT) {
-            alert('Vui long chon kich thuoc (size) truoc khi them gio hang');
-            return false;
-        }
 
-        const qty = parseInt(document.getElementById('qtyInput').value || '1');
-        document.getElementById('soLuongHidden').value = isNaN(qty) ? 1 : Math.max(1, qty);
-        return true;
-    }
-
-    // Click size -> doi gia + ton kho + set MaBT
-    document.querySelectorAll('.size-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            const maBT = btn.getAttribute('data-bt');
-            const gia = parseFloat(btn.getAttribute('data-gia') || '0');
-            const ton = parseInt(btn.getAttribute('data-ton') || '0');
-
-            document.getElementById('maBTInput').value = maBT;
-            document.getElementById('giaHienThi').innerText = gia.toLocaleString('vi-VN') + ' d';
-            document.getElementById('tonKho').innerText = ton + ' items';
-        });
-    });
-
-    async function yeuThich() {
-        try {
-            await fetch(`/api/san-pham/{{ $sanPham->MaSP }}/yeu-thich`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            function beforeAddCart() {
+                const maBT = document.getElementById('maBTInput').value;
+                if (!maBT) {
+                    alert('Vui long chon kich thuoc (size) truoc khi them gio hang');
+                    return false;
                 }
+
+                const qty = parseInt(document.getElementById('qtyInput').value || '1');
+                document.getElementById('soLuongHidden').value = isNaN(qty) ? 1 : Math.max(1, qty);
+                return true;
+            }
+
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const maBT = btn.getAttribute('data-bt');
+                    const gia = parseFloat(btn.getAttribute('data-gia') || '0');
+                    const ton = parseInt(btn.getAttribute('data-ton') || '0');
+
+                    document.getElementById('maBTInput').value = maBT;
+                    document.getElementById('giaHienThi').innerText = gia.toLocaleString('vi-VN') + ' d';
+                    document.getElementById('tonKho').innerText = ton + ' items';
+                });
             });
-            await refreshThongKe();
-        } catch (e) {
-            console.log(e);
-        }
-    }
 
-    async function refreshThongKe() {
-        try {
-            const res = await fetch(`/api/san-pham/{{ $sanPham->MaSP }}/thong-ke`);
-            const data = await res.json();
+            async function yeuThich() {
+                try {
+                    await fetch(`/api/san-pham/{{ $sanPham->MaSP }}/yeu-thich`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+                    await refreshThongKe();
+                } catch (e) {
+                    console.log(e);
+                }
+            }
 
-            document.getElementById('viewCount').innerText = data.luotXem;
-            document.getElementById('favCount').innerText = data.luotYeuThich;
-        } catch (e) {
-            console.log(e);
-        }
-    }
+            async function refreshThongKe() {
+                try {
+                    const res = await fetch(`/api/san-pham/{{ $sanPham->MaSP }}/thong-ke`);
+                    const data = await res.json();
 
-    // realtime moi 5s
-    setInterval(refreshThongKe, 5000);
-    //end phat
-    </script>
-@endsection
+                    document.getElementById('viewCount').innerText = data.luotXem;
+                    document.getElementById('favCount').innerText = data.luotYeuThich;
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+
+            setInterval(refreshThongKe, 5000);
+        </script>
+    @endsection

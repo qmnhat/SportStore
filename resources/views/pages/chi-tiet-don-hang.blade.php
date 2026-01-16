@@ -4,83 +4,102 @@
 
 @section('content')
     <div class="container py-5">
+
         <div class="row">
             <div class="col-12">
 
-                {{-- TIÊU ĐỀ --}}
-                <div class="mb-4">
-                    <h3 class="mb-0">
-                        <i class="fa fa-receipt me-2"></i>Chi tiết đơn hàng #DH001
-                    </h3>
-                </div>
+                <h3 class="mb-4">
+                    <i class="fa fa-receipt me-2"></i>Chi tiết đơn hàng #DH{{ $donHang->MaDH }}
+                </h3>
 
-                {{-- THÔNG TIN ĐƠN HÀNG --}}
-                <div class="card shadow-sm border-0 mb-4">
+                {{-- Thông tin đơn --}}
+                <div class="card border-0 shadow-sm mb-4">
                     <div class="card-body">
+
                         <div class="row">
-                            <div class="col-md-4">
-                                <strong>Ngày đặt:</strong> 06/01/2026
+                            <div class="col-md-6">
+                                <strong>Ngày đặt:</strong>
+                                {{ \Carbon\Carbon::parse($donHang->NgayDat)->format('d/m/Y') }}
                             </div>
-                            <div class="col-md-4">
+
+                            <div class="col-md-6">
                                 <strong>Trạng thái:</strong>
-                                <span class="badge bg-warning text-dark">
-                                    Chờ xác nhận
-                                </span>
-                            </div>
-                            <div class="col-md-4">
-                                <strong>Tổng tiền:</strong> 2.500.000 ₫
+
+                                @if ($donHang->TrangThai == 0)
+                                    <span class="badge bg-warning text-dark">Chờ xác nhận</span>
+                                @elseif($donHang->TrangThai == 1)
+                                    <span class="badge bg-info text-dark">Đang giao</span>
+                                @elseif($donHang->TrangThai == 2)
+                                    <span class="badge bg-success">Hoàn thành</span>
+                                @elseif($donHang->TrangThai == 3)
+                                    <span class="badge bg-danger">Đã hủy</span>
+                                @endif
                             </div>
                         </div>
+
                     </div>
                 </div>
 
-                {{-- BẢNG CHI TIẾT --}}
-                <div class="card shadow-sm border-0">
-                    <div class="card-body p-0">
+                {{-- Bảng sản phẩm --}}
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+
                         <table class="table table-hover align-middle mb-0">
                             <thead class="table-light">
                                 <tr>
                                     <th>Sản phẩm</th>
-                                    <th>Kích thước</th>
-                                    <th>Số lượng</th>
                                     <th>Giá</th>
+                                    <th>Số lượng</th>
                                     <th class="text-end">Thành tiền</th>
                                 </tr>
                             </thead>
+
                             <tbody>
-                                <tr>
-                                    <td>Giày thể thao Nike Air</td>
-                                    <td>42</td>
-                                    <td>1</td>
-                                    <td>1.500.000 ₫</td>
-                                    <td class="text-end">1.500.000 ₫</td>
-                                </tr>
-                                <tr>
-                                    <td>Áo thể thao Adidas</td>
-                                    <td>L</td>
-                                    <td>2</td>
-                                    <td>500.000 ₫</td>
-                                    <td class="text-end">1.000.000 ₫</td>
-                                </tr>
+                                @php $tongTien = 0; @endphp
+
+                                @foreach ($chiTiet as $ct)
+                                    @php
+                                        $thanhTien = $ct->GiaGoc * $ct->SoLuong;
+                                        $tongTien += $thanhTien;
+                                    @endphp
+
+                                    <tr>
+                                        <td>{{ $ct->TenSP }}</td>
+
+                                        <td>{{ number_format($ct->GiaGoc) }} ₫</td>
+
+                                        <td>{{ $ct->SoLuong }}</td>
+
+                                        <td class="text-end">
+                                            {{ number_format($thanhTien) }} ₫
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
-                            <tfoot class="table-light">
+
+                            <tfoot>
                                 <tr>
-                                    <th colspan="4" class="text-end">Tổng cộng</th>
-                                    <th class="text-end">2.500.000 ₫</th>
+                                    <th colspan="3" class="text-end">Tổng cộng:</th>
+                                    <th class="text-end text-danger">
+                                        {{ number_format($tongTien) }} ₫
+                                    </th>
                                 </tr>
                             </tfoot>
+
                         </table>
+
                     </div>
                 </div>
 
-                {{-- NÚT QUAY LẠI Ở DƯỚI – BÊN PHẢI --}}
-                <div class="mt-4 d-flex justify-content-end">
-                    <a href="/don-hang" class="btn btn-outline-secondary">
-                        <i class="fa fa-arrow-left me-1"></i>Quay lại
+                {{-- Nút quay lại --}}
+                <div class="mt-4">
+                    <a href="{{ route('donhang.index') }}" class="btn btn-outline-secondary">
+                        <i class="fa fa-arrow-left me-2"></i>Quay lại
                     </a>
                 </div>
 
             </div>
         </div>
+
     </div>
 @endsection

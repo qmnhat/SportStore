@@ -1,86 +1,122 @@
 @extends('layouts.app')
 
-@section('title', 'Tình trạng đơn hàng')
+@section('title', 'Danh sách đơn hàng')
 
 @section('content')
     <div class="container py-5">
-        <div class="row">
-            <div class="col-12">
-                <h3 class="mb-4">
-                    <i class="fa fa-truck me-2"></i>Tình trạng đơn hàng
-                </h3>
 
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body">
+        {{-- TIÊU ĐỀ --}}
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="mb-0">
+                <i class="fa fa-shopping-cart me-2"></i>Danh sách đơn hàng
+            </h3>
+        </div>
 
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Mã đơn</th>
-                                    <th>Ngày đặt</th>
-                                    <th>Tổng tiền</th>
-                                    <th>Trạng thái</th>
-                                    <th class="text-end">Chi tiết</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+        {{-- BỘ LỌC --}}
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
 
-                                {{-- ĐƠN HÀNG GIẢ – sau này thay bằng DB --}}
-                                <tr>
-                                    <td>#DH001</td>
-                                    <td>06/01/2026</td>
-                                    <td>2.500.000 ₫</td>
-                                    <td>
-                                        <span class="badge bg-warning text-dark">
-                                            Chờ xác nhận
-                                        </span>
-                                    </td>
-                                    <td class="text-end">
-                                        <a href="/don-hang/1" class="btn btn-sm btn-outline-primary">
-                                            Xem
-                                        </a>
-                                    </td>
-                                </tr>
+                <form method="GET" class="row g-3 align-items-end">
 
-                                <tr>
-                                    <td>#DH002</td>
-                                    <td>04/01/2026</td>
-                                    <td>1.200.000 ₫</td>
-                                    <td>
-                                        <span class="badge bg-info text-dark">
-                                            Đang giao
-                                        </span>
-                                    </td>
-                                    <td class="text-end">
-                                        <a href="/don-hang/2" class="btn btn-sm btn-outline-primary">
-                                            Xem
-                                        </a>
-                                    </td>
-                                </tr>
+                    {{-- Trạng thái --}}
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Trạng thái</label>
+                        <select name="trangthai" class="form-select">
+                            <option value="all" {{ request('trangthai') == 'all' ? 'selected' : '' }}>Tất cả</option>
+                            <option value="0" {{ request('trangthai') == '0' ? 'selected' : '' }}>Chờ xác nhận</option>
+                            <option value="1" {{ request('trangthai') == '1' ? 'selected' : '' }}>Đang giao</option>
+                            <option value="2" {{ request('trangthai') == '2' ? 'selected' : '' }}>Hoàn thành</option>
+                            <option value="3" {{ request('trangthai') == '3' ? 'selected' : '' }}>Đã hủy</option>
+                        </select>
 
-                                <tr>
-                                    <td>#DH003</td>
-                                    <td>01/01/2026</td>
-                                    <td>3.800.000 ₫</td>
-                                    <td>
-                                        <span class="badge bg-success">
-                                            Hoàn thành
-                                        </span>
-                                    </td>
-                                    <td class="text-end">
-                                        <a href="/don-hang/3" class="btn btn-sm btn-outline-primary">
-                                            Xem
-                                        </a>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
 
                     </div>
-                </div>
+
+                    {{-- Sắp xếp --}}
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Sắp xếp theo ngày</label>
+                        <select name="sort" class="form-select">
+                            <option value="new" {{ request('sort') === 'new' ? 'selected' : '' }}>Mới nhất</option>
+                            <option value="old" {{ request('sort') === 'old' ? 'selected' : '' }}>Cũ nhất</option>
+                        </select>
+                    </div>
+
+                    {{-- Nút --}}
+                    <div class="col-md-4">
+                        <button class="btn btn-primary w-100">
+                            <i class="fa fa-filter me-2"></i>Lọc đơn hàng
+                        </button>
+                    </div>
+
+                </form>
 
             </div>
         </div>
+
+        {{-- BẢNG --}}
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-0">
+
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Mã đơn</th>
+                            <th>Ngày đặt</th>
+                            <th>Trạng thái</th>
+                            <th class="text-end pe-4">Chi tiết</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @forelse($donHangs as $dh)
+                            <tr>
+                                <td class="ps-4 fw-semibold">
+                                    #DH{{ $dh->MaDH }}
+                                </td>
+
+                                <td>
+                                    {{ \Carbon\Carbon::parse($dh->NgayDat)->format('d/m/Y') }}
+                                </td>
+
+                                <td>
+                                    @if ($dh->TrangThai == 0)
+                                        <span class="badge bg-warning text-dark px-3 py-2">
+                                            Chờ xác nhận
+                                        </span>
+                                    @elseif ($dh->TrangThai == 1)
+                                        <span class="badge bg-info text-dark px-3 py-2">
+                                            Đang giao
+                                        </span>
+                                    @elseif ($dh->TrangThai == 2)
+                                        <span class="badge bg-success px-3 py-2">
+                                            Hoàn thành
+                                        </span>
+                                    @elseif ($dh->TrangThai == 3)
+                                        <span class="badge bg-danger px-3 py-2">
+                                            Đã hủy
+                                        </span>
+                                    @endif
+                                </td>
+
+                                <td class="text-end pe-4">
+                                    <a href="{{ route('donhang.show', $dh->MaDH) }}" class="btn btn-sm btn-outline-primary">
+                                        Xem
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center py-5 text-muted">
+                                    <i class="fa fa-box-open me-2"></i>Không có đơn hàng
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+
     </div>
 @endsection

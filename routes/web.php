@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\ThuongHieuController;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
 use App\Http\Controllers\GioHangController;
 use App\Http\Controllers\SanPhamApiController;
+use App\Http\Controllers\DonHangController;
+
 /*
 |--------------------------------------------------------------------------
 | FRONTEND (KHÁCH HÀNG - KHÔNG CẦN LOGIN)
@@ -40,9 +42,7 @@ Route::get('/san-pham/{maSP}', [SanPhamController::class, 'show'])->name('shop.s
 // (15) Them vao gio hang
 Route::post('/gio-hang/them', [GioHangController::class, 'them'])->name('cart.add');
 // (17) Thong ke realtime: view/yeu thich/rating
-Route::get('/api/san-pham/{maSP}/thong-ke', [SanPhamApiController::class, 'thongKe']);
-Route::post('/api/san-pham/{maSP}/yeu-thich', [SanPhamApiController::class, 'yeuThich']);
-//end phat
+
 
 Route::get('/tim-kiem', [SanPhamController::class, 'search'])->name('search');
 
@@ -76,8 +76,11 @@ Route::middleware('khachhang.auth')->group(function () {
     Route::get('/gio-hang', fn() => view('pages.gio-hang'));
     Route::get('/lich-su-mua-hang', fn() => view('pages.lich-su-mua-hang'));
 
-    Route::get('/don-hang', fn() => view('pages.don-hang'));
-    Route::get('/don-hang/{id}', fn($id) => view('pages.chi-tiet-don-hang'));
+    Route::get('/don-hang', [DonHangController::class, 'index'])
+        ->name('donhang.index');
+
+    Route::get('/don-hang/{id}', [DonHangController::class, 'show'])
+        ->name('donhang.show');
 
     Route::get('/thong-tin-ca-nhan', [ProfileController::class, 'index']);
     Route::post('/thong-tin-ca-nhan', [ProfileController::class, 'update']);
