@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\Auth\AdminAuthController;
 use App\Http\Controllers\GioHangController;
 use App\Http\Controllers\SanPhamApiController;
 use App\Http\Controllers\DonHangController;
+use App\Http\Controllers\Admin\KhuyenMaiController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -202,3 +204,16 @@ Route::prefix('admin')
             return redirect()->route('admin.dashboard');
         });
     });
+Route::prefix('admin/khuyen-mai')->name('admin.khuyenmai.')->group(function () {
+
+    Route::get('/', [KhuyenMaiController::class, 'index'])->name('index');
+
+    Route::get('/create', [KhuyenMaiController::class, 'create'])->name('create');
+    Route::post('/store', [KhuyenMaiController::class, 'store'])->name('store');
+
+    Route::get('/edit/{id}', [KhuyenMaiController::class, 'edit'])->name('edit');
+
+    Route::post('/delete/{id}', [KhuyenMaiController::class, 'destroy'])->name('destroy');
+
+    Route::post('/restore/{id}', [KhuyenMaiController::class, 'restore'])->name('restore');
+});
