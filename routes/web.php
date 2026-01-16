@@ -10,8 +10,12 @@ use App\Http\Controllers\Admin\ThuongHieuController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\AdminContactController;
-//route contact
+use App\Http\Controllers\Admin\CompanyInfoController;
+use Faker\Provider\Company;
+
+//route liên hệ(nghia)
 Route::post('/contact',[ContactController::class, 'store'])->name('contact.store');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +39,7 @@ Route::middleware('khachhang.auth')->group(function () {
 
 
 
-Route::get('/gioi-thieu', [PageController::class, 'about'])->name('pages.about');
+Route::get('/gioi-thieu', [PageController::class, 'gioiThieu'])->name('pages.gioi-thieu');
 
 Route::get('/san-pham', [SanPhamController::class, 'index'])->name('shop.index');
 Route::get('/san-pham/{maSP}', [SanPhamController::class, 'show'])->name('shop.show');
@@ -163,9 +167,14 @@ Route::prefix('admin')
         Route::post('/thuong-hieu/destroy/{id}', [ThuongHieuController::class, 'destroy'])->name('thuonghieu.destroy');
         Route::post('/thuong-hieu/restore/{id}', [ThuongHieuController::class, 'restore'])->name('thuonghieu.restore');
 
-        //route quản lý liên hệ
+        //route quản lý liên hệ(nghia)
         Route::get('/contacts',[AdminContactController::class,'index'])->name('admin.contacts.index');
         Route::get('/contacts/{id}',[AdminContactController::class,'show'])->name('admin.contacts.show');
         Route::put('/contacts/{id}',[AdminContactController::class,'update'])->name('admin.contacts.update');
         Route::delete('/contacts/{id}',[AdminContactController::class,'destroy'])->name('admin.contacts.destroy');
+        // route Thong tin công ty (nghia)
+        Route::get('/company-info',[CompanyInfoController::class,'edit'])->name('admin.company_info.edit');
+        Route::put('/company-info/{id}',[CompanyInfoController::class,'update'])->name('admin.company_info.update');
+
+
     });

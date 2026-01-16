@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('title', 'Thông tin công ty - SportStore')
@@ -20,13 +21,13 @@
                         <i class="bi bi-building"></i> Hồ sơ doanh nghiệp
                     </h3>
                     <ul class="list-unstyled mt-3">
-                        <li class="mb-2"><strong>📋 Tên đơn vị:</strong> CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ SPORTSTORE VIỆT NAM</li>
-                        <li class="mb-2"><strong>📍 Trụ sở chính:</strong> Số 123, Đường Nguyễn Văn Cừ, Phường 5, Quận 5, TP. Hồ Chí Minh</li>
+                        <li class="mb-2"><strong>📋 Tên đơn vị:</strong> {{ $company->name }}</li>
+                        <li class="mb-2"><strong>📍 Trụ sở chính:</strong> {{ $company->address }}</li>
                         <li class="mb-2"><strong>🏬 Showroom chính:</strong> Tầng 2, Tòa nhà SportComplex, Quận 1, TP.HCM</li>
-                        <li class="mb-2"><strong>📞 Hotline:</strong> 1900 888 999 (Hỗ trợ 24/7)</li>
-                        <li class="mb-2"><strong>📧 Email:</strong> support@sportstore.vn | info@sportstore.vn</li>
-                        <li class="mb-2"><strong>🔢 Mã số thuế:</strong> 0316xxxxxx</li>
-                        <li class="mb-2"><strong>📅 Thời gian hoạt động:</strong> Thứ 2 - Chủ nhật: 08:00 - 21:00 (Hàng ngày)</li>
+                        <li class="mb-2"><strong>📞 Hotline:</strong> {{ $company->hotline }} (Hỗ trợ 24/7)</li>
+                        <li class="mb-2"><strong>📧 Email:</strong> {{ $company->email }}</li>
+                        <li class="mb-2"><strong>🔢 Mã số thuế:</strong> {{ $company->tax_code }}</li>
+                        <li class="mb-2"><strong>📅 Thời gian hoạt động:</strong> {{ $company->opening_hours }}</li>
                         <li><strong>🎯 Lĩnh vực kinh doanh chính:</strong>
                             <ul class="mt-2">
                                 <li>Bán lẻ dụng cụ thể thao chuyên nghiệp (Bóng đá, Gym, Yoga, Cầu lông, Bóng bàn, Badminton...).</li>
@@ -45,7 +46,7 @@
                     <div class="card h-100 border-0 bg-light shadow-sm">
                         <div class="card-body">
                             <h4 class="text-primary"><i class="bi bi-eye"></i> Tầm nhìn</h4>
-                            <p>Trở thành hệ thống bán lẻ đồ thể thao số 1 tại Việt Nam, mang đến trải nghiệm mua sắm tiện lợi, hiện đại và đáng tin cậy nhất cho người yêu vận động.</p>
+                            <p>{{ $company->vision }}</p>
                         </div>
                     </div>
                 </div>
@@ -53,7 +54,7 @@
                     <div class="card h-100 border-0 bg-light shadow-sm">
                         <div class="card-body">
                             <h4 class="text-primary"><i class="bi bi-flag"></i> Sứ mệnh</h4>
-                            <p>SportStore không chỉ bán sản phẩm, chúng tôi bán "sức khỏe" và "phong cách sống". Cam kết 100% sản phẩm chính hãng, chất lượng vượt trội và dịch vụ tuyệt vời.</p>
+                            <p>{{ $company->mission }}</p>
                         </div>
                     </div>
                 </div>
