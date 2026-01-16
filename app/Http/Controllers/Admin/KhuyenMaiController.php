@@ -14,37 +14,32 @@ class KhuyenMaiController extends Controller
 
     public function index(Request $request)
     {
-        $query = KhuyenMai::query();
+        // ACTIVE
+        $activeQuery = KhuyenMai::where('IsDeleted', false);
 
-        // Tìm theo tên khuyến mãi
         if ($request->q) {
-            $query->where('TenKM', 'like', '%' . $request->q . '%');
+            $activeQuery->where('TenKM', 'like', '%' . $request->q . '%');
         }
 
-        // Lọc trạng thái
         if ($request->status !== null && $request->status !== '') {
-            $query->where('TrangThai', $request->status);
+            $activeQuery->where('TrangThai', $request->status);
         }
 
-        // Sắp xếp
-        if ($request->sort == 'asc') {
-            $query->orderBy('MaKM', 'asc');
-        } else {
-            $query->orderBy('MaKM', 'desc');
-        }
+        $sort = $request->get('sort', 'desc');
 
-        // Đang hoạt động
-        $activeKM = (clone $query)
-            ->where('IsDeleted', false)
-            ->paginate(10);
+        $activeQuery->orderBy('MaKM', $sort);
 
-        // Đã xóa
+        $activeKM = $activeQuery->paginate(10);
+
+
+        // DELETED
         $deletedKM = KhuyenMai::where('IsDeleted', true)
             ->orderBy('DeletedAt', 'desc')
             ->paginate(10);
 
         return view('admin.khuyenmai.index', compact('activeKM', 'deletedKM'));
     }
+
 
     // ==============================
     // FORM THÊM
