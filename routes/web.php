@@ -45,7 +45,7 @@ Route::get('/dang-xuat', function () {
 Route::post('/dang-nhap', [AuthController::class, 'loginKhachHang']);
 Route::post('/dang-ky', [AuthController::class, 'registerKhachHang']);
 Route::get('/dang-nhap', fn() => view('auth.login'))->name('dang-nhap');
-
+Route::get('/dang-ky', fn() => view('auth.register'))->name('dang-ky');
 
 
 /*
