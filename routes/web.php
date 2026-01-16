@@ -213,6 +213,8 @@ Route::prefix('admin/khuyen-mai')->name('admin.khuyenmai.')->group(function () {
 
     Route::get('/edit/{id}', [KhuyenMaiController::class, 'edit'])->name('edit');
 
+    Route::put('/update/{id}', [KhuyenMaiController::class, 'update'])->name('update');
+
     Route::post('/delete/{id}', [KhuyenMaiController::class, 'destroy'])->name('destroy');
 
     Route::post('/restore/{id}', [KhuyenMaiController::class, 'restore'])->name('restore');

@@ -1,7 +1,5 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
