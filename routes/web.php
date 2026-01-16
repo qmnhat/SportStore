@@ -8,34 +8,52 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\Admin\KhachHangController;
 use App\Http\Controllers\Admin\ThuongHieuController;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
-
+use App\Http\Controllers\GioHangController;
+use App\Http\Controllers\SanPhamApiController;
 /*
 |--------------------------------------------------------------------------
 | FRONTEND (KHÁCH HÀNG - KHÔNG CẦN LOGIN)
 |--------------------------------------------------------------------------
 */
 
+
+/*
+|--------------------------------------------------------------------------
+| FRONTEND (KHÁCH HÀNG - PHẢI LOGIN)
+//begin phat
+
+//end phat
+
+/*
+|--------------------------------------------------------------------------
+| FRONTEND (PUBLIC)
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/', fn() => view('pages.trang-chu'));
 
-Route::get('/gioi-thieu', [PageController::class, 'about'])
-    ->name('pages.about');
+Route::get('/gioi-thieu', [PageController::class, 'about'])->name('pages.about');
 
-Route::get('/san-pham', [SanPhamController::class, 'index'])
-    ->name('shop.index');
+Route::get('/san-pham', [SanPhamController::class, 'index'])->name('shop.index');
+Route::get('/san-pham/{maSP}', [SanPhamController::class, 'show'])->name('shop.show');
 
-Route::get('/san-pham/{maSP}', [SanPhamController::class, 'show'])
-    ->name('shop.show');
+// (15) Them vao gio hang
+Route::post('/gio-hang/them', [GioHangController::class, 'them'])->name('cart.add');
+// (17) Thong ke realtime: view/yeu thich/rating
+Route::get('/api/san-pham/{maSP}/thong-ke', [SanPhamApiController::class, 'thongKe']);
+Route::post('/api/san-pham/{maSP}/yeu-thich', [SanPhamApiController::class, 'yeuThich']);
+//end phat
 
-Route::get('/tim-kiem', [SanPhamController::class, 'search'])
-    ->name('search');
-
-Route::get('/chi-tiet', fn() => view('products.chi-tiet'));
+Route::get('/tim-kiem', [SanPhamController::class, 'search'])->name('search');
 
 Route::get('/lien-he', fn() => view('pages.lien-he'));
 
-Route::get('/dang-nhap', fn() => view('auth.login'))
-    ->name('dang-nhap');
-
+/*
+|--------------------------------------------------------------------------
+| AUTH KHÁCH HÀNG
+|--------------------------------------------------------------------------
+*/
+Route::get('/dang-nhap', fn() => view('auth.login'))->name('dang-nhap');
 Route::post('/dang-nhap', [AuthController::class, 'loginKhachHang']);
 Route::post('/dang-ky', [AuthController::class, 'registerKhachHang']);
 Route::get('/dang-ky', fn() => view('auth.register'))->name('dang-ky');
@@ -49,8 +67,11 @@ Route::get('/dang-xuat', function () {
 | FRONTEND (KHÁCH HÀNG - PHẢI LOGIN)
 |--------------------------------------------------------------------------
 */
-
 Route::middleware('khachhang.auth')->group(function () {
+    //begin phat
+    // (12) Gui danh gia san pham
+    Route::post('/san-pham/{maSP}/danh-gia', [SanPhamController::class, 'guiDanhGia'])->name('shop.review');
+    //end phat
 
     Route::get('/gio-hang', fn() => view('pages.gio-hang'));
     Route::get('/lich-su-mua-hang', fn() => view('pages.lich-su-mua-hang'));
@@ -80,7 +101,6 @@ Route::get('/login', function () {
 | ADMIN AUTH (KHÔNG CẦN LOGIN)
 |--------------------------------------------------------------------------
 */
-
 Route::prefix('admin')->group(function () {
 
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])
@@ -98,7 +118,6 @@ Route::prefix('admin')->group(function () {
 | ADMIN AREA (PHẢI LOGIN)
 |--------------------------------------------------------------------------
 */
-
 Route::prefix('admin')
     ->name('admin.')
     ->middleware('auth:admin')
@@ -152,4 +171,8 @@ Route::prefix('admin')
 
         Route::post('/thuong-hieu/restore/{id}', [ThuongHieuController::class, 'restore'])
             ->name('thuonghieu.restore');
+
+        Route::get('/', function () {
+            return redirect()->route('admin.dashboard');
+        });
     });
