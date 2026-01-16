@@ -67,4 +67,30 @@ class DonHangController extends Controller
 
         return view('pages.chi-tiet-don-hang', compact('donHang', 'chiTiet'));
     }
+    public function huy($id)
+    {
+        $kh = session('khachhang');
+
+        if (!$kh) {
+            return redirect('/dang-nhap');
+        }
+
+        $maKH = $kh['MaKH'];
+
+        $donHang = DonHang::where('MaDH', $id)
+            ->where('MaKH', $maKH)
+            ->where('TrangThai', 0) // chỉ hủy khi chờ xác nhận
+            ->where('IsDeleted', 0)
+            ->first();
+
+        if (!$donHang) {
+            return back()->with('error', 'Không thể hủy đơn này');
+        }
+
+        $donHang->update([
+            'TrangThai' => 3
+        ]);
+
+        return back()->with('success', 'Đã hủy đơn hàng');
+    }
 }

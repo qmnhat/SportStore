@@ -98,12 +98,28 @@
                                     @endif
                                 </td>
 
+                                {{-- CỘT THAO TÁC --}}
                                 <td class="text-end pe-4">
-                                    <a href="{{ route('donhang.show', $dh->MaDH) }}" class="btn btn-sm btn-outline-primary">
+
+                                    <a href="{{ route('donhang.show', $dh->MaDH) }}"
+                                        class="btn btn-sm btn-outline-primary me-1">
                                         Xem
                                     </a>
+
+                                    @if ($dh->TrangThai == 0)
+                                        <form action="{{ route('donhang.huy', $dh->MaDH) }}" method="POST"
+                                            class="d-inline">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                onclick="return confirm('Bạn chắc chắn muốn hủy đơn này?')">
+                                                Hủy
+                                            </button>
+                                        </form>
+                                    @endif
+
                                 </td>
                             </tr>
+
                         @empty
                             <tr>
                                 <td colspan="4" class="text-center py-5 text-muted">

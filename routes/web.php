@@ -81,7 +81,8 @@ Route::middleware('khachhang.auth')->group(function () {
 
     Route::get('/don-hang/{id}', [DonHangController::class, 'show'])
         ->name('donhang.show');
-
+    Route::post('/don-hang/huy/{id}', [DonHangController::class, 'huy'])
+        ->name('donhang.huy');
     Route::get('/thong-tin-ca-nhan', [ProfileController::class, 'index']);
     Route::post('/thong-tin-ca-nhan', [ProfileController::class, 'update']);
 

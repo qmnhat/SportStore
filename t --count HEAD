@@ -1,0 +1,29 @@
+[33mb4ee3f9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mMinhNhat[m[33m, [m[1;31morigin/MinhNhat[m[33m)[m chuc nang don hang
+[33mfd32d1b[m fix merge conflict routes
+[33mc161ec7[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m Merge branch phat into main
+[33ma5472b4[m Fix routes and clean merge conflict
+[33m46145d7[m Fix routes web conflict
+[33m26b0795[m[33m ([m[1;31morigin/phat[m[33m)[m Phat: chỉnh sửa trang chi tiết sản phẩm
+[33m11cf041[m Resolve merge conflicts (routes + navbar)
+[33m5231b11[m gop nhanh minhnhat
+[33mfb545d4[m sua chuc nang dang nhap khach hang
+[33mf363a3e[m chuc nang sua thuong hieu
+[33m24a4c28[m Chuc nang them thuong hieu
+[33mc067b53[m Them chuc nang xoa thuong hieu
+[33m5d41487[m Them chuc nang login admin cho admin
+[33m6305c6c[m gop trang gioi thieu
+[33m1cee8c6[m gop chuc nang quanly khachhang
+[33m236764e[m Quan ly them xoa sua khachhang
+[33m257f117[m Quan ly them xoa sua khach hang
+[33m8342c73[m giao dien va gioi thieu
+[33mf191191[m fix loi
+[33meb8b587[m giao dien quan ly
+[33mf464214[m[33m ([m[1;31morigin/Dat[m[33m)[m Update navbar.blade.php
+[33mc221059[m login, register, logout, doi mat khau, layoutz, lien-he
+[33m71d47fc[m login, register, logout, doi mat khau, layout
+[33m3906c61[m MinhNhat update trang chu
+[33m63f6f3c[m code giao dien
+[33m21d9106[m Add giao dien quan ly
+[33mec344c3[m Add gio-hang-lich-su-mua-hang
+[33mcd8ccf7[m first commit
+[33m98896d5[m first commit
