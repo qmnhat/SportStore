@@ -60,9 +60,10 @@ class SanPhamController extends Controller
                 $q->where('sp.MaTH', $maTH);
             })
 
-            // search ten
+            // search ten va mo ta san pham
             ->when($tuKhoa !== '', function ($q) use ($tuKhoa) {
-                $q->where('sp.TenSP', 'like', '%' . $tuKhoa . '%');
+                $q->where('sp.TenSP', 'like', '%' . $tuKhoa . '%')
+                  ->orWhere('sp.MoTa','like','%'.$tuKhoa.'%');
             })
 
             ->groupBy('sp.MaSP', 'sp.TenSP', 'sp.MoTa', 'dm.TenDM', 'th.TenTH')
@@ -119,12 +120,16 @@ class SanPhamController extends Controller
                 'sp.MaSP',
                 'sp.TenSP',
                 'sp.MoTa',
+                'sp.TrangThai',
+                'sp.MaDM',
                 'dm.TenDM',
                 'th.TenTH'
             )
             ->select(
                 'sp.MaSP',
                 'sp.TenSP',
+                'sp.TrangThai',
+                'sp.MaDM',
                 'sp.MoTa',
                 'dm.TenDM as tenDanhMuc',
                 'th.TenTH as tenThuongHieu',
@@ -176,12 +181,108 @@ class SanPhamController extends Controller
         $sanPham->saoTrungBinh = DB::table('DanhGia')
             ->where('MaSP', $maSP)
             ->avg('SoSao') ?? 0;
+        //begin phat
+        // Tong ton kho (cong tat ca bien the)
+        $tongTon = (int) DB::table('BienTheSanPham')
+            ->where('MaSP', $maSP)
+            ->where('IsDeleted', 0)
+            ->where('TrangThai', 1)
+            ->sum('SoLuong');
+
+        $sanPham->tongTon = $tongTon;
+
+        // Trang thai hien thi
+        if ((int)$sanPham->TrangThai === 0) {
+            $sanPham->trangThaiText = 'Tam ngung ban';
+        } else {
+            $sanPham->trangThaiText = $tongTon > 0 ? 'Con hang' : 'Het hang';
+        }
+
+        // Thong so ky thuat
+        $thongSos = DB::table('ThongSoSanPham')
+            ->where('MaSP', $maSP)
+            ->orderBy('SapXep')
+            ->orderBy('MaTS')
+            ->get();
+
+        // Thong ke: +1 luot xem
+        DB::table('ThongKeSanPham')->updateOrInsert(
+            ['MaSP' => $maSP],
+            ['LuotXem' => DB::raw('COALESCE(LuotXem,0) + 1')]
+        );
+
+        $thongKe = DB::table('ThongKeSanPham')->where('MaSP', $maSP)->first();
+
+        // San pham lien quan (cung danh muc)
+        $related = DB::table('SanPham as sp')
+            ->leftJoin('BienTheSanPham as bt', function ($join) {
+                $join->on('bt.MaSP', '=', 'sp.MaSP')
+                    ->where('bt.IsDeleted', 0)
+                    ->where('bt.TrangThai', 1);
+            })
+            ->leftJoin('HinhAnhSanPham as ha', 'ha.MaSP', '=', 'sp.MaSP')
+            ->where('sp.IsDeleted', 0)
+            ->where('sp.MaDM', $sanPham->MaDM)
+            ->where('sp.MaSP', '<>', $maSP)
+            ->groupBy('sp.MaSP', 'sp.TenSP')
+            ->select(
+                'sp.MaSP',
+                'sp.TenSP',
+                DB::raw('MIN(bt.GiaGoc) as giaMin'),
+                DB::raw('MIN(ha.DuongDan) as anhDauTien')
+            )
+            ->orderByDesc('sp.MaSP')
+            ->limit(8)
+            ->get();
+        //end phat
 
         return view('products.chi-tiet', compact(
             'sanPham',
             'hinhAnhs',
             'bienThes',
-            'danhGias'
+            'danhGias',
+            'thongSos',
+            'related',
+            'thongKe'
         ));
     }
+    //begin phat
+        public function guiDanhGia(Request $request, $maSP)
+    {
+        $kh = session('khachhang');
+        if (!$kh) return redirect('/dang-nhap');
+
+        $request->validate([
+            'SoSao' => 'required|integer|min:1|max:5',
+            'NoiDung' => 'nullable|string',
+        ]);
+
+        $maSP = (int) $maSP;
+        $maKH = (int) $kh['MaKH'];
+
+        // upsert theo UNIQUE (MaKH, MaSP)
+        $daCo = DB::table('DanhGia')->where('MaSP', $maSP)->where('MaKH', $maKH)->first();
+
+        if ($daCo) {
+            DB::table('DanhGia')
+                ->where('MaSP', $maSP)
+                ->where('MaKH', $maKH)
+                ->update([
+                    'SoSao' => (int) $request->SoSao,
+                    'NoiDung' => $request->NoiDung,
+                    'NgayDanhGia' => now(),
+                ]);
+        } else {
+            DB::table('DanhGia')->insert([
+                'MaSP' => $maSP,
+                'MaKH' => $maKH,
+                'SoSao' => (int) $request->SoSao,
+                'NoiDung' => $request->NoiDung,
+                'NgayDanhGia' => now(),
+            ]);
+        }
+
+        return back()->with('success', 'Da gui danh gia');
+    }
+    //end phat
 }
