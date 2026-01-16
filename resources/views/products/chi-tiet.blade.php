@@ -40,29 +40,6 @@
         $saoTb = (float) ($sanPham->saoTrungBinh ?? 0);
         $soDanhGia = (int) ($sanPham->soLuotDanhGia ?? 0);
     @endphp
-    //begin phat
-        <div class="tab-pane fade" id="tab-spec">
-        <div class="bg-light rounded p-4">
-            @if (($thongSos->count() ?? 0) == 0)
-                <div class="text-muted">Chua co thong so ky thuat.</div>
-            @else
-                <div class="table-responsive">
-                    <table class="table table-sm align-middle mb-0">
-                        <tbody>
-                            @foreach ($thongSos as $ts)
-                                <tr>
-                                    <td style="width: 35%" class="text-muted">{{ $ts->TenTS }}</td>
-                                    <td class="fw-bold">{{ $ts->GiaTri }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @endif
-        </div>
-    </div>
-    //end phat
-
     <!-- Page Header -->
     <div class="container-fluid page-header py-5">
         <h1 class="text-center text-white display-6 wow fadeInUp" data-wow-delay="0.1s">Chi tiet san pham</h1>
@@ -104,7 +81,6 @@
                         </div>
                     </div>
                     
-                    //begin phat
                     <div class="small text-muted mb-1 mt-3">Trang thai</div>
                     <div class="fw-bold mb-3">
                         <span class="badge bg-{{ $sanPham->trangThaiText == 'Con hang' ? 'success' : 'secondary' }}">
@@ -118,7 +94,6 @@
                         <span>Yeu thich: <strong id="favCount">{{ (int)($thongKe->LuotYeuThich ?? 0) }}</strong></span>
                     </div>
 
-                    //end phat
 
                     {{-- Sizes (bien the) --}}
                     <div class="bg-light rounded p-4 mb-4">
@@ -241,7 +216,7 @@
                             </div>
 
                             {{-- Add to cart (placeholder) --}}
-                            //begin phat
+                            {{-- begin phat --}}
                             <!-- <button class="btn btn-primary border border-secondary rounded-pill px-4 py-2 mb-4"
                                 type="button" onclick="alert('Chua lam cart')">
                                 <i class="fa fa-shopping-bag me-2 text-white"></i> Add to cart
@@ -260,7 +235,7 @@
                                     <i class="fa fa-heart me-2"></i> Yeu thich
                                 </button>
                             </form>
-                            //end phat
+                            {{-- end phat --}}
 
                         {{-- Tabs: Description / Reviews --}}
                         <div class="col-lg-12">
@@ -274,12 +249,12 @@
                                         data-bs-toggle="tab" data-bs-target="#tab-rev">
                                         Reviews ({{ $soDanhGia }})
                                     </button>
-                                    //begin phat
+                                    {{-- begin phat --}}
                                     <button class="nav-link border-white border-bottom-0" type="button"
                                         data-bs-toggle="tab" data-bs-target="#tab-spec">
                                         Thong so ky thuat
                                     </button>
-                                    //end phat
+                                    {{-- end phat --}}
                                 </div>
                             </nav>
 
@@ -335,7 +310,7 @@
                                                 {{ $danhGias->links() }}
                                             </div>
                                         @endif
-                                        //begin phat
+                                        {{-- begin phat --}}
                                         @if (session()->has('khachhang'))
                                             <form method="POST" action="{{ route('shop.review', ['maSP' => $sanPham->MaSP]) }}" class="mb-4">
                                                 @csrf
@@ -362,9 +337,31 @@
                                                 Ban can <a href="/dang-nhap">dang nhap</a> de danh gia san pham.
                                             </div>
                                         @endif
-                                        //end phat
+                                        {{-- end phat --}}
                                     </div>
                                 </div>
+                                {{-- begin phat --}}
+                                <div class="tab-pane fade" id="tab-spec">
+                                    <div class="bg-light rounded p-4">
+                                        @if (($thongSos->count() ?? 0) == 0)
+                                            <div class="text-muted">Chua co thong so ky thuat.</div>
+                                        @else
+                                            <div class="table-responsive">
+                                                <table class="table table-sm align-middle mb-0">
+                                                    <tbody>
+                                                        @foreach ($thongSos as $ts)
+                                                            <tr>
+                                                                <td style="width: 35%" class="text-muted">{{ $ts->TenTS }}</td>
+                                                                <td class="fw-bold">{{ $ts->GiaTri }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                                {{-- end phat.}}
                             </div>
                         </div>
 
@@ -383,7 +380,7 @@
                                 Related Products chua noi DB. Muon tao query thi noi tao.
                             </div>
                         </div> -->
-                        //begin phat
+                        {{-- begin phat --}}
                         <div class="row g-4">
                             @if (($related->count() ?? 0) == 0)
                                 <div class="col-12">
@@ -408,7 +405,7 @@
                                 @endforeach
                             @endif
                         </div>
-                        //end phat
+                        {{-- end phat --}}
 
                     </div>
                 </div>
@@ -416,7 +413,7 @@
             </div>
         </div>
     </div>
-
+    @push('scripts')
     <script>
         function qtyUp() {
             const el = document.getElementById('qtyInput');
@@ -431,19 +428,7 @@
         }
 
         // Click size -> doi gia + ton kho (UI)
-        document.querySelectorAll('.size-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                const gia = parseFloat(btn.getAttribute('data-gia') || '0');
-                const ton = parseInt(btn.getAttribute('data-ton') || '0');
-
-                document.getElementById('giaHienThi').innerText = gia.toLocaleString('vi-VN') + ' d';
-                document.getElementById('tonKho').innerText = ton + ' items';
-            });
-        });
-        //begin phat
+        {{-- begin phat --}}
          function beforeAddCart() {
         const maBT = document.getElementById('maBTInput').value;
         if (!maBT) {
@@ -500,6 +485,7 @@
 
     // realtime moi 5s
     setInterval(refreshThongKe, 5000);
-    //end phat
+    {{-- end phat --}}
     </script>
+    @endpush
 @endsection

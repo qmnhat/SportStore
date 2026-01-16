@@ -30,7 +30,7 @@ use App\Http\Controllers\SanPhamApiController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', fn() => view('pages.trang-chu'));
+Route::get('/', [PageController::class, 'home'])->name('home');
 
 Route::get('/gioi-thieu', [PageController::class, 'about'])->name('pages.about');
 
