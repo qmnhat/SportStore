@@ -58,6 +58,7 @@
 
     <script src="{{ asset('js/main.js') }}"></script>
     @stack('scripts')
+    @include('partials.chat-widget')
 </body>
 
 </html>

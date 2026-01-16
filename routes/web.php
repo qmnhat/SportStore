@@ -40,8 +40,8 @@ Route::get('/san-pham/{maSP}', [SanPhamController::class, 'show'])->name('shop.s
 // (15) Them vao gio hang
 Route::post('/gio-hang/them', [GioHangController::class, 'them'])->name('cart.add');
 // (17) Thong ke realtime: view/yeu thich/rating
-Route::get('/api/san-pham/{maSP}/thong-ke', [SanPhamApiController::class, 'thongKe']);
-Route::post('/api/san-pham/{maSP}/yeu-thich', [SanPhamApiController::class, 'yeuThich']);
+Route::get('/san-pham/{maSP}/thong-ke', [SanPhamApiController::class, 'thongKe']);
+Route::post('/san-pham/{maSP}/yeu-thich', [SanPhamApiController::class, 'yeuThich']);
 //end phat
 
 Route::get('/tim-kiem', [SanPhamController::class, 'search'])->name('search');
@@ -55,6 +55,9 @@ Route::get('/lien-he', fn() => view('pages.lien-he'));
 */
 Route::get('/dang-nhap', fn() => view('auth.login'))->name('dang-nhap');
 Route::post('/dang-nhap', [AuthController::class, 'loginKhachHang']);
+Route::post('/gio-hang/cap-nhat', [GioHangController::class, 'capNhat'])->name('cart.update');
+Route::post('/gio-hang/xoa', [GioHangController::class, 'xoaItem'])->name('cart.remove');
+Route::post('/gio-hang/xoa-het', [GioHangController::class, 'xoaHet'])->name('cart.clear');
 Route::post('/dang-ky', [AuthController::class, 'registerKhachHang']);
 Route::get('/dang-ky', fn() => view('auth.register'))->name('dang-ky');
 Route::get('/dang-xuat', function () {
@@ -73,7 +76,12 @@ Route::middleware('khachhang.auth')->group(function () {
     Route::post('/san-pham/{maSP}/danh-gia', [SanPhamController::class, 'guiDanhGia'])->name('shop.review');
     //end phat
 
-    Route::get('/gio-hang', fn() => view('pages.gio-hang'));
+    Route::get('/gio-hang', [GioHangController::class, 'index'])->name('cart.index');
+
+    Route::post('/gio-hang/cap-nhat', [GioHangController::class, 'capNhat'])->name('cart.update');
+
+    Route::post('/gio-hang/xoa-het', [GioHangController::class, 'xoaHet'])->name('cart.clear');
+
     Route::get('/lich-su-mua-hang', fn() => view('pages.lich-su-mua-hang'));
 
     Route::get('/don-hang', fn() => view('pages.don-hang'));
