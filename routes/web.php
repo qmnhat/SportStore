@@ -209,6 +209,7 @@ Route::prefix('admin/khuyen-mai')->name('admin.khuyenmai.')->group(function () {
     Route::get('/', [KhuyenMaiController::class, 'index'])->name('index');
 
     Route::get('/create', [KhuyenMaiController::class, 'create'])->name('create');
+
     Route::post('/store', [KhuyenMaiController::class, 'store'])->name('store');
 
     Route::get('/edit/{id}', [KhuyenMaiController::class, 'edit'])->name('edit');
