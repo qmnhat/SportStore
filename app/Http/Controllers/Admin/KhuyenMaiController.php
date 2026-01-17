@@ -8,9 +8,6 @@ use Illuminate\Http\Request;
 
 class KhuyenMaiController extends Controller
 {
-    // ==============================
-    // DANH SÁCH + SEARCH + FILTER
-    // ==============================
 
     public function index(Request $request)
     {
@@ -41,9 +38,6 @@ class KhuyenMaiController extends Controller
     }
 
 
-    // ==============================
-    // FORM THÊM
-    // ==============================
 
     public function create()
     {

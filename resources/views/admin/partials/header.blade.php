@@ -28,18 +28,14 @@
                                 {{ $admin->HoTen ?? 'Admin' }}
                             </div>
                             <small class="text-muted">
-                                {{ $admin->VaiTro == 1 ? 'Quản trị viên' : 'Quản lý' }}
+                                {{ $admin->VaiTro == 1 ? 'Quản trị viên' : 'Nhân viên' }}
                             </small>
                         </div>
                     </div>
                 </a>
 
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                        <a class="dropdown-item" href="#">
-                            <i class="bi bi-person me-2"></i> Hồ sơ
-                        </a>
-                    </li>
+
                     <li>
                         <form method="POST" action="{{ route('admin.logout') }}">
                             @csrf
