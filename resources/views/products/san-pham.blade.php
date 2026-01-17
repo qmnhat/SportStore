@@ -246,10 +246,42 @@
 
                                             <div
                                                 class="product-item-add border border-top-0 rounded-bottom text-center p-4 pt-0">
-                                                <a href="#"
-                                                    class="btn btn-primary border-secondary rounded-pill py-2 px-4 mb-4">
-                                                    <i class="fas fa-shopping-cart me-2"></i> Add To Cart
-                                                </a>
+                                               @if ($listBT->count() > 0)
+                                                    <form method="POST" action="{{ route('cart.add') }}" class="mb-3">
+                                                        @csrf
+
+                                                        <select name="MaBT" class="form-select form-select-sm mb-2" required>
+                                                            <option value="">-- Chon size --</option>
+                                                            @foreach ($listBT as $bt)
+                                                                <option value="{{ $bt->MaBT }}">
+                                                                    {{ $bt->TenKT }} - {{ number_format((float)$bt->GiaGoc, 0, ',', '.') }} d
+                                                                    ({{ (int)$bt->SoLuong }} sp)
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+
+                                                        <div class="d-flex gap-2 justify-content-center">
+                                                            <input type="number"
+                                                                name="SoLuong"
+                                                                value="1"
+                                                                min="1"
+                                                                class="form-control form-control-sm"
+                                                                style="width: 90px;"
+                                                            >
+
+                                                            <button type="submit"
+                                                                class="btn btn-primary border-secondary rounded-pill py-2 px-4">
+                                                                <i class="fas fa-shopping-cart me-2"></i> Add To Cart
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                @else
+                                                    <a href="{{ route('shop.show', $sp->MaSP) }}"
+                                                        class="btn btn-outline-secondary rounded-pill py-2 px-4 mb-3">
+                                                        Chua co size - xem chi tiet
+                                                    </a>
+                                                @endif
+
                                                 @php
                                                     $saoTb = (float) ($sp->saoTrungBinh ?? 0);
                                                     $soLuot = (int) ($sp->soLuotDanhGia ?? 0);
