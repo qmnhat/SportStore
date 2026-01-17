@@ -10,6 +10,10 @@ class PageController extends Controller
 {
     //
 
+    public function trangChu(){
+        return view('pages.trang-chu');
+    }
+
     public function gioiThieu(){
         $company=CompanyInfo::find(1);
         return view('pages.gioi-thieu',compact('company'));
