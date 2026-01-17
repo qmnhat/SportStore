@@ -29,7 +29,7 @@
             <li class="sidebar-title">Quản lý</li>
 
             <li class="sidebar-item">
-                <a href="{{ url('/admin/CSanPham') }}" class="sidebar-link">
+                <a href="{{ url('/admin/san-pham') }}" class="sidebar-link">
                     <i class="bi bi-box-seam"></i>
                     <span>Sản phẩm</span>
                 </a>

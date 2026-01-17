@@ -208,6 +208,7 @@
 
                                 @forelse ($sanPhams as $sp)
                                     @php
+                                        $listBT = $bienTheTheoSP[$sp->MaSP] ?? collect();
                                         $anh = $sp->anhDauTien
                                             ? asset('img/' . $sp->anhDauTien)
                                             : asset('img/no-image.png');
@@ -245,18 +246,60 @@
 
                                             <div
                                                 class="product-item-add border border-top-0 rounded-bottom text-center p-4 pt-0">
-                                                <a href="#"
-                                                    class="btn btn-primary border-secondary rounded-pill py-2 px-4 mb-4">
-                                                    <i class="fas fa-shopping-cart me-2"></i> Add To Cart
-                                                </a>
-                                                <div class="d-flex justify-content-between align-items-center">
+                                                @if ($listBT->count() > 0)
+                                                    <form method="POST" action="{{ route('cart.add') }}"
+                                                        class="mb-3">
+                                                        @csrf
+
+                                                        <select name="MaBT" class="form-select form-select-sm mb-2"
+                                                            required>
+                                                            <option value="">-- Chon size --</option>
+                                                            @foreach ($listBT as $bt)
+                                                                <option value="{{ $bt->MaBT }}">
+                                                                    {{ $bt->TenKT }} -
+                                                                    {{ number_format((float) $bt->GiaGoc, 0, ',', '.') }} d
+                                                                    ({{ (int) $bt->SoLuong }} sp)
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+
+                                                        <div class="d-flex gap-2 justify-content-center">
+                                                            <input type="number" name="SoLuong" value="1"
+                                                                min="1" class="form-control form-control-sm"
+                                                                style="width: 90px;">
+
+                                                            <button type="submit"
+                                                                class="btn btn-primary border-secondary rounded-pill py-2 px-4">
+                                                                <i class="fas fa-shopping-cart me-2"></i> Add To Cart
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                @else
+                                                    <a href="{{ route('shop.show', $sp->MaSP) }}"
+                                                        class="btn btn-outline-secondary rounded-pill py-2 px-4 mb-3">
+                                                        Chua co size - xem chi tiet
+                                                    </a>
+                                                @endif
+
+                                                @php
+                                                    $saoTb = (float) ($sp->saoTrungBinh ?? 0);
+                                                    $soLuot = (int) ($sp->soLuotDanhGia ?? 0);
+                                                    $full = (int) floor($saoTb);
+                                                    $half = $saoTb - $full >= 0.5;
+                                                @endphp
+                                                <div class="d-flex align-items-center gap-2">
                                                     <div class="d-flex">
-                                                        <i class="fas fa-star text-primary"></i>
-                                                        <i class="fas fa-star text-primary"></i>
-                                                        <i class="fas fa-star text-primary"></i>
-                                                        <i class="fas fa-star text-primary"></i>
-                                                        <i class="fas fa-star"></i>
+                                                        @for ($i = 1; $i <= 5; $i++)
+                                                            @if ($i <= $full)
+                                                                <i class="fas fa-star text-primary"></i>
+                                                            @elseif ($half && $i == $full + 1)
+                                                                <i class="fas fa-star-half-alt text-primary"></i>
+                                                            @else
+                                                                <i class="fas fa-star"></i>
+                                                            @endif
+                                                        @endfor
                                                     </div>
+                                                    <small class="text-muted">({{ $soLuot }})</small>
                                                     <div class="d-flex">
                                                         <a href="#"
                                                             class="text-primary d-flex align-items-center justify-content-center me-3">
