@@ -208,6 +208,7 @@
 
                                 @forelse ($sanPhams as $sp)
                                     @php
+                                        $listBT = $bienTheTheoSP[$sp->MaSP] ?? collect();
                                         $anh = $sp->anhDauTien
                                             ? asset('img/' . $sp->anhDauTien)
                                             : asset('img/no-image.png');
@@ -249,14 +250,25 @@
                                                     class="btn btn-primary border-secondary rounded-pill py-2 px-4 mb-4">
                                                     <i class="fas fa-shopping-cart me-2"></i> Add To Cart
                                                 </a>
-                                                <div class="d-flex justify-content-between align-items-center">
+                                                @php
+                                                    $saoTb = (float) ($sp->saoTrungBinh ?? 0);
+                                                    $soLuot = (int) ($sp->soLuotDanhGia ?? 0);
+                                                    $full = (int) floor($saoTb);
+                                                    $half = ($saoTb - $full) >= 0.5;
+                                                @endphp
+                                               <div class="d-flex align-items-center gap-2">
                                                     <div class="d-flex">
-                                                        <i class="fas fa-star text-primary"></i>
-                                                        <i class="fas fa-star text-primary"></i>
-                                                        <i class="fas fa-star text-primary"></i>
-                                                        <i class="fas fa-star text-primary"></i>
-                                                        <i class="fas fa-star"></i>
+                                                        @for ($i = 1; $i <= 5; $i++)
+                                                            @if ($i <= $full)
+                                                                <i class="fas fa-star text-primary"></i>
+                                                            @elseif ($half && $i == $full + 1)
+                                                                <i class="fas fa-star-half-alt text-primary"></i>
+                                                            @else
+                                                                <i class="fas fa-star"></i>
+                                                            @endif
+                                                        @endfor
                                                     </div>
+                                                    <small class="text-muted">({{ $soLuot }})</small>
                                                     <div class="d-flex">
                                                         <a href="#"
                                                             class="text-primary d-flex align-items-center justify-content-center me-3">

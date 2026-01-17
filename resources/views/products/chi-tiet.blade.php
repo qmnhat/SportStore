@@ -201,19 +201,19 @@
 
                             {{-- Quantity UI --}}
                             <div class="input-group quantity mb-4" style="width: 130px;">
-                                <button class="btn btn-sm btn-minus rounded-circle bg-light border" type="button"
-                                    onclick="qtyDown()">
+                                <button class="btn btn-sm btn-minus rounded-circle bg-light border" type="button">
                                     <i class="fa fa-minus"></i>
                                 </button>
 
                                 <input id="qtyInput" type="text"
-                                    class="form-control form-control-sm text-center border-0" value="1">
+                                    class="form-control form-control-sm text-center border-0 qty-input"
+                                    value="1">
 
-                                <button class="btn btn-sm btn-plus rounded-circle bg-light border" type="button"
-                                    onclick="qtyUp()">
+                                <button class="btn btn-sm btn-plus rounded-circle bg-light border" type="button">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </div>
+
 
                             {{-- Add to cart (placeholder) --}}
                             {{-- begin phat --}}

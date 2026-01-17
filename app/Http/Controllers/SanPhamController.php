@@ -118,6 +118,24 @@ class SanPhamController extends Controller
             ->orderBy('sp.MaSP', 'desc')
             ->paginate(9)
             ->withQueryString();
+        $dsMaSP = $sanPhams->pluck('MaSP')->toArray();
+
+        $bienTheTheoSP = DB::table('BienTheSanPham as bt')
+            ->join('KichThuoc as kt', 'kt.MaKT', '=', 'bt.MaKT')
+            ->whereIn('bt.MaSP', $dsMaSP)
+            ->where('bt.IsDeleted', 0)
+            ->where('bt.TrangThai', 1)
+            ->select(
+                'bt.MaSP',
+                'bt.MaBT',
+                'kt.TenKT',
+                'bt.GiaGoc',
+                'bt.SoLuong'
+            )
+            ->orderBy('bt.MaSP')
+            ->orderBy('kt.TenKT')
+            ->get()
+            ->groupBy('MaSP');
 
         return view('products.san-pham', compact(
             'sanPhams',
@@ -126,7 +144,8 @@ class SanPhamController extends Controller
             'tuKhoa',
             'maDM',
             'maTH',
-            'gia'
+            'gia',
+            'bienTheTheoSP'
         ));
     }
 

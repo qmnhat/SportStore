@@ -144,18 +144,29 @@
     // Product Quantity
     $('.quantity button').on('click', function () {
         var button = $(this);
-        var oldValue = button.parent().parent().find('input').val();
-        if (button.hasClass('btn-plus')) {
-            var newVal = parseFloat(oldValue) + 1;
-        } else {
-            if (oldValue > 0) {
-                var newVal = parseFloat(oldValue) - 1;
-            } else {
-                newVal = 0;
-            }
+
+        // Chi tim input so luong ben trong .quantity
+        var input = button.closest('.quantity').find('input.qty-input');
+
+        // Neu khong co class qty-input thi fallback: input dau tien trong .quantity
+        if (input.length === 0) {
+            input = button.closest('.quantity').find('input').first();
         }
-        button.parent().parent().find('input').val(newVal);
+
+        var oldValue = parseFloat(input.val() || '1');
+        if (isNaN(oldValue) || oldValue < 1) oldValue = 1;
+
+        var newVal = oldValue;
+
+        if (button.hasClass('btn-plus')) {
+            newVal = oldValue + 1;
+        } else {
+            newVal = Math.max(1, oldValue - 1);
+        }
+
+        input.val(newVal);
     });
+
 
 
     
