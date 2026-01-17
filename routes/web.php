@@ -12,27 +12,15 @@ use App\Http\Controllers\GioHangController;
 use App\Http\Controllers\SanPhamApiController;
 use App\Http\Controllers\DonHangController;
 use App\Http\Controllers\Admin\KhuyenMaiController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Admin\AdminContactController;
+use App\Http\Controllers\Admin\AdminCompanyInfoController;
+use Faker\Provider\Company;
+
+//route liên hệ(nghia)
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 
-/*
-|--------------------------------------------------------------------------
-| FRONTEND (KHÁCH HÀNG - KHÔNG CẦN LOGIN)
-|--------------------------------------------------------------------------
-*/
-
-
-/*
-|--------------------------------------------------------------------------
-| FRONTEND (KHÁCH HÀNG - PHẢI LOGIN)
-//begin phat
-
-//end phat
-
-/*
-|--------------------------------------------------------------------------
-| FRONTEND (PUBLIC)
-|--------------------------------------------------------------------------
-*/
 
 Route::get('/', fn() => view('pages.trang-chu'));
 
@@ -93,42 +81,6 @@ Route::middleware('khachhang.auth')->group(function () {
 });
 
 
-Route::get('/', function () {
-    return view('pages.trang-chu');
-});
-
-Route::get('/san-pham', [SanPhamController::class, 'index'])->name('shop.index');
-Route::get('/san-pham/{maSP}', [SanPhamController::class, 'show'])->name('shop.show');
-
-Route::get('/lien-he', fn() => view('pages.lien-he'));
-
-
-Route::get('/dang-xuat', function () {
-    session()->forget('khachhang');
-    return redirect('/');
-});
-
-Route::post('/dang-nhap', [AuthController::class, 'loginKhachHang']);
-Route::post('/dang-ky', [AuthController::class, 'registerKhachHang']);
-Route::get('/dang-nhap', fn() => view('auth.login'))->name('dang-nhap');
-Route::get('/dang-ky', fn() => view('auth.register'))->name('dang-ky');
-
-
-/*
-|--------------------------------------------------------------------------
-| ROUTE LOGIN MẶC ĐỊNH (CHO LARAVEL)
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/login', function () {
-    return redirect()->route('admin.login.form');
-})->name('login');
-
-/*
-|--------------------------------------------------------------------------
-| ADMIN AUTH (KHÔNG CẦN LOGIN)
-|--------------------------------------------------------------------------
-*/
 Route::prefix('admin')->group(function () {
 
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])
@@ -141,11 +93,7 @@ Route::prefix('admin')->group(function () {
         ->name('admin.logout');
 });
 
-/*
-|--------------------------------------------------------------------------
-| ADMIN AREA (PHẢI LOGIN)
-|--------------------------------------------------------------------------
-*/
+
 Route::prefix('admin')
     ->name('admin.')
     ->middleware('auth:admin')
@@ -203,6 +151,40 @@ Route::prefix('admin')
         Route::get('/', function () {
             return redirect()->route('admin.dashboard');
         });
+
+        Route::get('/thuong-hieu', [ThuongHieuController::class, 'index'])->name('thuonghieu.index');
+        Route::get('/thuong-hieu/create', [ThuongHieuController::class, 'create'])->name('thuonghieu.create');
+        Route::post('/thuong-hieu/store', [ThuongHieuController::class, 'store'])->name('thuonghieu.store');
+        Route::get('/thuong-hieu/edit/{id}', [ThuongHieuController::class, 'edit'])->name('thuonghieu.edit');
+        Route::put('/thuong-hieu/update/{id}', [ThuongHieuController::class, 'update'])->name('thuonghieu.update');
+        Route::post('/thuong-hieu/destroy/{id}', [ThuongHieuController::class, 'destroy'])->name('thuonghieu.destroy');
+        Route::post('/thuong-hieu/restore/{id}', [ThuongHieuController::class, 'restore'])->name('thuonghieu.restore');
+
+        //route quản lý liên hệ(nghia)
+        Route::get('/contacts', [AdminContactController::class, 'index'])->name('contacts.index');
+        Route::get('/contacts/{id}', [AdminContactController::class, 'show'])->name('contacts.show');
+        Route::put('/contacts/{id}', [AdminContactController::class, 'update'])->name('contacts.update');
+        Route::delete('/contacts/{id}', [AdminContactController::class, 'destroy'])->name('contacts.destroy');
+
+        // route Thong tin công ty (nghia)
+        Route::get('/company-info', [AdminCompanyInfoController::class, 'edit'])->name('company-info.edit');
+        Route::put('/company-info', [AdminCompanyInfoController::class, 'update'])->name('company-info.update');
+
+        // route Chính sách
+        Route::get('/policies', [AdminCompanyInfoController::class, 'policiesIndex'])->name('policies.index');
+        Route::get('/policies/create', [AdminCompanyInfoController::class, 'policiesCreate'])->name('policies.create');
+        Route::post('/policies', [AdminCompanyInfoController::class, 'policiesStore'])->name('policies.store');
+        Route::get('/policies/{id}/edit', [AdminCompanyInfoController::class, 'policiesEdit'])->name('policies.edit');
+        Route::put('/policies/{id}', [AdminCompanyInfoController::class, 'policiesUpdate'])->name('policies.update');
+        Route::delete('/policies/{id}', [AdminCompanyInfoController::class, 'policiesDestroy'])->name('policies.destroy');
+
+        // route FAQ
+        Route::get('/faqs', [AdminCompanyInfoController::class, 'faqsIndex'])->name('faqs.index');
+        Route::get('/faqs/create', [AdminCompanyInfoController::class, 'faqsCreate'])->name('faqs.create');
+        Route::post('/faqs', [AdminCompanyInfoController::class, 'faqsStore'])->name('faqs.store');
+        Route::get('/faqs/{id}/edit', [AdminCompanyInfoController::class, 'faqsEdit'])->name('faqs.edit');
+        Route::put('/faqs/{id}', [AdminCompanyInfoController::class, 'faqsUpdate'])->name('faqs.update');
+        Route::delete('/faqs/{id}', [AdminCompanyInfoController::class, 'faqsDestroy'])->name('faqs.destroy');
     });
 Route::prefix('admin/khuyen-mai')->name('admin.khuyenmai.')->group(function () {
 
