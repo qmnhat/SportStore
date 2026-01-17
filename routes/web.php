@@ -21,8 +21,17 @@ use Faker\Provider\Company;
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 
-
 Route::get('/', [PageController::class, 'home'])->name('home');
+
+//end phat
+
+/*
+|--------------------------------------------------------------------------
+| FRONTEND (PUBLIC)
+|--------------------------------------------------------------------------
+*/
+
+
 
 Route::get('/gioi-thieu', [PageController::class, 'about'])->name('pages.about');
 
