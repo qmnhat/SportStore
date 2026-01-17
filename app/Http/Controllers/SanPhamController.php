@@ -14,6 +14,15 @@ class SanPhamController extends Controller
         $maTH = $request->get('th');   // MaTH
         $gia = $request->get('gia');   // 1 | 2 | 3
 
+        // ===== (SUA SO SAO) RATING SUBQUERY =====
+        $ratingSub = DB::table('DanhGia as dg')
+            ->select(
+                'dg.MaSP',
+                DB::raw('ROUND(AVG(dg.SoSao), 1) as saoTrungBinh'),
+                DB::raw('COUNT(*) as soLuotDanhGia')
+            )
+            ->groupBy('dg.MaSP');
+
         // ===== DANH MUC + SO LUONG SAN PHAM =====
         $danhMucs = DB::table('DanhMuc as dm')
             ->leftJoin('SanPham as sp', function ($join) {
@@ -42,6 +51,12 @@ class SanPhamController extends Controller
         $sanPhams = DB::table('SanPham as sp')
             ->leftJoin('DanhMuc as dm', 'dm.MaDM', '=', 'sp.MaDM')
             ->leftJoin('ThuongHieu as th', 'th.MaTH', '=', 'sp.MaTH')
+
+            // ===== (SUA SO SAO) JOIN RATING =====
+            ->leftJoinSub($ratingSub, 'rt', function ($join) {
+                $join->on('rt.MaSP', '=', 'sp.MaSP');
+            })
+
             ->leftJoin('BienTheSanPham as bt', function ($join) {
                 $join->on('bt.MaSP', '=', 'sp.MaSP')
                     ->where('bt.IsDeleted', 0)
@@ -49,7 +64,6 @@ class SanPhamController extends Controller
             })
             ->leftJoin('HinhAnhSanPham as ha', 'ha.MaSP', '=', 'sp.MaSP')
             ->where('sp.IsDeleted', 0)
-
             // filter danh muc
             ->when($maDM, function ($q) use ($maDM) {
                 $q->where('sp.MaDM', $maDM);
@@ -63,10 +77,19 @@ class SanPhamController extends Controller
             // search ten va mo ta san pham
             ->when($tuKhoa !== '', function ($q) use ($tuKhoa) {
                 $q->where('sp.TenSP', 'like', '%' . $tuKhoa . '%')
-                  ->orWhere('sp.MoTa','like','%'.$tuKhoa.'%');
+                    ->orWhere('sp.MoTa', 'like', '%' . $tuKhoa . '%');
             })
 
-            ->groupBy('sp.MaSP', 'sp.TenSP', 'sp.MoTa', 'dm.TenDM', 'th.TenTH')
+            ->groupBy(
+                'sp.MaSP',
+                'sp.TenSP',
+                'sp.MoTa',
+                'dm.TenDM',
+                'th.TenTH',
+                // ===== (SUA SO SAO) GROUP BY RATING =====
+                'rt.saoTrungBinh',
+                'rt.soLuotDanhGia'
+            )
             ->select(
                 'sp.MaSP',
                 'sp.TenSP',
@@ -74,7 +97,11 @@ class SanPhamController extends Controller
                 'dm.TenDM as tenDanhMuc',
                 'th.TenTH as tenThuongHieu',
                 DB::raw('MIN(bt.GiaGoc) as giaMin'),
-                DB::raw('MIN(ha.DuongDan) as anhDauTien')
+                DB::raw('MIN(ha.DuongDan) as anhDauTien'),
+
+                // ===== (SUA SO SAO) SELECT RATING =====
+                DB::raw('COALESCE(rt.saoTrungBinh, 0) as saoTrungBinh'),
+                DB::raw('COALESCE(rt.soLuotDanhGia, 0) as soLuotDanhGia')
             )
 
             // filter gia: dua theo MIN(bt.GiaGoc)
@@ -103,12 +130,27 @@ class SanPhamController extends Controller
         ));
     }
 
+
     public function show($maSP)
     {
+        $ratingSub = DB::table('DanhGia as dg')
+            ->select(
+                'dg.MaSP',
+                DB::raw('ROUND(AVG(dg.SoSao), 1) as saoTrungBinh'),
+                DB::raw('COUNT(*) as soLuotDanhGia')
+            )
+            ->groupBy('dg.MaSP');
+
         // San pham
         $sanPham = DB::table('SanPham as sp')
             ->leftJoin('DanhMuc as dm', 'dm.MaDM', '=', 'sp.MaDM')
             ->leftJoin('ThuongHieu as th', 'th.MaTH', '=', 'sp.MaTH')
+
+            // ===== (SUA SO SAO) JOIN RATING =====
+            ->leftJoinSub($ratingSub, 'rt', function ($join) {
+                $join->on('rt.MaSP', '=', 'sp.MaSP');
+            })
+
             ->leftJoin('BienTheSanPham as bt', function ($join) {
                 $join->on('bt.MaSP', '=', 'sp.MaSP')
                     ->where('bt.IsDeleted', 0)
@@ -123,7 +165,10 @@ class SanPhamController extends Controller
                 'sp.TrangThai',
                 'sp.MaDM',
                 'dm.TenDM',
-                'th.TenTH'
+                'th.TenTH',
+                // ===== (SUA SO SAO) GROUP BY RATING =====
+                'rt.saoTrungBinh',
+                'rt.soLuotDanhGia'
             )
             ->select(
                 'sp.MaSP',
@@ -134,7 +179,11 @@ class SanPhamController extends Controller
                 'dm.TenDM as tenDanhMuc',
                 'th.TenTH as tenThuongHieu',
                 DB::raw('MIN(bt.GiaGoc) as giaMin'),
-                DB::raw('MAX(bt.GiaGoc) as giaMax')
+                DB::raw('MAX(bt.GiaGoc) as giaMax'),
+
+                // ===== (SUA SO SAO) SELECT RATING =====
+                DB::raw('COALESCE(rt.saoTrungBinh, 0) as saoTrungBinh'),
+                DB::raw('COALESCE(rt.soLuotDanhGia, 0) as soLuotDanhGia')
             )
             ->first();
 
@@ -167,6 +216,7 @@ class SanPhamController extends Controller
         $danhGias = DB::table('DanhGia as dg')
             ->join('KhachHang as kh', 'kh.MaKH', '=', 'dg.MaKH')
             ->where('dg.MaSP', $maSP)
+            // ===== (SUA SO SAO) DONG BO LOC REVIEW =====
             ->orderByDesc('dg.NgayDanhGia')
             ->select(
                 'kh.HoTen',
@@ -176,11 +226,12 @@ class SanPhamController extends Controller
             )
             ->paginate(5);
 
-        // Sao trung bình
-        $sanPham->soLuotDanhGia = $danhGias->total();
-        $sanPham->saoTrungBinh = DB::table('DanhGia')
-            ->where('MaSP', $maSP)
-            ->avg('SoSao') ?? 0;
+        // ===== (SUA SO SAO) BO DOAN TINH LAI SAO/DEM (DE TRANH LECH) =====
+        // $sanPham->soLuotDanhGia = $danhGias->total();
+        // $sanPham->saoTrungBinh = DB::table('DanhGia')
+        //     ->where('MaSP', $maSP)
+        //     ->avg('SoSao') ?? 0;
+
         //begin phat
         // Tong ton kho (cong tat ca bien the)
         $tongTon = (int) DB::table('BienTheSanPham')
@@ -246,8 +297,9 @@ class SanPhamController extends Controller
             'thongKe'
         ));
     }
+
     //begin phat
-        public function guiDanhGia(Request $request, $maSP)
+    public function guiDanhGia(Request $request, $maSP)
     {
         $kh = session('khachhang');
         if (!$kh) return redirect('/dang-nhap');

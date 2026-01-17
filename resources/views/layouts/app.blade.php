@@ -29,6 +29,8 @@
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
+    @stack('styles')
 </head>
 
 <body>
@@ -55,6 +57,8 @@
     <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
 
     <script src="{{ asset('js/main.js') }}"></script>
+    @stack('scripts')
+    @include('partials.chat-widget')
 </body>
 
 </html>

@@ -26,9 +26,9 @@
         <div class="col-md-4 col-lg-3 text-center text-lg-end">
             <div class="d-inline-flex align-items-center">
 
-                <a href="/gio-hang" class="text-muted d-flex align-items-center justify-content-center"><span
-                        class="rounded-circle btn-md-square border"><i class="fas fa-shopping-cart"></i></span>
-                    <span class="text-dark ms-2">$0.00</span></a>
+                <a href="{{ route('cart.index') }}" class="position-relative me-4 my-auto">
+                    <i class="fa fa-shopping-bag fa-2x"></i>
+                 </a>
             </div>
         </div>
     </div>
