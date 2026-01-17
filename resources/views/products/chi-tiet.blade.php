@@ -53,7 +53,6 @@
                     </button>
 
                     <button type="button" onclick="yeuThich()" class="btn btn-outline-danger ms-2">
-                        Yeu thich ❤️
                     </button>
                 </form>
 
