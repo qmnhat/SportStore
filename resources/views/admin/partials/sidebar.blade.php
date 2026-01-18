@@ -69,6 +69,12 @@
                 </a>
             </li>
             <li class="sidebar-item">
+                <a href="{{ url('/admin/baiviet') }}" class="sidebar-link">
+                    <i class="bi bi-journal-text"></i>
+                    <span>Bài viết</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
                 <a href="{{ url('/admin/khuyen-mai') }}" class="sidebar-link">
                     <i class="bi bi-tags"></i>
                     <span>Khuyến mãi</span>

@@ -17,12 +17,15 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\AdminContactController;
 use App\Http\Controllers\Admin\AdminCompanyInfoController;
 use Faker\Provider\Company;
-
+use App\Http\Controllers\Admin\AdminBaiVietController;
+use App\Http\Controllers\BaiVietController;
 //route liên hệ(nghia)
 Route::post('/contact',[ContactController::class, 'store'])->name('contact.store');
 
 Route::get('/', [PageController::class, 'trangChu'])->name('home');
-
+//route bài viết blog(nghia)
+Route::get('/blog',[BaiVietController::class,'index'])->name('blog.index');
+Route::get('/blog/{slug}',[BaiVietController::class,'show'])->name('blog.show');
 /*
 |--------------------------------------------------------------------------
 | FRONTEND (PUBLIC)
@@ -43,7 +46,7 @@ Route::get('/san-pham', [SanPhamController::class, 'index'])->name('shop.index')
 Route::get('/san-pham/{maSP}', [SanPhamController::class, 'show'])->name('shop.show');
 
 // (15) Them vao gio hang
-Route::post('/gio-hang/them', [GioHangController::class, 'them'])->name('cart.add');
+//Route::post('/gio-hang/them', [GioHangController::class, 'them'])->name('cart.add');
 // (17) Thong ke realtime: view/yeu thich/rating
 
 Route::get('/tim-kiem', [SanPhamController::class, 'search'])->name('search');
@@ -142,7 +145,21 @@ Route::prefix('admin')
             ->name('sanpham.destroy');
         Route::post('/san-pham/restore/{id}', [AdminSanPhamController::class, 'restore'])
             ->name('sanpham.restore');
-
+        //bai viet(nghia)
+        Route::get('/bai-viet', [AdminBaiVietController::class, 'index'])
+            ->name('baiviet.index');
+        Route::get('/bai-viet/create', [AdminBaiVietController::class, 'create'])
+            ->name('baiviet.create');
+        Route::post('/bai-viet/store', [AdminBaiVietController::class, 'store'])
+            ->name('baiviet.store');
+        Route::get('/bai-viet/edit/{id}', [AdminBaiVietController::class, 'edit'])
+            ->name('baiviet.edit');
+        Route::put('/bai-viet/update/{id}', [AdminBaiVietController::class, 'update'])
+            ->name('baiviet.update');
+        Route::post('/bai-viet/destroy/{id}', [AdminBaiVietController::class, 'destroy'])
+            ->name('baiviet.destroy');
+        Route::post('/bai-viet/restore/{id}', [AdminBaiVietController::class, 'restore'])
+            ->name('baiviet.restore');
         // KHÁCH HÀNG
         Route::get('/khach-hang', [KhachHangController::class, 'index'])
             ->name('khachhang.index');
