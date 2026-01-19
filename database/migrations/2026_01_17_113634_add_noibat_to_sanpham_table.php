@@ -11,20 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('company_faqs', function (Blueprint $table) {
-            $table->id();
-            $table->text('question');
-            $table->text('answer');
-            $table->integer('order')->default(0);
-            $table->timestamps();
-        });
+        Schema::table('SanPham', function (Blueprint $table) {
+            $table->boolean('NoiBat')->default(false)->after('TrangThai');
+    });
     }
-
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('company_faqs');
+        Schema::table('SanPham', function (Blueprint $table) {
+            $table->dropColumn('NoiBat');
+        });
     }
 };

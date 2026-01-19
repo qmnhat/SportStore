@@ -20,8 +20,7 @@ class DonHang extends Model
         'MaKH',
         'NgayDat',
         'TrangThai',
-        'IsDeleted',
-        'DeletedAt'
+        'IsDeleted'
     ];
 
     // Ép kiểu dữ liệu (an toàn khi xử lý)

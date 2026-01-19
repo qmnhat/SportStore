@@ -52,6 +52,9 @@
                             Liên hệ
                         </a>
 
+                        <a href="{{ route('blog.index') }}" class="nav-item nav-link {{ request()->routeIs('blog.*') ? 'active' : '' }}">
+                            Bài viết
+                        </a>
                         @if (session()->has('khachhang'))
                             <div class="nav-item dropdown ms-2">
                                 <a href="#"

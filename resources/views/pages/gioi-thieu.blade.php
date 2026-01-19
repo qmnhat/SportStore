@@ -11,10 +11,15 @@
             {{-- 1. GIỚI THIỆU CHUNG --}}
             <div class="mb-5 text-center">
                 <h1 class="display-4 fw-bold text-primary">Giới thiệu về SportStore</h1>
-                <p class="lead text-muted">{{ $company->description }}</p>
+                @if($company)
+                    <p class="lead text-muted">{{ $company->description }}</p>
+                @else
+                    <p class="lead text-muted">Đang cập nhật thông tin công ty...</p>
+                @endif
             </div>
 
             {{-- 2. HỒ SƠ DOANH NGHIỆP --}}
+            @if($company)
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
                     <h3 class="card-title h4 text-uppercase border-bottom pb-2">
@@ -39,14 +44,16 @@
                     </ul>
                 </div>
             </div>
+            @endif
 
             {{-- 3. TẦM NHÌN & SỨ MỆNH --}}
+            @if($company)
             <div class="row mb-4">
                 <div class="col-md-6">
                     <div class="card h-100 border-0 bg-light shadow-sm">
                         <div class="card-body">
                             <h4 class="text-primary"><i class="bi bi-eye"></i> Tầm nhìn</h4>
-                            <p>{{ $company->vision }}</p>
+                            <p>{{ $company->vision ?? 'Đang cập nhật...' }}</p>
                         </div>
                     </div>
                 </div>
@@ -54,11 +61,12 @@
                     <div class="card h-100 border-0 bg-light shadow-sm">
                         <div class="card-body">
                             <h4 class="text-primary"><i class="bi bi-flag"></i> Sứ mệnh</h4>
-                            <p>{{ $company->mission }}</p>
+                            <p>{{ $company->mission ?? 'Đang cập nhật...' }}</p>
                         </div>
                     </div>
                 </div>
             </div>
+            @endif
 
             {{-- 4. LỢI THẾ CẠNH TRANH --}}
             <div class="card shadow-sm mb-4">
@@ -284,6 +292,7 @@
             </div>
 
             {{-- 10. LIÊN HỆ & MẠNG XÃ HỘI --}}
+            @if($company)
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
                     <h3 class="card-title h4 text-uppercase border-bottom pb-2">
@@ -322,6 +331,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
             {{-- 11. CÂU HỎI THƯỜNG GẶP --}}
             <div class="card shadow-sm">
