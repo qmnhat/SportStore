@@ -42,7 +42,6 @@
                         Thanh toán khi nhận hàng (COD)
                     </label>
                 </div>
-
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="phuong_thuc" value="bank">
                     <label class="form-check-label">
@@ -51,7 +50,6 @@
                 </div>
             </div>
         </div>
-
         {{-- Tổng tiền --}}
         <div class="card">
             <div class="card-body">
@@ -64,7 +62,6 @@
                         {{ number_format($tong,0,',','.') }} đ
                     </strong>
                 </p>
-
                 <button type="button"
                     class="btn btn-success w-100 py-2"
                     onclick="xacNhanDatHang()">
@@ -75,7 +72,6 @@
     </form>
 </div>
 @endsection
-
 @push('scripts')
 <script>
 function xacNhanDatHang() {
