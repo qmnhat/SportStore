@@ -8,7 +8,6 @@
                 <div class="header-carousel owl-carousel bg-light py-5">
                     @foreach($sliderSanPham as $sp)
                     <div class="row g-0 header-carousel-item align-items-center">
-
                         {{-- HÌNH ẢNH --}}
                         <div class="col-xl-6 carousel-img wow fadeInLeft" data-wow-delay="0.1s">
                             <img 
@@ -17,40 +16,32 @@
                                 alt="{{ $sp->TenSP }}"
                             >
                         </div>
-
                         {{-- NỘI DUNG --}}
                         <div class="col-xl-6 carousel-content p-4">
-
                             @php
                                 $giaGoc = $sp->bienThe->first()->GiaGoc ?? 0;
                                 $phanTram = $sp->khuyenMai->first()->PhanTramGiam ?? 0;
                             @endphp
-
                             <h4 class="text-uppercase fw-bold mb-4 text-danger">
                                 Giảm {{ $phanTram }}%
                             </h4>
-
                             <h1 class="display-5 text-capitalize mb-4">
                                 {{ $sp->TenSP }}
                             </h1>
-
                             <p class="text-dark">
                                 Giá chỉ còn 
                                 <strong>{{ number_format($giaGoc - ($giaGoc * $phanTram / 100)) }} đ</strong>
                             </p>
-
                             {{-- LINK ĐÚNG SẢN PHẨM --}}
                             <a class="btn btn-primary rounded-pill py-3 px-5"
                             href="{{ route('cart.add', $sp->MaSP) }}">
                                 Mua ngay
                             </a>
-
                         </div>
                     </div>
                     @endforeach
                 </div>
             </div>
-            
         </div>
     </div>
     <!-- Carousel End -->
