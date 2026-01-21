@@ -146,4 +146,13 @@ class KhachHangController extends Controller
 
         return redirect()->route('admin.khachhang.index')->with('success', 'Cập nhật khách hàng thành công!');
     }
+    public function thongTinCaNhan()
+{
+    $kh = auth()->user(); // hoặc lấy theo session MaKH
+
+    $sanPhamYeuThich = $kh->yeuThich()->get();
+
+    return view('khachhang.thongtincanhan', compact('kh', 'sanPhamYeuThich'));
+}
+
 }
