@@ -84,7 +84,37 @@
         </div>
     </div>
 
-$sanPhamYeuThich
+<hr class="my-4">
+
+<h5 class="mb-3">
+    <i class="fas fa-heart text-danger me-2"></i>
+    Sản phẩm yêu thích
+</h5>
+
+@if($sanPhamYeuThich->count() > 0)
+    <div class="list-group">
+        @foreach($sanPhamYeuThich as $sp)
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ $sp->TenSP }}</strong>
+                    <div class="text-muted small">
+                        Giá: {{ number_format($sp->GiaBan) }}đ
+                    </div>
+                </div>
+
+                <a href="{{ route('sanpham.chitiet', $sp->MaSP) }}"
+                   class="btn btn-sm btn-outline-primary">
+                    Xem
+                </a>
+            </div>
+        @endforeach
+    </div>
+@else
+    <p class="text-muted fst-italic">
+        Bạn chưa có sản phẩm yêu thích nào.
+    </p>
+@endif
+
 
 
 
