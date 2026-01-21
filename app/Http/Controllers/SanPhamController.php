@@ -304,5 +304,39 @@ class SanPhamController extends Controller
         ));
     }
 
-    
+    public function guiDanhGia(Request $request, $maSP)
+    {
+        $kh = session('khachhang');
+        if (!$kh) return redirect('/dang-nhap');
+        $request->validate([
+            'SoSao' => 'required|integer|min:1|max:5',
+            'NoiDung' => 'nullable|string',
+        ]);
+
+        $maSP = (int) $maSP;
+        $maKH = (int) $kh['MaKH'];
+
+        $daCo = DB::table('DanhGia')->where('MaSP', $maSP)->where('MaKH', $maKH)->first();
+
+        if ($daCo) {
+            DB::table('DanhGia')
+                ->where('MaSP', $maSP)
+                ->where('MaKH', $maKH)
+                ->update([
+                    'SoSao' => (int) $request->SoSao,
+                    'NoiDung' => $request->NoiDung,
+                    'NgayDanhGia' => now(),
+                ]);
+        } else {
+            DB::table('DanhGia')->insert([
+                'MaSP' => $maSP,
+                'MaKH' => $maKH,
+                'SoSao' => (int) $request->SoSao,
+                'NoiDung' => $request->NoiDung,
+                'NgayDanhGia' => now(),
+            ]);
+        }
+
+        return back()->with('success', 'Da gui danh gia');
+    }
 }
