@@ -101,7 +101,6 @@
                         Giá: {{ number_format($sp->GiaBan) }}đ
                     </div>
                 </div>
-
                 <a href="{{ route('sanpham.chitiet', $sp->MaSP) }}"
                    class="btn btn-sm btn-outline-primary">
                     Xem
