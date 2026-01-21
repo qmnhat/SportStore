@@ -78,11 +78,10 @@ Route::get('/login', function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware('khachhang.auth')->group(function () {
-    //begin phat
-    // (12) Gui danh gia san pham
+    
+    //danh gia san pham
     Route::post('/san-pham/{maSP}/danh-gia', [SanPhamController::class, 'guiDanhGia'])->name('shop.review');
-    //end phat
-
+    
     Route::get('/gio-hang', [GioHangController::class, 'index'])->name('cart.index');
 
     Route::post('/gio-hang/them', [GioHangController::class, 'them'])->name('cart.add');
@@ -113,7 +112,7 @@ Route::middleware('khachhang.auth')->group(function () {
         ->name('checkout');
     Route::post('/thanh-toan', [DonHangController::class, 'processCheckout'])
         ->name('checkout.process');
-        
+
     Route::post('/yeu-thich/toggle', [YeuThichController::class, 'toggle'])
         ->name('yeuthich.toggle');
 });
