@@ -19,7 +19,6 @@ class ProfileController extends Controller
 
         return view('pages.thong-tin-ca-nhan', compact('kh'));
     }
-
     public function update(Request $request)
     {
         if (!session()->has('khachhang')) {
