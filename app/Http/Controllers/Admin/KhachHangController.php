@@ -148,7 +148,8 @@ class KhachHangController extends Controller
     }
     public function thongTinCaNhan()
 {
-    $kh = auth()->user(); // hoặc lấy theo session MaKH
+    $kh = KhachHang::find(session('MaKH'));
+ // hoặc lấy theo session MaKH
 
     $sanPhamYeuThich = $kh->yeuThich()->get();
 
