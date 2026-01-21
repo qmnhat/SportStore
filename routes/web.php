@@ -7,6 +7,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Admin\KhachHangController;
 use App\Http\Controllers\Admin\ThuongHieuController;
+use App\Http\Controllers\Admin\AdminDanhMucController;
+use App\Http\Controllers\Admin\AdminKichThuocController;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
 use App\Http\Controllers\GioHangController;
 use App\Http\Controllers\SanPhamApiController;
@@ -16,12 +18,22 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\AdminContactController;
 use App\Http\Controllers\Admin\AdminCompanyInfoController;
 use Faker\Provider\Company;
-
+use App\Http\Controllers\NhaCungCapController;
+use App\Http\Controllers\YeuThichController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\AdminDonHangController;
+use App\Http\Controllers\BaiVietController;
+use App\Http\Controllers\Admin\AdminBaiVietController;
+use App\Http\Controllers\Admin\AdminBlogCategoryController;
+use App\Http\Controllers\Admin\AdminSanPhamController;
 //route liên hệ(nghia)
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
+//route bài viết blog,ct_baiviet
+Route::get('/blog', [BaiVietController::class, 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [BaiVietController::class, 'show'])->name('blog.show');
 
-Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/', [PageController::class, 'trangChu'])->name('home');
 
 //end phat
 
@@ -32,21 +44,24 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 */
 
 
+Route::post('/dang-nhap', [AuthController::class, 'loginKhachHang']);
+Route::post('/dang-ky', [AuthController::class, 'registerKhachHang']);
+Route::get('/dang-nhap', fn() => view('auth.login'))->name('dang-nhap');
+Route::get('/dang-ky', fn() => view('auth.register'))->name('dang-ky');
+Route::get('/dang-xuat', function () {
+    session()->forget('khachhang');
+    return redirect('/');
+});
 
-Route::get('/gioi-thieu', [PageController::class, 'about'])->name('pages.about');
-
+Route::get('/gioi-thieu', [PageController::class, 'gioiThieu'])->name('pages.gioi-thieu');
 Route::get('/san-pham', [SanPhamController::class, 'index'])->name('shop.index');
-Route::get('/san-pham/{maSP}', [SanPhamController::class, 'show'])->name('shop.show');
+Route::get('/san-pham/{slug}', [SanPhamController::class, 'show'])->name('shop.show');
 
 // (15) Them vao gio hang
 Route::post('/gio-hang/them', [GioHangController::class, 'them'])->name('cart.add');
 // (17) Thong ke realtime: view/yeu thich/rating
 
-Route::get('/san-pham/{maSP}/thong-ke', [SanPhamApiController::class, 'thongKe']);
-Route::post('/san-pham/{maSP}/yeu-thich', [SanPhamApiController::class, 'yeuThich']);
 
-
-Route::get('/tim-kiem', [SanPhamController::class, 'search'])->name('search');
 
 Route::get('/lien-he', fn() => view('pages.lien-he'));
 
@@ -55,17 +70,10 @@ Route::get('/lien-he', fn() => view('pages.lien-he'));
 | AUTH KHÁCH HÀNG
 |--------------------------------------------------------------------------
 */
-Route::get('/dang-nhap', fn() => view('auth.login'))->name('dang-nhap');
-Route::post('/dang-nhap', [AuthController::class, 'loginKhachHang']);
-Route::post('/gio-hang/cap-nhat', [GioHangController::class, 'capNhat'])->name('cart.update');
-Route::post('/gio-hang/xoa', [GioHangController::class, 'xoaItem'])->name('cart.remove');
-Route::post('/gio-hang/xoa-het', [GioHangController::class, 'xoaHet'])->name('cart.clear');
-Route::post('/dang-ky', [AuthController::class, 'registerKhachHang']);
-Route::get('/dang-ky', fn() => view('auth.register'))->name('dang-ky');
-Route::get('/dang-xuat', function () {
-    session()->forget('khachhang');
-    return redirect('/');
-});
+
+Route::get('/login', function () {
+    return redirect()->route('admin.login.form');
+})->name('login');
 
 /*
 |--------------------------------------------------------------------------
@@ -80,7 +88,11 @@ Route::middleware('khachhang.auth')->group(function () {
 
     Route::get('/gio-hang', [GioHangController::class, 'index'])->name('cart.index');
 
+    Route::post('/gio-hang/them', [GioHangController::class, 'them'])->name('cart.add');
+
     Route::post('/gio-hang/cap-nhat', [GioHangController::class, 'capNhat'])->name('cart.update');
+
+    Route::post('/gio-hang/xoa', [GioHangController::class, 'xoaItem'])->name('cart.remove');
 
     Route::post('/gio-hang/xoa-het', [GioHangController::class, 'xoaHet'])->name('cart.clear');
 
@@ -98,6 +110,17 @@ Route::middleware('khachhang.auth')->group(function () {
 
     Route::get('/doi-mat-khau', fn() => view('auth.doi-mat-khau'));
     Route::post('/doi-mat-khau', [AuthController::class, 'doiMatKhau']);
+
+    // ===== THANH TOÁN =====
+    Route::get('/thanh-toan', [DonHangController::class, 'checkout'])
+        ->name('checkout');
+
+    Route::post('/thanh-toan', [DonHangController::class, 'processCheckout'])
+        ->name('checkout.process');
+
+
+    Route::post('/yeu-thich/toggle', [YeuThichController::class, 'toggle'])
+        ->name('yeuthich.toggle');
 });
 
 
@@ -121,7 +144,8 @@ Route::prefix('admin')
 
         Route::get('/', fn() => redirect()->route('admin.dashboard'));
 
-        Route::view('/dashboard', 'admin.dashboard')
+
+        Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
 
         // KHÁCH HÀNG
@@ -145,6 +169,47 @@ Route::prefix('admin')
 
         Route::post('/khach-hang/restore/{id}', [KhachHangController::class, 'restore'])
             ->name('khachhang.restore');
+
+        // DANH MỤC
+        Route::get('/danh-muc', [AdminDanhMucController::class, 'index'])
+            ->name('danhmuc.index');
+
+        Route::get('/danh-muc/create', [AdminDanhMucController::class, 'create'])
+            ->name('danhmuc.create');
+
+        Route::post('/danh-muc/store', [AdminDanhMucController::class, 'store'])
+            ->name('danhmuc.store');
+
+        Route::get('/danh-muc/edit/{id}', [AdminDanhMucController::class, 'edit'])
+            ->name('danhmuc.edit');
+
+        Route::put('/danh-muc/update/{id}', [AdminDanhMucController::class, 'update'])
+            ->name('danhmuc.update');
+
+        Route::post('/danh-muc/destroy/{id}', [AdminDanhMucController::class, 'destroy'])
+            ->name('danhmuc.destroy');
+
+        Route::post('/danh-muc/restore/{id}', [AdminDanhMucController::class, 'restore'])
+            ->name('danhmuc.restore');
+
+        // KÍCH THƯỚC
+        Route::get('/kich-thuoc', [AdminKichThuocController::class, 'index'])
+            ->name('kichthuoc.index');
+
+        Route::get('/kich-thuoc/create', [AdminKichThuocController::class, 'create'])
+            ->name('kichthuoc.create');
+
+        Route::post('/kich-thuoc/store', [AdminKichThuocController::class, 'store'])
+            ->name('kichthuoc.store');
+
+        Route::get('/kich-thuoc/edit/{id}', [AdminKichThuocController::class, 'edit'])
+            ->name('kichthuoc.edit');
+
+        Route::put('/kich-thuoc/update/{id}', [AdminKichThuocController::class, 'update'])
+            ->name('kichthuoc.update');
+
+        Route::post('/kich-thuoc/destroy/{id}', [AdminKichThuocController::class, 'destroy'])
+            ->name('kichthuoc.destroy');
 
         // THƯƠNG HIỆU
         Route::get('/thuong-hieu', [ThuongHieuController::class, 'index'])
@@ -205,7 +270,46 @@ Route::prefix('admin')
         Route::get('/faqs/{id}/edit', [AdminCompanyInfoController::class, 'faqsEdit'])->name('faqs.edit');
         Route::put('/faqs/{id}', [AdminCompanyInfoController::class, 'faqsUpdate'])->name('faqs.update');
         Route::delete('/faqs/{id}', [AdminCompanyInfoController::class, 'faqsDestroy'])->name('faqs.destroy');
+
+        //sản phẩm
+
+        Route::get('/san-pham', [AdminSanPhamController::class, 'index'])->name('sanpham.index');
+        Route::get('/san-pham/create', [AdminSanPhamController::class, 'create'])->name('sanpham.create');
+        Route::post('/san-pham/store', [AdminSanPhamController::class, 'store'])->name('sanpham.store');
+        Route::get('/san-pham/edit/{id}', [AdminSanPhamController::class, 'edit'])->name('sanpham.edit');
+        Route::put('/san-pham/update/{id}', [AdminSanPhamController::class, 'update'])->name('sanpham.update');
+        Route::post('/san-pham/destroy/{id}', [AdminSanPhamController::class, 'destroy'])->name('sanpham.destroy');
+        Route::post('/san-pham/restore/{id}', [AdminSanPhamController::class, 'restore'])->name('sanpham.restore');
+
+        Route::get('/don-hang', [AdminDonHangController::class, 'index'])
+            ->name('donhang.index');
+
+        Route::post('/don-hang/{id}/cancel', [AdminDonHangController::class, 'cancel'])
+            ->name('donhang.cancel');
+
+        Route::post('/don-hang/{id}/status', [AdminDonHangController::class, 'updateStatus'])
+            ->name('donhang.updateStatus');
+
+        Route::get('/don-hang/{id}', [AdminDonHangController::class, 'show'])
+            ->name('donhang.show');
+
+        // BLOG - DANH MỤC BÀI VIẾT
+        Route::resource('blog-category', AdminBlogCategoryController::class, [
+            'names' => 'blog-category',
+            'parameters' => ['blog_category' => 'blogCategory'],
+        ]);
+
+        // BLOG - BÀI VIẾT
+        Route::resource('bai-viet', AdminBaiVietController::class, [
+            'names' => 'bai-viet',
+            'parameters' => ['bai_viet' => 'baiViet'],
+        ]);
+        Route::delete('bai-viet/{id}/force', [AdminBaiVietController::class, 'forceDelete'])
+            ->name('bai-viet.forceDelete');
+        Route::post('bai-viet/{id}/restore', [AdminBaiVietController::class, 'restore'])
+            ->name('bai-viet.restore');
     });
+
 Route::prefix('admin/khuyen-mai')->name('admin.khuyenmai.')->group(function () {
 
     Route::get('/', [KhuyenMaiController::class, 'index'])->name('index');
@@ -221,4 +325,14 @@ Route::prefix('admin/khuyen-mai')->name('admin.khuyenmai.')->group(function () {
     Route::post('/delete/{id}', [KhuyenMaiController::class, 'destroy'])->name('destroy');
 
     Route::post('/restore/{id}', [KhuyenMaiController::class, 'restore'])->name('restore');
+});
+Route::prefix('admin')->group(function () {
+
+    Route::get('/nha-cung-cap', [NhaCungCapController::class, 'index']);
+    Route::get('/nha-cung-cap/create', [NhaCungCapController::class, 'create']);
+    Route::post('/nha-cung-cap/store', [NhaCungCapController::class, 'store']);
+
+    Route::get('/nha-cung-cap/edit/{id}', [NhaCungCapController::class, 'edit']);
+    Route::post('/nha-cung-cap/update/{id}', [NhaCungCapController::class, 'update']);
+    Route::get('/nha-cung-cap/delete/{id}', [NhaCungCapController::class, 'delete']);
 });

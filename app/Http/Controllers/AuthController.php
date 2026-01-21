@@ -17,28 +17,19 @@ class AuthController extends Controller
             'Email'   => 'required|email',
             'MatKhau' => 'required',
         ]);
-
         $kh = DB::table('KhachHang')
             ->where('Email', $request->Email)
             ->where('IsDeleted', 0)
             ->first();
-
-        // ❌ email không tồn tại
         if (!$kh) {
             return back()->with('error', 'Email không tồn tại');
         }
-
-        // ❌ tài khoản bị khóa
         if ($kh->TrangThai == 0) {
             return back()->with('error', 'Tài khoản đã bị khóa');
         }
-
-        // ❌ mật khẩu sai
         if (!Hash::check($request->MatKhau, $kh->MatKhau)) {
             return back()->with('error', 'Mật khẩu không đúng');
         }
-
-        // ✅ đăng nhập thành công
         session([
             'khachhang' => [
                 'MaKH'  => $kh->MaKH,
@@ -46,19 +37,17 @@ class AuthController extends Controller
                 'Email' => $kh->Email,
             ]
         ]);
-
         return redirect('/');
     }
 
 
     public function registerKhachHang(Request $request)
     {
-        // 1. VALIDATE: Chặn ngay nếu Email trùng hoặc Mật khẩu không khớp
         $request->validate([
             'HoTen'           => 'required|string|max:255',
-            'Email'           => 'required|email|unique:KhachHang,Email', // <-- QUAN TRỌNG: Chặn trùng Email ở đây
+            'Email'           => 'required|email|unique:KhachHang,Email',
             'MatKhau'         => 'required|min:6',
-            'MatKhau_confirm' => 'required|same:MatKhau', // <-- Kiểm tra khớp mật khẩu
+            'MatKhau_confirm' => 'required|same:MatKhau',
             'SoDienThoai'     => 'nullable|numeric',
         ], [
             'Email.unique'         => 'Email này đã được sử dụng. Vui lòng chọn email khác.',
@@ -66,8 +55,6 @@ class AuthController extends Controller
             'MatKhau.min'          => 'Mật khẩu phải có ít nhất 6 ký tự.',
             'HoTen.required'       => 'Vui lòng nhập họ tên.',
         ]);
-
-        // 2. INSERT: Chỉ chạy khi validate phía trên không có lỗi
         DB::table('KhachHang')->insert([
             'HoTen'     => $request->HoTen,
             'Email'     => $request->Email,
@@ -79,31 +66,24 @@ class AuthController extends Controller
             'IsDeleted' => 0,
             'NgayTao'   => now(),
         ]);
-
         return redirect('/dang-nhap')->with('success', 'Đăng ký thành công! Vui lòng đăng nhập.');
     }
     public function doiMatKhau(Request $request)
     {
         $kh = session('khachhang');
-
         if (!$kh) {
             return redirect('/dang-nhap');
         }
-
         $khDb = DB::table('KhachHang')
             ->where('MaKH', $kh['MaKH'])
             ->first();
 
-        // check mật khẩu cũ
         if (!Hash::check($request->MatKhauCu, $khDb->MatKhau)) {
             return back();
         }
-
-        // check nhập lại
         if ($request->MatKhauMoi !== $request->MatKhauMoi_confirm) {
             return back();
         }
-
         DB::table('KhachHang')
             ->where('MaKH', $kh['MaKH'])
             ->update([

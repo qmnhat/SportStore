@@ -90,11 +90,13 @@ class GioHangController extends Controller
             ->leftJoin('KichThuoc as kt', 'kt.MaKT', '=', 'bt.MaKT')
             ->leftJoin('HinhAnhSanPham as ha', 'ha.MaSP', '=', 'sp.MaSP')
             ->where('ct.MaGH', $maGH)
-            ->groupBy('ct.MaBT','ct.SoLuong','bt.GiaGoc','sp.MaSP','sp.TenSP','kt.TenKT')
+            ->groupBy('ct.MaBT', 'ct.SoLuong', 'bt.GiaGoc', 'sp.MaSP', 'sp.TenSP', 'kt.TenKT')
             ->select(
-                'ct.MaBT','ct.SoLuong',
+                'ct.MaBT',
+                'ct.SoLuong',
                 'bt.GiaGoc',
-                'sp.MaSP','sp.TenSP',
+                'sp.MaSP',
+                'sp.TenSP',
                 'kt.TenKT',
                 DB::raw('MIN(ha.DuongDan) as anhDauTien')
             )
@@ -109,7 +111,7 @@ class GioHangController extends Controller
         $phiShip = $tamTinh > 0 ? 30000 : 0;
         $tong = $tamTinh + $phiShip;
 
-        return view('pages.gio-hang', compact('items','tamTinh','phiShip','tong'));
+        return view('pages.gio-hang', compact('items', 'tamTinh', 'phiShip', 'tong'));
     }
 
     // (25) Cập nhật số lượng
@@ -180,4 +182,18 @@ class GioHangController extends Controller
 
         return back()->with('success', 'Đã xóa hết giỏ hàng.');
     }
+
+    public function store(Request $request)
+    {
+        $kh = session('khachhang');
+        if (!$kh) {
+            return redirect('/dang-nhap');
+        }
+
+        // (sau này sẽ xử lý tạo đơn hàng ở đây)
+
+        return redirect('/')
+            ->with('success', 'Đặt hàng thành công. Cảm ơn bạn!');
+    }
+
 }

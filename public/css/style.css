@@ -1,19 +1,238 @@
-
 /*** Spinner Start ***/
 /*** Spinner ***/
 #spinner {
     opacity: 0;
     visibility: hidden;
-    transition: opacity .5s ease-out, visibility 0s linear .5s;
+    transition:
+        opacity 0.5s ease-out,
+        visibility 0s linear 0.5s;
     z-index: 99999;
+}
+/* Khung ảnh sản phẩm */
+.product-item-inner-item {
+    width: 100%;
+    height: 260px; /* chiều cao cố định */
+    overflow: hidden;
+    position: relative;
+    background: #f8f9fa; /* nền xám nhẹ */
+}
+/* =========================
+   1) CAROUSEL (slider)
+========================= */
+.carousel-img {
+    height: 420px; /* khung cố định */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+}
+.product .product-item {
+    position: relative;
+    z-index: 1;
+    overflow: visible; /* quan trọng: cho phép panel tràn ra ngoài */
+}
+
+.product .product-item:hover {
+    z-index: 9999; /* quan trọng: nổi lên trên các sản phẩm khác */
+}
+
+.product .product-item .product-item-add {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    opacity: 0;
+    transition: 0.25s ease;
+    z-index: 9999; /* quan trọng: panel nằm trên */
+}
+
+.product .product-item:hover .product-item-add {
+    background: var(--bs-white);
+    margin-bottom: -124px; /* giữ y như cũ nếu bạn đang dùng */
+    opacity: 1;
+}
+.carousel-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* slider nên contain để không cắt SP */
+    object-position: center;
+}
+
+/* Responsive nhỏ hơn */
+@media (max-width: 992px) {
+    .carousel-img {
+        height: 280px;
+    }
+}
+
+/* =========================
+   2) GRID SẢN PHẨM (Our Products)
+========================= */
+.product-item {
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 12px;
+    background: #fff;
+    height: 100%;
+}
+
+/* khung ảnh cố định */
+.product-item > img {
+    width: 100%;
+    height: 220px; /* cố định */
+    object-fit: cover; /* grid nên cover cho đều */
+    object-position: center;
+    border-radius: 10px;
+    background: #f8f9fa;
+}
+
+/* giữ nút ở dưới cho đều card */
+.product-item h6 {
+    min-height: 44px; /* tránh tên dài làm lệch */
+}
+
+/* =========================
+   3) BANNER (2 banner dưới)
+========================= */
+.bg-primary.rounded.position-relative > img,
+.text-center.bg-primary.rounded.position-relative > img {
+    width: 100%;
+    height: 320px; /* cố định */
+    object-fit: cover; /* banner đẹp hơn */
+    object-position: center;
+    border-radius: 12px;
+    background: #f8f9fa;
+}
+
+@media (max-width: 992px) {
+    .bg-primary.rounded.position-relative > img,
+    .text-center.bg-primary.rounded.position-relative > img {
+        height: 240px;
+    }
+}
+/* Card */
+.product-item {
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 12px;
+    background: #fff;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    height: 100%;
+}
+
+.product-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* Khung ảnh + cố định size */
+.home-product-img {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #f8f9fa;
+}
+
+.home-product-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* đồng đều */
+    object-position: center;
+    transition: transform 0.3s ease;
+}
+
+/* Zoom nhẹ khi hover */
+.product-item:hover .home-product-img img {
+    transform: scale(1.05);
+}
+
+/* Overlay */
+.home-product-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.product-item:hover .home-product-overlay {
+    opacity: 1;
+}
+
+/* Nút icon */
+.home-icon-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    color: #0d6efd;
+    text-decoration: none;
+    border: 1px solid rgba(13, 110, 253, 0.3);
+}
+
+.home-icon-btn:hover {
+    background: #0d6efd;
+    color: #fff;
+}
+
+/* Ảnh sản phẩm */
+.product-item-inner-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* cover cho đẹp, không méo */
+    object-position: center;
 }
 
 #spinner.show {
-    transition: opacity .5s ease-out, visibility 0s linear 0s;
+    transition:
+        opacity 0.5s ease-out,
+        visibility 0s linear 0s;
     visibility: visible;
     opacity: 1;
 }
 /*** Spinner End ***/
+.pagination {
+    display: flex !important;
+    justify-content: center;
+    gap: 8px;
+}
+
+.page-item .page-link {
+    border-radius: 50px;
+    padding: 8px 14px;
+    border: 1px solid #eee;
+    color: #333;
+}
+.btn-sm-square:hover {
+    background: #f28123;
+    color: white;
+    transform: scale(1.1);
+    transition: 0.2s;
+}
+
+.page-item.active .page-link {
+    background: #f28123;
+    border-color: #f28123;
+    color: #fff;
+}
+
+.page-item .page-link:hover {
+    background: #f28123;
+    color: #fff;
+}
 
 .back-to-top {
     position: fixed;
@@ -31,7 +250,7 @@
 /*** Button Start ***/
 .btn {
     font-weight: 600;
-    transition: .5s;
+    transition: 0.5s;
 }
 
 .btn-square {
@@ -69,7 +288,7 @@
 .btn.btn-primary {
     background: var(--bs-primary) !important;
     color: var(--bs-white) !important;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-weight: 400;
     transition: 0.5s;
 }
@@ -82,7 +301,7 @@
 .btn.btn-secondary {
     background: var(--bs-secondary) !important;
     color: var(--bs-white);
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-weight: 400;
     border: 1px solid var(--bs-secondary);
     transition: 0.5s;
@@ -109,14 +328,12 @@
     color: var(--bs-secondary) !important;
 }
 
-
 @media (max-width: 768px) {
     .topbar {
-        display: none;    
+        display: none;
     }
 }
 /*** Topbar End ***/
-
 
 /*** Navbar ***/
 .nav-bar .categories-bars .categories-bars-item {
@@ -149,9 +366,9 @@
 .nav-bar .navbar .navbar-nav .nav-link {
     padding: 18px 15px;
     font-weight: 500;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 17px;
-    transition: .5s;
+    transition: 0.5s;
 }
 
 .navbar .navbar-nav .nav-link:hover,
@@ -178,7 +395,7 @@
         transform-origin: 0% 0%;
         border: 0;
         border-radius: 10px;
-        transition: .5s;
+        transition: 0.5s;
         opacity: 0;
     }
 }
@@ -198,7 +415,7 @@
     transform: rotateX(0deg);
     visibility: visible;
     background: var(--bs-light) !important;
-    transition: .5s;
+    transition: 0.5s;
     opacity: 1;
 }
 
@@ -207,16 +424,16 @@
 }
 
 #allCat {
-    position: absolute; 
-    left: 0; 
-    right: 0; 
-    top: 51px; 
-    z-index: 999; 
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 51px;
+    z-index: 999;
     background: var(--bs-light);
 }
 
 .nav-bar .navbar-toggler {
-    border-radius: 5px !important; 
+    border-radius: 5px !important;
     box-shadow: none !important;
 }
 
@@ -259,7 +476,7 @@
 
 .carousel .carousel-banner-offer {
     position: absolute;
-    top: 20px; 
+    top: 20px;
     left: 20px;
     display: flex;
     align-items: center;
@@ -270,7 +487,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    top: 0; 
+    top: 0;
     left: 0;
     padding: 30px;
     display: flex;
@@ -282,18 +499,18 @@
 }
 /*** Carousel Header End ***/
 
-
 /*** Page Header start ***/
 .page-header {
     position: relative;
     padding: 100px 0;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/carousel-1.jpg);
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url(../img/carousel-1.jpg);
     background-position: center top;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
 /*** Page Header end ***/
-
 
 /*** Products Start ***/
 .product .product-item {
@@ -334,25 +551,41 @@
     overflow: hidden;
 }
 
-.product .product-item .product-item-inner .product-item-inner-item .product-new,
-.product .product-item .product-item-inner .product-item-inner-item .product-sale {
+.product
+    .product-item
+    .product-item-inner
+    .product-item-inner-item
+    .product-new,
+.product
+    .product-item
+    .product-item-inner
+    .product-item-inner-item
+    .product-sale {
     position: absolute;
-    width: 60px; 
+    width: 60px;
     height: 60px;
-    border-radius: 60px; 
-    top: 20px; 
+    border-radius: 60px;
+    top: 20px;
     right: 20px;
     display: flex;
     align-items: center;
-    justify-content: center; 
+    justify-content: center;
 }
 
-.product .product-item .product-item-inner .product-item-inner-item .product-new {
+.product
+    .product-item
+    .product-item-inner
+    .product-item-inner-item
+    .product-new {
     background: var(--bs-primary);
     color: var(--bs-white);
 }
 
-.product .product-item .product-item-inner .product-item-inner-item .product-sale {
+.product
+    .product-item
+    .product-item-inner
+    .product-item-inner-item
+    .product-sale {
     background: var(--bs-secondary);
     color: var(--bs-white);
 }
@@ -365,11 +598,15 @@
     transform: scale(1.1);
 }
 
-.product .product-item .product-item-inner .product-item-inner-item .product-details {
+.product
+    .product-item
+    .product-item-inner
+    .product-item-inner-item
+    .product-details {
     position: absolute;
-    width: 100%; 
-    height: 100%; 
-    top: 0; 
+    width: 100%;
+    height: 100%;
+    top: 0;
     left: 0;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
@@ -381,8 +618,14 @@
     transition: 0.5s;
 }
 
-.product .product-item .product-item-inner .product-item-inner-item .product-details a i {
-    width: 50px; 
+.product
+    .product-item
+    .product-item-inner
+    .product-item-inner-item
+    .product-details
+    a
+    i {
+    width: 50px;
     height: 50px;
     border-radius: 50px;
     display: flex;
@@ -393,7 +636,13 @@
     transition: 0.5s;
 }
 
-.product .product-item:hover .product-item-inner .product-item-inner-item .product-details a i:hover {
+.product
+    .product-item:hover
+    .product-item-inner
+    .product-item-inner-item
+    .product-details
+    a
+    i:hover {
     background: var(--bs-secondary);
     color: var(--bs-white);
 }
@@ -411,23 +660,31 @@
 }
 /*** Product End ***/
 
-
 /*** ProductList Categories Start ***/
 .productList .productList-carousel {
     height: 215px !important;
 }
 
-.productList .productList-carousel .productImg-carousel.productList-item .productImg-item {
+.productList
+    .productList-carousel
+    .productImg-carousel.productList-item
+    .productImg-item {
     position: relative;
     width: calc(100% - 1px);
     transition: 0.5s;
 }
 
-.productList .productList-carousel .productImg-carousel.productList-item .productImg-item {
+.productList
+    .productList-carousel
+    .productImg-carousel.productList-item
+    .productImg-item {
     margin-bottom: 75px;
 }
 
-.productList .productList-carousel .productImg-carousel.productList-item .productImg-item:hover {
+.productList
+    .productList-carousel
+    .productImg-carousel.productList-item
+    .productImg-item:hover {
     border-bottom: 0 !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
@@ -470,8 +727,16 @@
     opacity: 0;
 }
 
-.productList .productList-carousel .productImg-carousel .owl-nav .owl-prev:hover,
-.productList .productList-carousel .productImg-carousel .owl-nav .owl-next:hover {
+.productList
+    .productList-carousel
+    .productImg-carousel
+    .owl-nav
+    .owl-prev:hover,
+.productList
+    .productList-carousel
+    .productImg-carousel
+    .owl-nav
+    .owl-next:hover {
     background: var(--bs-secondary) !important;
     color: var(--bs-white) !important;
 }
@@ -484,13 +749,19 @@
     right: 0;
 }
 
-.productList .productList-carousel .productImg-carousel.productList-item:hover .owl-nav .owl-prev,
-.productList .productList-carousel .productImg-carousel.productList-item:hover .owl-nav .owl-next {
+.productList
+    .productList-carousel
+    .productImg-carousel.productList-item:hover
+    .owl-nav
+    .owl-prev,
+.productList
+    .productList-carousel
+    .productImg-carousel.productList-item:hover
+    .owl-nav
+    .owl-next {
     opacity: 1;
 }
 /*** ProductList Categories End ***/
-
-
 
 /*** bestseller Products Start ***/
 .products .products-mini .products-mini-item {
@@ -505,8 +776,8 @@
 }
 
 .products .products-mini .products-mini-item .products-mini-img {
- position: relative;
- overflow: hidden;
+    position: relative;
+    overflow: hidden;
 }
 
 .products .products-mini .products-mini-item .products-mini-img img {
@@ -520,13 +791,17 @@
     transform: scale(1.3);
 }
 
-.products .products-mini .products-mini-item .products-mini-img .products-mini-icon {
+.products
+    .products-mini
+    .products-mini-item
+    .products-mini-img
+    .products-mini-icon {
     position: absolute;
-    width: 50px; 
-    height: 50px; 
-    top: 50%; 
+    width: 50px;
+    height: 50px;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); 
+    transform: translate(-50%, -50%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -534,11 +809,19 @@
     transition: 0.5s;
 }
 
-.products .products-mini .products-mini-item:hover .products-mini-img .products-mini-icon {
+.products
+    .products-mini
+    .products-mini-item:hover
+    .products-mini-img
+    .products-mini-icon {
     opacity: 1;
 }
 
-.products .products-mini .products-mini-item:hover .products-mini-img .products-mini-icon:hover {
+.products
+    .products-mini
+    .products-mini-item:hover
+    .products-mini-img
+    .products-mini-icon:hover {
     background: var(--bs-secondary) !important;
 }
 
@@ -568,7 +851,7 @@
 .pagination {
     display: inline-block;
 }
-  
+
 .pagination a {
     color: var(--bs-dark);
     padding: 10px 16px;
@@ -577,14 +860,16 @@
     border: 1px solid var(--bs-secondary);
     margin: 0 4px;
 }
-  
+
 .pagination a.active {
     background-color: var(--bs-primary);
     color: var(--bs-light);
     border: 1px solid var(--bs-secondary);
 }
-  
-.pagination a:hover:not(.active) {background-color: var(--bs-primary)}
+
+.pagination a:hover:not(.active) {
+    background-color: var(--bs-primary);
+}
 
 .nav.nav-tabs .nav-link.active {
     border-bottom: 2px solid var(--bs-secondary) !important;
@@ -647,7 +932,6 @@
 
 /*** Shop Page End ***/
 
-
 /*** Single Products Start ***/
 .single-product .owl-nav .owl-prev,
 .single-product .owl-nav .owl-next {
@@ -666,7 +950,6 @@
 .single-product .owl-nav .owl-next {
     right: 0 !important;
 }
-
 
 .single-product .single-carousel .owl-dots {
     width: 100%;
@@ -693,19 +976,6 @@
     border-radius: 40px;
     border: 4px solid var(--bs-secondary);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .related-product .related-carousel .related-item {
     width: 100%;
@@ -737,33 +1007,57 @@
     border-bottom-left-radius: 0 !important;
 }
 
-.related-product .related-carousel .related-item .related-item-inner .related-item-inner-item {
+.related-product
+    .related-carousel
+    .related-item
+    .related-item-inner
+    .related-item-inner-item {
     position: relative;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
     overflow: hidden;
 }
 
-.related-product .related-carousel .related-item .related-item-inner .related-item-inner-item .related-new,
-.related-product .related-carousel .related-item .related-item-inner .related-item-inner-item .related-sale {
+.related-product
+    .related-carousel
+    .related-item
+    .related-item-inner
+    .related-item-inner-item
+    .related-new,
+.related-product
+    .related-carousel
+    .related-item
+    .related-item-inner
+    .related-item-inner-item
+    .related-sale {
     position: absolute;
-    width: 60px; 
+    width: 60px;
     height: 60px;
-    border-radius: 60px; 
-    top: 20px; 
+    border-radius: 60px;
+    top: 20px;
     right: 20px;
     display: flex;
     align-items: center;
-    justify-content: center; 
+    justify-content: center;
     z-index: 5;
 }
 
-.related-product .related-carousel .related-item .related-item-inner .related-item-inner-item .related-new {
+.related-product
+    .related-carousel
+    .related-item
+    .related-item-inner
+    .related-item-inner-item
+    .related-new {
     background: var(--bs-primary);
     color: var(--bs-white);
 }
 
-.related-product .related-carousel .related-item .related-item-inner .related-item-inner-item .related-sale {
+.related-product
+    .related-carousel
+    .related-item
+    .related-item-inner
+    .related-item-inner-item
+    .related-sale {
     background: var(--bs-secondary);
     color: var(--bs-white);
 }
@@ -776,11 +1070,16 @@
     transform: scale(1.1);
 }
 
-.related-product .related-carousel .related-item .related-item-inner .related-item-inner-item .related-details {
+.related-product
+    .related-carousel
+    .related-item
+    .related-item-inner
+    .related-item-inner-item
+    .related-details {
     position: absolute;
-    width: 100%; 
-    height: 100%; 
-    top: 0; 
+    width: 100%;
+    height: 100%;
+    top: 0;
     left: 0;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
@@ -792,8 +1091,15 @@
     transition: 0.5s;
 }
 
-.related-product .related-carousel .related-item .related-item-inner .related-item-inner-item .related-details a i {
-    width: 50px; 
+.related-product
+    .related-carousel
+    .related-item
+    .related-item-inner
+    .related-item-inner-item
+    .related-details
+    a
+    i {
+    width: 50px;
     height: 50px;
     border-radius: 50px;
     display: flex;
@@ -804,15 +1110,25 @@
     transition: 0.5s;
 }
 
-.related-product .related-carousel .related-item:hover .related-item-inner .related-item-inner-item .related-details a i:hover {
+.related-product
+    .related-carousel
+    .related-item:hover
+    .related-item-inner
+    .related-item-inner-item
+    .related-details
+    a
+    i:hover {
     background: var(--bs-secondary);
     color: var(--bs-white);
 }
 
-.related-product .related-carousel .related-item:hover .related-item-inner .related-details {
+.related-product
+    .related-carousel
+    .related-item:hover
+    .related-item-inner
+    .related-details {
     opacity: 1;
 }
-
 
 .related-product .owl-nav .owl-prev,
 .related-product .owl-nav .owl-next {
@@ -859,7 +1175,6 @@
 }
 
 /*** Footer End ***/
-
 
 /*** copyright Start ***/
 .copyright {

@@ -12,7 +12,7 @@ class PageController extends Controller
     // Trang giới thiệu
     public function gioiThieu()
     {
-        $company = CompanyInfo::find(1);
+        $company = CompanyInfo::first();
         return view('pages.gioi-thieu', compact('company'));
     }
 
@@ -25,6 +25,30 @@ class PageController extends Controller
     // Trang chủ mới (slider + tab + banner)
     public function trangChu()
     {
+        // Slider sản phẩm
+        $sliderSanPham = SanPham::where('NoiBat', 1)->take(6)->get();
+        $sanPhamKhuyenMai = SanPham::whereHas('khuyenMai')->take(6)->get();
+        $spNoiBat = SanPham::with('hinhAnh')
+            ->leftJoin('ThongKeSanPham as tk', 'SanPham.MaSP', '=', 'tk.MaSP')
+            ->where('SanPham.IsDeleted', 0)
+            ->where('SanPham.TrangThai', 1)
+            ->select('SanPham.*')
+            ->orderByDesc(DB::raw('COALESCE(tk.LuotXem,0)'))
+            ->take(6)
+            ->get();
+        $spKhuyenMai = SanPham::with('hinhAnh')
+            ->join('SanPhamKhuyenMai', 'SanPham.MaSP', '=', 'SanPhamKhuyenMai.MaSP')
+            ->join('KhuyenMai', 'SanPhamKhuyenMai.MaKM', '=', 'KhuyenMai.MaKM')
+            ->where('SanPham.IsDeleted', 0)
+            ->where('SanPham.TrangThai', 1)
+            ->select('SanPham.*')
+            ->orderByDesc('KhuyenMai.PhanTramGiam')
+            ->take(6)
+            ->get();
+        $bannerQuangCao = [
+            ['img' => 'img/nghia.jpg', 'link' => route('shop.index')],
+            ['img' => 'img/ahihi.jpg', 'link' => route('shop.index')],
+            ];
         // Slider sản phẩm khuyến mãi cao nhất
         $sliderSanPham = SanPham::with(['hinhAnh', 'bienThe', 'khuyenMai'])
             ->join('sanphamkhuyenmai', 'sanpham.MaSP', '=', 'sanphamkhuyenmai.MaSP')
@@ -49,9 +73,25 @@ class PageController extends Controller
             ->get();
 
         // Tab Top selling (tạm)
-        $topSelling = SanPham::with(['hinhAnh', 'bienThe', 'khuyenMai'])
-            ->take(8)
-            ->get();
+        // 1) Lay MaSP + DaBan (GROUP BY chi tren MaSP)
+        $topIds = DB::table('SanPham as sp')
+            ->join('BienTheSanPham as bt', 'bt.MaSP', '=', 'sp.MaSP')
+            ->join('ChiTietDonHang as ct', 'ct.MaBT', '=', 'bt.MaBT')
+            ->where('sp.IsDeleted', 0)
+            ->groupBy('sp.MaSP')
+            ->orderByDesc(DB::raw('SUM(ct.SoLuong)'))
+            ->limit(8)
+            ->pluck('sp.MaSP')
+            ->toArray();
+
+        // 2) Lay day du SanPham theo danh sach MaSP (khong GROUP BY nua)
+        $topSelling = SanPham::with(['hinhAnh', 'khuyenMai'])
+            ->whereIn('MaSP', $topIds)
+            ->get()
+            ->sortBy(function ($sp) use ($topIds) {
+                return array_search($sp->MaSP, $topIds);
+            })
+            ->values();
 
         // Banner trái (mới nhất)
         $bannerNoiBat = SanPham::with(['hinhAnh', 'bienThe'])
@@ -69,11 +109,16 @@ class PageController extends Controller
         return view('pages.trang-chu', compact(
             'sliderSanPham',
             'allProducts',
+            'spNoiBat',
+            'spKhuyenMai',
             'newArrivals',
             'featured',
             'topSelling',
             'bannerNoiBat',
-            'bannerKhuyenMai'
+            'bannerKhuyenMai',
+            'sliderSanPham',
+            'sanPhamKhuyenMai',
+            'bannerQuangCao'
         ));
     }
 

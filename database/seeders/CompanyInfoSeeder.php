@@ -18,7 +18,7 @@ class CompanyInfoSeeder extends Seeder
             [
                 'name' => 'CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ SPORTSTORE VIỆT NAM',
                 'description' => 'Đồng hành cùng đam mê thể thao của bạn từ năm 2025',
-                'address' => 'Số 123, Đường Nguyễn Văn Cừ, Phường 5, Quận 5, TP. Hồ Chí Minh',
+                'address' => '109 Khánh Hội, Phường 3, Quận 4, Thành phố Hồ Chí Minh 700000, Việt Nam',
                 'hotline' => '1900 888 999',
                 'email' => 'support@sportstore.vn',
                 'tax_code' => '0316xxxxxx',

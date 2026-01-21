@@ -29,18 +29,25 @@
             <li class="sidebar-title">Quản lý</li>
 
             <li class="sidebar-item">
-                <a href="{{ url('/admin/CSanPham') }}" class="sidebar-link">
+                <a href="{{ url('/admin/san-pham') }}" class="sidebar-link">
                     <i class="bi bi-box-seam"></i>
                     <span>Sản phẩm</span>
                 </a>
             </li>
-
             <li class="sidebar-item">
-                <a href="{{ url('/admin/CDanhMuc') }}" class="sidebar-link">
-                    <i class="bi bi-list-ul"></i>
+                <a href="{{ url('/admin/danh-muc') }}" class="sidebar-link">
+                    <i class="bi bi-folder2-open"></i>
                     <span>Danh mục</span>
                 </a>
             </li>
+            <li class="sidebar-item">
+                <a href="{{ url('/admin/kich-thuoc') }}" class="sidebar-link">
+                    <i class="bi bi-arrows-expand"></i>
+                    <span>Kích thước</span>
+                </a>
+            </li>
+
+
 
             <li class="sidebar-item">
                 <a href="{{ url('/admin/thuong-hieu') }}" class="sidebar-link">
@@ -50,7 +57,7 @@
             </li>
 
             <li class="sidebar-item">
-                <a href="{{ url('/admin/CDonHang') }}" class="sidebar-link">
+                <a href="{{ url('/admin/don-hang') }}" class="sidebar-link">
                     <i class="bi bi-receipt"></i>
                     <span>Đơn hàng</span>
                 </a>
@@ -75,12 +82,26 @@
                 </a>
             </li>
 
-            {{-- <li class="sidebar-item">
-                <a href="{{ route('admin.company-info.edit') }}" class="sidebar-link">
-                    <i class="bi bi-gear"></i>
-                    <span>Thông tin công ty</span>
+            <li class="sidebar-item">
+                <a href="{{ url('/admin/nha-cung-cap') }}" class="sidebar-link">
+                    <i class="bi bi-truck"></i>
+                    <span>Nhà cung cấp</span>
                 </a>
-            </li> --}}
+            </li>
+            <li class="sidebar-item">
+                <a href="{{ route('admin.bai-viet.index') }}" class="sidebar-link">
+                    <i class="bi bi-journal-text"></i>
+                    <span>Bài viết</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="{{ route('admin.blog-category.index') }}" class="sidebar-link">
+                    <i class="bi bi-folder2-open"></i>
+                    <span>Danh mục Blog</span>
+                </a>
+            </li>
+
+
             <li class="sidebar-item">
                 <a href="{{ url('admin/company-info') }}" class="sidebar-link">
                     <i class="bi bi-gear"></i>

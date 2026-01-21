@@ -3,11 +3,14 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
+use Illuminate\Pagination\Paginator;
+use App\Models\CompanyInfo;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Đăng ký các dịch vụ ứng dụng.
      */
     public function register(): void
     {
@@ -15,10 +18,19 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * Khởi động các dịch vụ ứng dụng.
      */
     public function boot(): void
     {
-        //
+        // Sử dụng Bootstrap 5 cho pagination
+        Paginator::useBootstrapFive();
+
+        // Chia sẻ dữ liệu công ty cho tất cả các view
+        View::composer('*', function ($view) {
+            if (!$view->offsetExists('company')) {
+                $company = CompanyInfo::find(1);
+                $view->with('company', $company);
+            }
+        });
     }
 }
