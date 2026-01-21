@@ -239,13 +239,10 @@ Route::post('/san-pham/restore/{id}', [AdminSanPhamController::class, 'restore']
 
         Route::get('/don-hang', [AdminDonHangController::class, 'index'])
             ->name('donhang.index');
-
         Route::post('/don-hang/{id}/cancel', [AdminDonHangController::class, 'cancel'])
             ->name('donhang.cancel');
-
         Route::post('/don-hang/{id}/status', [AdminDonHangController::class, 'updateStatus'])
             ->name('donhang.updateStatus');
-
         Route::get('/don-hang/{id}', [AdminDonHangController::class, 'show'])
             ->name('donhang.show');
     });
