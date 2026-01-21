@@ -17,7 +17,6 @@ class DonHangController extends Controller
         if (!$kh) {
             return redirect('/dang-nhap');
         }
-
         $maKH = $kh['MaKH'];
 
         $query = DonHang::where('MaKH', $maKH)

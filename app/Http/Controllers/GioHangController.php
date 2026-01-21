@@ -17,7 +17,6 @@ class GioHangController extends Controller
             'MaBT' => 'required|integer',
             'SoLuong' => 'required|integer|min:1',
         ]);
-
         $maBT = (int) $request->MaBT;
         $soLuong = (int) $request->SoLuong;
         $maKH = (int) $kh['MaKH'];
