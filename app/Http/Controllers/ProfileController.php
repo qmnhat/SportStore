@@ -34,8 +34,6 @@ class ProfileController extends Controller
                 'DiaChi'    => $request->DiaChi,
                 'GioiTinh'  => $request->GioiTinh, // ✅ CHỈ LẤY GIÁ TRỊ
             ]);
-
-
         // cập nhật lại session cho đồng bộ tên
         session()->put('khachhang.HoTen', $request->HoTen);
 
