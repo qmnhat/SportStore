@@ -111,11 +111,9 @@ Route::middleware('khachhang.auth')->group(function () {
     // ===== THANH TOÁN =====
     Route::get('/thanh-toan', [DonHangController::class, 'checkout'])
         ->name('checkout');
-
     Route::post('/thanh-toan', [DonHangController::class, 'processCheckout'])
         ->name('checkout.process');
-
-
+        
     Route::post('/yeu-thich/toggle', [YeuThichController::class, 'toggle'])
         ->name('yeuthich.toggle');
 });
