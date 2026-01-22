@@ -2,20 +2,13 @@
     <div class="row gx-0 bg-primary px-5 align-items-center">
         <div class="col-lg-3 d-none d-lg-block">
             <nav class="navbar navbar-light position-relative" style="width: 250px;">
-                <button class="navbar-toggler border-0 fs-4 w-100 px-0 text-start" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#allCat">
+                <button class="navbar-toggler border-0 fs-4 w-100 px-0 text-start" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#allCat">
                     <h4 class="m-0"><i class="fa fa-bars me-2"></i>All Categories</h4>
                 </button>
                 <div class="collapse navbar-collapse rounded-bottom" id="allCat">
                     <div class="navbar-nav ms-auto py-0">
-                        <ul class="list-unstyled categories-bars">
-                            <li>
-                                <div class="categories-bars-item">
-                                    <a href="#">Accessories</a>
-                                    <span>(3)</span>
-                                </div>
-                            </li>
-                        </ul>
+
                     </div>
                 </div>
             </nav>
@@ -40,7 +33,8 @@
                             Trang chủ
                         </a>
 
-                        <a href="/gioi-thieu" class="nav-item nav-link {{ request()->is('gioi-thieu') ? 'active' : '' }}">
+                        <a href="/gioi-thieu"
+                            class="nav-item nav-link {{ request()->is('gioi-thieu') ? 'active' : '' }}">
                             Giới thiệu
                         </a>
 
@@ -52,6 +46,10 @@
                             Liên hệ
                         </a>
 
+                        <a href="{{ route('blog.index') }}"
+                            class="nav-item nav-link {{ request()->routeIs('blog.*') ? 'active' : '' }}">
+                            Bài viết
+                        </a>
                         @if (session()->has('khachhang'))
                             <div class="nav-item dropdown ms-2">
                                 <a href="#"
@@ -78,10 +76,6 @@
                                         Đơn hàng
                                     </a>
 
-                                    <a href="/lich-su-mua-hang"
-                                        class="dropdown-item {{ request()->is('lich-su-mua-hang') ? 'active' : '' }}">
-                                        Lịch sử mua hàng
-                                    </a>
 
                                     <a href="/gio-hang"
                                         class="dropdown-item {{ request()->is('gio-hang') ? 'active' : '' }}">
@@ -101,7 +95,8 @@
                                 </div>
                             </div>
                         @else
-                            <a href="/dang-nhap" class="nav-link ms-2 {{ request()->is('dang-nhap') ? 'active' : '' }}">
+                            <a href="/dang-nhap"
+                                class="nav-link ms-2 {{ request()->is('dang-nhap') ? 'active' : '' }}">
                                 <i class="fa fa-sign-in-alt me-1"></i> Đăng nhập
                             </a>
                         @endif

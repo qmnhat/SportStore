@@ -33,7 +33,7 @@ class ProfileController extends Controller
                 'NgaySinh'  => $request->NgaySinh,
                 'SDT'       => $request->SDT,
                 'DiaChi'    => $request->DiaChi,
-                'GioiTinh'  => $request->GioiTinh, // ✅ CHỈ LẤY GIÁ TRỊ
+                'GioiTinh'  => $request->GioiTinh,
             ]);
 
 

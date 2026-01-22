@@ -26,7 +26,6 @@ class KhachHangController extends Controller
             'DiaChi'  => 'nullable|string|max:255',
             'NgaySinh' => 'nullable|date',
         ]);
-
         KhachHang::create([
             'HoTen'     => $request->HoTen,
             'Email'     => $request->Email,
@@ -39,10 +38,7 @@ class KhachHangController extends Controller
             'IsDeleted' => 0,
             'NgayTao'   => Carbon::now(),
         ]);
-
-        return redirect()
-            ->route('admin.khachhang.index')
-            ->with('success', 'Thêm khách hàng thành công');
+        return redirect()->route('admin.khachhang.index')->with('success', 'Thêm khách hàng thành công');
     }
     /**
      * Hiển thị danh sách khách hàng
@@ -139,11 +135,9 @@ class KhachHangController extends Controller
             'DiaChi'     => $request->DiaChi,
             'SDT'        => $request->SDT,
             'NgaySinh'   => $request->NgaySinh,
-            'GioiTinh'   => $request->GioiTinh, // ✅ BỔ SUNG
+            'GioiTinh'   => $request->GioiTinh,
             'TrangThai'  => $request->TrangThai,
         ]);
-
-
         return redirect()->route('admin.khachhang.index')->with('success', 'Cập nhật khách hàng thành công!');
     }
 }

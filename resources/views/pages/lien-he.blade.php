@@ -34,75 +34,88 @@
                              functional and working contact form with Ajax & PHP in a few minutes. Just copy and paste
                              the files, add a little code and you're done. <a
                                  href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
-                                 {{-- cập nhập lại form --}}
+                         {{-- cập nhập lại form --}}
                          <form action="{{ route('contact.store') }}" method="POST">
-                            @csrf
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
+                             @csrf
+                             @if ($errors->any())
+                                 <div class="alert alert-danger">
+                                     <ul>
+                                         @foreach ($errors->all() as $error)
+                                             <li>{{ $error }}</li>
+                                         @endforeach
+                                     </ul>
+                                 </div>
+                             @endif
 
-                            @if (session('success'))
-                                <div class="alert alert-success">{{ session('success') }}</div>
-                            @endif
+                             @if (session('success'))
+                                 <div class="alert alert-success">{{ session('success') }}</div>
+                             @endif
 
-                            <div class="row g-4 wow fadeInUp" data-wow-delay="0.1s">
-                                <div class="col-lg-12 col-xl-6">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                            id="name" name="name" placeholder="Your Name" value="{{ old('name') }}" required>
-                                        <label for="name">Your Name</label>
-                                        @error('name')<span class="text-danger small">{{ $message }}</span>@enderror
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-xl-6">
-                                    <div class="form-floating">
-                                        <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                            id="email" name="email" placeholder="Your Email" value="{{ old('email') }}" required>
-                                        <label for="email">Your Email</label>
-                                        @error('email')<span class="text-danger small">{{ $message }}</span>@enderror
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-xl-6">
-                                    <div class="form-floating">
-                                        <input type="tel" class="form-control @error('phone') is-invalid @enderror"
-                                            id="phone" name="phone" placeholder="Phone" value="{{ old('phone') }}" required>
-                                        <label for="phone">Your Phone</label>
-                                        @error('phone')<span class="text-danger small">{{ $message }}</span>@enderror
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-xl-6">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control @error('subject') is-invalid @enderror"
-                                            id="subject" name="subject" placeholder="Subject" value="{{ old('subject') }}" required>
-                                        <label for="subject">Subject(VD: Tên sản phẩm)</label>
-                                        @error('subject')<span class="text-danger small">{{ $message }}</span>@enderror
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <textarea class="form-control @error('message') is-invalid @enderror"
-                                                placeholder="Leave a message here" id="message" name="message"
-                                                style="height: 160px" required>{{ old('message') }}</textarea>
-                                        <label for="message">Message</label>
-                                        @error('message')<span class="text-danger small">{{ $message }}</span>@enderror
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary w-100 py-3">Send Message</button>
-                                </div>
-                            </div>
-                        </form>
+                             <div class="row g-4 wow fadeInUp" data-wow-delay="0.1s">
+                                 <div class="col-lg-12 col-xl-6">
+                                     <div class="form-floating">
+                                         <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                             id="name" name="name" placeholder="Your Name"
+                                             value="{{ old('name') }}" required>
+                                         <label for="name">Your Name</label>
+                                         @error('name')
+                                             <span class="text-danger small">{{ $message }}</span>
+                                         @enderror
+                                     </div>
+                                 </div>
+                                 <div class="col-lg-12 col-xl-6">
+                                     <div class="form-floating">
+                                         <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                             id="email" name="email" placeholder="Your Email"
+                                             value="{{ old('email') }}" required>
+                                         <label for="email">Your Email</label>
+                                         @error('email')
+                                             <span class="text-danger small">{{ $message }}</span>
+                                         @enderror
+                                     </div>
+                                 </div>
+                                 <div class="col-lg-12 col-xl-6">
+                                     <div class="form-floating">
+                                         <input type="tel" class="form-control @error('phone') is-invalid @enderror"
+                                             id="phone" name="phone" placeholder="Phone" value="{{ old('phone') }}"
+                                             required>
+                                         <label for="phone">Your Phone</label>
+                                         @error('phone')
+                                             <span class="text-danger small">{{ $message }}</span>
+                                         @enderror
+                                     </div>
+                                 </div>
+                                 <div class="col-lg-12 col-xl-6">
+                                     <div class="form-floating">
+                                         <input type="text" class="form-control @error('subject') is-invalid @enderror"
+                                             id="subject" name="subject" placeholder="Subject"
+                                             value="{{ old('subject') }}" required>
+                                         <label for="subject">Subject(VD: Tên sản phẩm)</label>
+                                         @error('subject')
+                                             <span class="text-danger small">{{ $message }}</span>
+                                         @enderror
+                                     </div>
+                                 </div>
+                                 <div class="col-12">
+                                     <div class="form-floating">
+                                         <textarea class="form-control @error('message') is-invalid @enderror" placeholder="Leave a message here" id="message"
+                                             name="message" style="height: 160px" required>{{ old('message') }}</textarea>
+                                         <label for="message">Message</label>
+                                         @error('message')
+                                             <span class="text-danger small">{{ $message }}</span>
+                                         @enderror
+                                     </div>
+                                 </div>
+                                 <div class="col-12">
+                                     <button type="submit" class="btn btn-primary w-100 py-3">Send Message</button>
+                                 </div>
+                             </div>
+                         </form>
                      </div>
                      <div class="col-lg-5 wow fadeInUp" data-wow-delay="0.2s">
                          <div class="h-100 rounded">
                              <iframe class="rounded w-100" style="height: 100%;"
-                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387191.33750346623!2d-73.97968099999999!3d40.6974881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sbd!4v1694259649153!5m2!1sen!2sbd"
+                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15678.079640101872!2d106.6784717828639!3d10.77143490907843!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f40a3b49e59%3A0xa1bd14e483a602db!2zVHLGsOG7nW5nIENhbyDEkeG6s25nIEvhu7kgdGh14bqtdCBDYW8gVGjhuq9uZw!5e0!3m2!1svi!2s!4v1768904676876!5m2!1svi!2s"
                                  loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                          </div>
                      </div>
@@ -116,7 +129,8 @@
                                      </div>
                                      <div>
                                          <h4>Address</h4>
-                                         <p class="mb-2">123 Street New York.USA</p>
+                                         <p class="mb-2">65 Huỳnh Thúc Kháng, Phường Sài Gòn, Quận 1, Thành phố Hồ Chí
+                                             Minh 50000, Việt Nam</p>
                                      </div>
                                  </div>
                              </div>
@@ -128,10 +142,11 @@
                                      </div>
                                      <div>
                                          <h4>Mail Us</h4>
-                                         <p class="mb-2">info@example.com</p>
+                                         <p class="mb-2">info@sportstore.com</p>
                                      </div>
                                  </div>
                              </div>
+
                              <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.5s">
                                  <div class="rounded p-4">
                                      <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mb-4"
@@ -140,7 +155,7 @@
                                      </div>
                                      <div>
                                          <h4>Telephone</h4>
-                                         <p class="mb-2">(+012) 3456 7890</p>
+                                         <p class="mb-2">(+84) 123 456 7890</p>
                                      </div>
                                  </div>
                              </div>

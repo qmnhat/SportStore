@@ -153,10 +153,9 @@
                         <span class="fs-5 fw-bold text-primary">{{ number_format((float)$tong, 0, ',', '.') }} đ</span>
                     </div>
 
-                    <button class="btn btn-primary w-100 py-2" type="button"
-                        onclick="alert('Chưa làm thanh toán. Mục này làm sau.')">
+                    <a href="{{ route('checkout') }}" class="btn btn-primary w-100 py-2">
                         <i class="fa fa-credit-card me-2"></i>Tiến hành thanh toán
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

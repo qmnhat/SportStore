@@ -51,12 +51,9 @@ class SanPhamController extends Controller
         $sanPhams = DB::table('SanPham as sp')
             ->leftJoin('DanhMuc as dm', 'dm.MaDM', '=', 'sp.MaDM')
             ->leftJoin('ThuongHieu as th', 'th.MaTH', '=', 'sp.MaTH')
-
-            // ===== (SUA SO SAO) JOIN RATING =====
             ->leftJoinSub($ratingSub, 'rt', function ($join) {
                 $join->on('rt.MaSP', '=', 'sp.MaSP');
             })
-
             ->leftJoin('BienTheSanPham as bt', function ($join) {
                 $join->on('bt.MaSP', '=', 'sp.MaSP')
                     ->where('bt.IsDeleted', 0)
@@ -64,29 +61,23 @@ class SanPhamController extends Controller
             })
             ->leftJoin('HinhAnhSanPham as ha', 'ha.MaSP', '=', 'sp.MaSP')
             ->where('sp.IsDeleted', 0)
-            // filter danh muc
             ->when($maDM, function ($q) use ($maDM) {
                 $q->where('sp.MaDM', $maDM);
             })
 
-            // filter thuong hieu
             ->when($maTH, function ($q) use ($maTH) {
                 $q->where('sp.MaTH', $maTH);
             })
-
-            // search ten va mo ta san pham
             ->when($tuKhoa !== '', function ($q) use ($tuKhoa) {
                 $q->where('sp.TenSP', 'like', '%' . $tuKhoa . '%')
                     ->orWhere('sp.MoTa', 'like', '%' . $tuKhoa . '%');
             })
-
             ->groupBy(
                 'sp.MaSP',
                 'sp.TenSP',
                 'sp.MoTa',
                 'dm.TenDM',
                 'th.TenTH',
-                // ===== (SUA SO SAO) GROUP BY RATING =====
                 'rt.saoTrungBinh',
                 'rt.soLuotDanhGia'
             )
@@ -98,13 +89,9 @@ class SanPhamController extends Controller
                 'th.TenTH as tenThuongHieu',
                 DB::raw('MIN(bt.GiaGoc) as giaMin'),
                 DB::raw('MIN(ha.DuongDan) as anhDauTien'),
-
-                // ===== (SUA SO SAO) SELECT RATING =====
                 DB::raw('COALESCE(rt.saoTrungBinh, 0) as saoTrungBinh'),
                 DB::raw('COALESCE(rt.soLuotDanhGia, 0) as soLuotDanhGia')
             )
-
-            // filter gia: dua theo MIN(bt.GiaGoc)
             ->when($gia, function ($q) use ($gia) {
                 if ($gia == '1') {
                     $q->havingRaw('MIN(bt.GiaGoc) < 1000000');
@@ -114,11 +101,9 @@ class SanPhamController extends Controller
                     $q->havingRaw('MIN(bt.GiaGoc) >= 2000000');
                 }
             })
-
             ->orderBy('sp.MaSP', 'desc')
             ->paginate(9)
             ->withQueryString();
-
         return view('products.san-pham', compact(
             'sanPhams',
             'danhMucs',
@@ -271,7 +256,6 @@ class SanPhamController extends Controller
                     ->where('bt.IsDeleted', 0)
                     ->where('bt.TrangThai', 1);
             })
-            ->leftJoin('HinhAnhSanPham as ha', 'ha.MaSP', '=', 'sp.MaSP')
             ->where('sp.IsDeleted', 0)
             ->where('sp.MaDM', $sanPham->MaDM)
             ->where('sp.MaSP', '<>', $maSP)
@@ -279,14 +263,19 @@ class SanPhamController extends Controller
             ->select(
                 'sp.MaSP',
                 'sp.TenSP',
-                DB::raw('MIN(bt.GiaGoc) as giaMin'),
-                DB::raw('MIN(ha.DuongDan) as anhDauTien')
+                DB::raw('COALESCE(MIN(bt.GiaGoc),0) as giaMin'),
+
+                DB::raw('(
+            SELECT ha2.DuongDan
+            FROM HinhAnhSanPham ha2
+            WHERE ha2.MaSP = sp.MaSP
+            ORDER BY ha2.MaHinh ASC
+            LIMIT 1
+        ) as anhDauTien')
             )
             ->orderByDesc('sp.MaSP')
-            ->limit(8)
+            ->limit(5)
             ->get();
-        //end phat
-
         return view('products.chi-tiet', compact(
             'sanPham',
             'hinhAnhs',
@@ -298,7 +287,6 @@ class SanPhamController extends Controller
         ));
     }
 
-    //begin phat
     public function guiDanhGia(Request $request, $maSP)
     {
         $kh = session('khachhang');
@@ -312,7 +300,6 @@ class SanPhamController extends Controller
         $maSP = (int) $maSP;
         $maKH = (int) $kh['MaKH'];
 
-        // upsert theo UNIQUE (MaKH, MaSP)
         $daCo = DB::table('DanhGia')->where('MaSP', $maSP)->where('MaKH', $maKH)->first();
 
         if ($daCo) {
@@ -336,5 +323,4 @@ class SanPhamController extends Controller
 
         return back()->with('success', 'Da gui danh gia');
     }
-    //end phat
 }
