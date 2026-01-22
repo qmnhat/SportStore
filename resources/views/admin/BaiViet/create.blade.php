@@ -62,7 +62,14 @@
                         <option value="0" {{ old('TrangThai') == 0 ? 'selected' : '' }}>Bản nháp</option>
                     </select>
                 </div>
-
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Lưu bài viết
+                    </button>
+                    <a href="{{ route('admin.baiviet.index') }}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Quay lại
+                    </a>
+                </div>
             </form>
         </div>
     </div>
