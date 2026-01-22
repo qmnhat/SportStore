@@ -161,6 +161,7 @@
                                  </div>
 
                              </div>
+
                              <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.7s">
                                  <div class="rounded p-4">
                                      <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mb-4"
