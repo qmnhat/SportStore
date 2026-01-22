@@ -15,7 +15,6 @@
                 <button type="submit" class="btn btn-primary">Tìm</button>
             </form>
         </div>
-
         <div class="col-md-3">
             <form method="GET" action="{{ route('admin.baiviet.index') }}">
                 <select name="sort" class="form-select" onchange="this.form.submit()">
