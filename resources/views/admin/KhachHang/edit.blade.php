@@ -8,19 +8,6 @@
         <h3>Sửa khách hàng: {{ $kh->HoTen }}</h3>
     </div>
 
-    <div class="card">
-        <div class="card-body">
-            <form action="{{ route('admin.khachhang.update', $kh->MaKH) }}" method="POST">
-                @csrf
-                @method('PUT')
-
-                <div class="mb-3">
-                    <label for="HoTen" class="form-label">Họ tên</label>
-                    <input type="text" name="HoTen" id="HoTen" class="form-control"
-                        value="{{ old('HoTen', $kh->HoTen) }}" required>
-                </div>
-
-                <div class="mb-3">
                     <label for="Email" class="form-label">Email</label>
                     <input type="email" name="Email" id="Email" class="form-control"
                         value="{{ old('Email', $kh->Email) }}" required>
