@@ -66,6 +66,8 @@
                         <div class="ms-4">
 
                             <h6 class="text-uppercase mb-2">Free Return</h6>
+
+
                             <p class="mb-0">30 days money back guarantee!</p>
                         </div>
                     </div>
