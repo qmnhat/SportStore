@@ -70,6 +70,7 @@
 
                             <p class="mb-0">30 days money back guarantee!</p>
                         </div>
+
                     </div>
                 </div>
             </div>
