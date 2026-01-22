@@ -72,10 +72,6 @@
                 </div>
             </div>
 
-            <button type="button" class="btn btn-secondary mb-3" id="btnAddRow">
-                <i class="bi bi-plus-circle"></i> Thêm dòng
-            </button>
-
             <hr>
 
             <div class="d-flex justify-content-between">
