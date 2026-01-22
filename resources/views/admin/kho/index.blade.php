@@ -124,16 +124,7 @@
                             <span class="badge bg-success">Còn hàng</span>
                         @endif
                     </td>
-                    <td class="text-center">
-                        <form action="{{ route('admin.kho.updateStock', $bt->MaBT) }}" method="POST" class="d-inline-flex">
-                            @csrf
-                            <input type="number" name="SoLuong" value="{{ $bt->SoLuong }}" class="form-control form-control-sm" style="width: 80px;" min="0">
-                            <button type="submit" class="btn btn-sm btn-primary ms-1">
-                                <i class="bi bi-check"></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
+
                 @empty
                 <tr>
                     <td colspan="7" class="text-center text-muted">Không có dữ liệu</td>
