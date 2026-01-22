@@ -132,7 +132,14 @@ class AdminSanPhamController extends Controller
 
     public function update(Request $request, $id)
     {
-
+        $request->validate([
+            'TenSP' => 'required|max:200',
+            'MaDM' => 'required|exists:DanhMuc,MaDM',
+            'MaTH' => 'required|exists:ThuongHieu,MaTH',
+            'HinhAnh' => 'nullable|array',
+            'HinhAnh.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'bienthe' => 'nullable|array',
+        ]);
 
         DB::beginTransaction();
         try {
