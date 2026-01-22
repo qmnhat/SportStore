@@ -63,7 +63,6 @@
                         <option value="0" {{ old('TrangThai') == 0 ? 'selected' : '' }}>Bản nháp</option>
                     </select>
                 </div>
-
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-check-circle"></i> Lưu bài viết
