@@ -40,6 +40,7 @@
                                 {{-- LINK ĐÚNG SẢN PHẨM --}}
                                 <a class="btn btn-primary rounded-pill py-3 px-5"
                                     href="{{ route('shop.show', $sp->MaSP) }}">
+
                                     Mua ngay
                                 </a>
 
