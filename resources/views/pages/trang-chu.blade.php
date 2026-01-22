@@ -32,6 +32,7 @@
                                 </h1>
 
                                 <p class="text-dark">
+
                                     Giá chỉ còn
                                     <strong>{{ number_format($giaGoc - ($giaGoc * $phanTram) / 100) }} đ</strong>
                                 </p>
