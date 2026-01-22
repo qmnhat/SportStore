@@ -154,6 +154,7 @@
                                          <i class="fa fa-phone-alt fa-2x text-primary"></i>
                                      </div>
                                      <div>
+
                                          <h4>Telephone</h4>
                                          <p class="mb-2">(+84) 123 456 7890</p>
                                      </div>
