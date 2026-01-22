@@ -83,7 +83,14 @@
             </li>
 
             <li class="sidebar-item">
-                <a href="{{ url('/admin/nha-cung-cap') }}" class="sidebar-link">
+                <a href="{{ route('admin.kho.index') }}" class="sidebar-link">
+                    <i class="bi bi-box-seam-fill"></i>
+                    <span>Quản lý Kho</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a href="{{ route('admin.nhacungcap.index') }}" class="sidebar-link">
                     <i class="bi bi-truck"></i>
                     <span>Nhà cung cấp</span>
                 </a>

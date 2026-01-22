@@ -74,22 +74,34 @@ class AuthController extends Controller
         if (!$kh) {
             return redirect('/dang-nhap');
         }
+
+        // Validation
+        $request->validate([
+            'MatKhauCu' => 'required',
+            'MatKhauMoi' => 'required|min:6',
+            'MatKhauMoi_confirm' => 'required|same:MatKhauMoi',
+        ], [
+            'MatKhauCu.required' => 'Vui lòng nhập mật khẩu cũ',
+            'MatKhauMoi.required' => 'Vui lòng nhập mật khẩu mới',
+            'MatKhauMoi.min' => 'Mật khẩu mới phải có ít nhất 6 ký tự',
+            'MatKhauMoi_confirm.required' => 'Vui lòng xác nhận mật khẩu mới',
+            'MatKhauMoi_confirm.same' => 'Xác nhận mật khẩu không khớp',
+        ]);
+
         $khDb = DB::table('KhachHang')
             ->where('MaKH', $kh['MaKH'])
             ->first();
 
         if (!Hash::check($request->MatKhauCu, $khDb->MatKhau)) {
-            return back();
+            return back()->with('error', 'Mật khẩu cũ không đúng');
         }
-        if ($request->MatKhauMoi !== $request->MatKhauMoi_confirm) {
-            return back();
-        }
+
         DB::table('KhachHang')
             ->where('MaKH', $kh['MaKH'])
             ->update([
                 'MatKhau' => Hash::make($request->MatKhauMoi),
             ]);
 
-        return redirect('/');
+        return redirect('/')->with('success', 'Đổi mật khẩu thành công');
     }
 }

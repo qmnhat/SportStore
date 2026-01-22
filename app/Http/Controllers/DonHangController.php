@@ -6,7 +6,7 @@ use App\Models\DonHang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\BienTheSanPham;
 class DonHangController extends Controller
 {
     public function index()
@@ -163,6 +163,23 @@ class DonHangController extends Controller
             return redirect()->route('cart.index')->with('error', 'Giỏ hàng trống');
         }
 
+        // ✅ KIỂM TRA TỒN KHO TRƯỚC KHI ĐẶT HÀNG
+        $outOfStock = [];
+        foreach ($items as $item) {
+            $bienThe = BienTheSanPham::with('sanPham')->find($item->MaBT);
+            if ($bienThe) {
+                if ($bienThe->SoLuong < $item->SoLuong) {
+                    $tenSP = $bienThe->sanPham ? $bienThe->sanPham->TenSP : 'Sản phẩm';
+                    $outOfStock[] = "{$tenSP} (còn {$bienThe->SoLuong}, bạn đặt {$item->SoLuong})";
+                }
+            }
+        }
+
+        if (!empty($outOfStock)) {
+            return redirect()->route('cart.index')
+                ->with('error', 'Không đủ tồn kho: ' . implode(', ', $outOfStock));
+        }
+
         DB::beginTransaction();
         try {
 
@@ -185,6 +202,10 @@ class DonHangController extends Controller
             DB::table('ChiTietGioHang')
                 ->where('MaGH', $gioHang->MaGH)
                 ->delete();
+
+            // Lưu ý: Không trừ kho ở đây.
+            // Tồn kho sẽ được trừ khi Admin chuyển đơn sang trạng thái "Hoàn thành" (2)
+            // Điều này đảm bảo chỉ trừ kho khi đơn hàng thực sự được giao thành công
 
             DB::commit();
 

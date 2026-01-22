@@ -3,7 +3,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\DonHang;
+use App\Models\BienTheSanPham;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminDonHangController extends Controller
 {
@@ -40,27 +42,91 @@ class AdminDonHangController extends Controller
     ));
     }
 
-    // Cập nhật trạng thái
+    /**
+     * Cập nhật trạng thái đơn hàng
+     * 0: Chờ xác nhận
+     * 1: Đang giao
+     * 2: Hoàn thành (trừ kho khi sang trạng thái này)
+     * 3: Đã hủy (hoàn trả kho)
+     */
     public function updateStatus(Request $request, $id)
     {
-        $donHang = DonHang::where('MaDH', $id)->firstOrFail();
+        $donHang = DonHang::with('chiTiet')->where('MaDH', $id)->firstOrFail();
+        $trangThaiCu = $donHang->TrangThai;
+        $trangThaiMoi = (int)$request->TrangThai;
 
         // Không cho đổi nếu đã hủy
-        if ($donHang->TrangThai == 3) {
+        if ($trangThaiCu == 3) {
             return back()->with('error', 'Đơn hàng đã bị hủy');
         }
 
         // Không cho quay lùi trạng thái
-        if ($request->TrangThai < $donHang->TrangThai) {
+        if ($trangThaiMoi < $trangThaiCu) {
             return back()->with('error', 'Không thể quay lùi trạng thái');
         }
 
-        $donHang->TrangThai = $request->TrangThai;
-        $donHang->save();
+        DB::beginTransaction();
+        try {
+            // Nếu chuyển sang "Hoàn thành" (2) từ trạng thái khác
+            if ($trangThaiMoi == 2 && $trangThaiCu != 2) {
+                $this->giamTonKho($donHang);
+            }
 
-        return back()->with('success', 'Cập nhật trạng thái thành công');
+            // Nếu hủy đơn hàng - CHỈ hoàn kho nếu đơn đã ở trạng thái "Hoàn thành" (2)
+            // vì chỉ khi hoàn thành mới trừ kho, nên chỉ hoàn kho khi hủy từ trạng thái đó
+            if ($trangThaiMoi == 3 && $trangThaiCu == 2) {
+                $this->hoantranTonKho($donHang);
+            }
+
+            $donHang->TrangThai = $trangThaiMoi;
+            $donHang->save();
+
+            DB::commit();
+            return back()->with('success', 'Cập nhật trạng thái thành công');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Lỗi: ' . $e->getMessage());
+        }
     }
 
+    /**
+     * Giảm tồn kho khi đơn hàng hoàn thành
+     */
+    private function giamTonKho(DonHang $donHang)
+    {
+        $chiTiets = DB::table('ChiTietDonHang')
+            ->where('MaDH', $donHang->MaDH)
+            ->get();
+
+        foreach ($chiTiets as $ct) {
+            $bienThe = BienTheSanPham::find($ct->MaBT);
+            if ($bienThe) {
+                $bienThe->SoLuong -= $ct->SoLuong;
+                if ($bienThe->SoLuong < 0) {
+                    $bienThe->SoLuong = 0;
+                }
+                $bienThe->save();
+            }
+        }
+    }
+
+    /**
+     * Hoàn trả tồn kho khi đơn hàng bị hủy
+     */
+    private function hoantranTonKho(DonHang $donHang)
+    {
+        $chiTiets = DB::table('ChiTietDonHang')
+            ->where('MaDH', $donHang->MaDH)
+            ->get();
+
+        foreach ($chiTiets as $ct) {
+            $bienThe = BienTheSanPham::find($ct->MaBT);
+            if ($bienThe) {
+                $bienThe->SoLuong += $ct->SoLuong;
+                $bienThe->save();
+            }
+        }
+    }
 
     // Xoá đơn hàng (soft delete)
     public function delete($id)
@@ -71,6 +137,7 @@ class AdminDonHangController extends Controller
 
         return back()->with('success', 'Đã xoá đơn hàng');
     }
+
     public function show($id)
     {
         $donHang = DonHang::with('khachHang')
@@ -79,20 +146,41 @@ class AdminDonHangController extends Controller
 
         return view('admin.donhang.show', compact('donHang'));
     }
+
     public function cancel($id)
     {
         $donHang = DonHang::where('MaDH', $id)->firstOrFail();
+        $trangThaiCu = $donHang->TrangThai;
 
-        // Chỉ cho hủy khi đang chờ xác nhận
-        if ($donHang->TrangThai != 0) {
-            return back()->with('error', 'Không thể hủy đơn hàng này');
+        // Không cho hủy nếu đã hủy rồi
+        if ($trangThaiCu == 3) {
+            return back()->with('error', 'Đơn hàng đã bị hủy');
         }
 
-        $donHang->TrangThai = 3; // 3 = Đã hủy
-        $donHang->save();
+        DB::beginTransaction();
+        try {
+            // CHỈ hoàn trả kho nếu đơn đã ở trạng thái "Hoàn thành" (2)
+            // vì chỉ khi hoàn thành mới trừ kho
+            if ($trangThaiCu == 2) {
+                $this->hoantranTonKho($donHang);
+            }
 
-        return redirect()
-            ->route('admin.donhang.index')
-            ->with('success', 'Đã hủy đơn hàng thành công');
+            $donHang->TrangThai = 3; // 3 = Đã hủy
+            $donHang->save();
+
+            DB::commit();
+
+            $message = 'Đã hủy đơn hàng thành công.';
+            if ($trangThaiCu == 2) {
+                $message .= ' Kho đã được hoàn trả.';
+            }
+
+            return redirect()
+                ->route('admin.donhang.index')
+                ->with('success', $message);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Lỗi: ' . $e->getMessage());
+        }
     }
 }

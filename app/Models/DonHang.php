@@ -34,4 +34,10 @@ class DonHang extends Model
     {
         return $this->belongsTo(KhachHang::class, 'MaKH', 'MaKH');
     }
+
+    // Quan hệ: Đơn hàng có nhiều chi tiết
+    public function chiTiet()
+    {
+        return $this->hasMany(ChiTietDonHang::class, 'MaDH', 'MaDH');
+    }
 }

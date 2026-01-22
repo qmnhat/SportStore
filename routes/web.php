@@ -57,8 +57,6 @@ Route::get('/gioi-thieu', [PageController::class, 'gioiThieu'])->name('pages.gio
 Route::get('/san-pham', [SanPhamController::class, 'index'])->name('shop.index');
 Route::get('/san-pham/{slug}', [SanPhamController::class, 'show'])->name('shop.show');
 
-// (15) Them vao gio hang
-Route::post('/gio-hang/them', [GioHangController::class, 'them'])->name('cart.add');
 // (17) Thong ke realtime: view/yeu thich/rating
 
 
@@ -233,18 +231,6 @@ Route::prefix('admin')
         Route::post('/thuong-hieu/restore/{id}', [ThuongHieuController::class, 'restore'])
             ->name('thuonghieu.restore');
 
-        Route::get('/', function () {
-            return redirect()->route('admin.dashboard');
-        });
-
-        Route::get('/thuong-hieu', [ThuongHieuController::class, 'index'])->name('thuonghieu.index');
-        Route::get('/thuong-hieu/create', [ThuongHieuController::class, 'create'])->name('thuonghieu.create');
-        Route::post('/thuong-hieu/store', [ThuongHieuController::class, 'store'])->name('thuonghieu.store');
-        Route::get('/thuong-hieu/edit/{id}', [ThuongHieuController::class, 'edit'])->name('thuonghieu.edit');
-        Route::put('/thuong-hieu/update/{id}', [ThuongHieuController::class, 'update'])->name('thuonghieu.update');
-        Route::post('/thuong-hieu/destroy/{id}', [ThuongHieuController::class, 'destroy'])->name('thuonghieu.destroy');
-        Route::post('/thuong-hieu/restore/{id}', [ThuongHieuController::class, 'restore'])->name('thuonghieu.restore');
-
         //route quản lý liên hệ(nghia)
         Route::get('/contacts', [AdminContactController::class, 'index'])->name('contacts.index');
         Route::get('/contacts/{id}', [AdminContactController::class, 'show'])->name('contacts.show');
@@ -308,9 +294,50 @@ Route::prefix('admin')
             ->name('bai-viet.forceDelete');
         Route::post('bai-viet/{id}/restore', [AdminBaiVietController::class, 'restore'])
             ->name('bai-viet.restore');
+
+        // QUẢN LÝ KHO
+        Route::get('/kho', [App\Http\Controllers\Admin\AdminKhoController::class, 'index'])
+            ->name('kho.index');
+        Route::post('/kho/update-stock/{maBT}', [App\Http\Controllers\Admin\AdminKhoController::class, 'updateStock'])
+            ->name('kho.updateStock');
+
+        // PHIẾU NHẬP KHO
+        Route::get('/kho/phieu-nhap', [App\Http\Controllers\Admin\AdminKhoController::class, 'phieuNhapIndex'])
+            ->name('kho.phieu-nhap.index');
+        Route::get('/kho/phieu-nhap/create', [App\Http\Controllers\Admin\AdminKhoController::class, 'phieuNhapCreate'])
+            ->name('kho.phieu-nhap.create');
+        Route::post('/kho/phieu-nhap/store', [App\Http\Controllers\Admin\AdminKhoController::class, 'phieuNhapStore'])
+            ->name('kho.phieu-nhap.store');
+        Route::get('/kho/phieu-nhap/{id}', [App\Http\Controllers\Admin\AdminKhoController::class, 'phieuNhapShow'])
+            ->name('kho.phieu-nhap.show');
+        Route::post('/kho/phieu-nhap/{id}/approve', [App\Http\Controllers\Admin\AdminKhoController::class, 'phieuNhapApprove'])
+            ->name('kho.phieu-nhap.approve');
+        Route::post('/kho/phieu-nhap/{id}/cancel', [App\Http\Controllers\Admin\AdminKhoController::class, 'phieuNhapCancel'])
+            ->name('kho.phieu-nhap.cancel');
+        Route::post('/kho/phieu-nhap/{id}/destroy', [App\Http\Controllers\Admin\AdminKhoController::class, 'phieuNhapDestroy'])
+            ->name('kho.phieu-nhap.destroy');
+        Route::post('/kho/phieu-nhap/{id}/restore', [App\Http\Controllers\Admin\AdminKhoController::class, 'phieuNhapRestore'])
+            ->name('kho.phieu-nhap.restore');
+
+        // NHÀ CUNG CẤP
+        Route::get('/nha-cung-cap', [App\Http\Controllers\Admin\AdminNhaCungCapController::class, 'index'])
+            ->name('nhacungcap.index');
+        Route::get('/nha-cung-cap/create', [App\Http\Controllers\Admin\AdminNhaCungCapController::class, 'create'])
+            ->name('nhacungcap.create');
+        Route::post('/nha-cung-cap/store', [App\Http\Controllers\Admin\AdminNhaCungCapController::class, 'store'])
+            ->name('nhacungcap.store');
+        Route::get('/nha-cung-cap/edit/{id}', [App\Http\Controllers\Admin\AdminNhaCungCapController::class, 'edit'])
+            ->name('nhacungcap.edit');
+        Route::put('/nha-cung-cap/update/{id}', [App\Http\Controllers\Admin\AdminNhaCungCapController::class, 'update'])
+            ->name('nhacungcap.update');
+        Route::post('/nha-cung-cap/destroy/{id}', [App\Http\Controllers\Admin\AdminNhaCungCapController::class, 'destroy'])
+            ->name('nhacungcap.destroy');
+        Route::post('/nha-cung-cap/restore/{id}', [App\Http\Controllers\Admin\AdminNhaCungCapController::class, 'restore'])
+            ->name('nhacungcap.restore');
     });
 
-Route::prefix('admin/khuyen-mai')->name('admin.khuyenmai.')->group(function () {
+
+Route::prefix('admin/khuyen-mai')->name('admin.khuyenmai.')->middleware('auth:admin')->group(function () {
 
     Route::get('/', [KhuyenMaiController::class, 'index'])->name('index');
 
@@ -326,13 +353,4 @@ Route::prefix('admin/khuyen-mai')->name('admin.khuyenmai.')->group(function () {
 
     Route::post('/restore/{id}', [KhuyenMaiController::class, 'restore'])->name('restore');
 });
-Route::prefix('admin')->group(function () {
 
-    Route::get('/nha-cung-cap', [NhaCungCapController::class, 'index']);
-    Route::get('/nha-cung-cap/create', [NhaCungCapController::class, 'create']);
-    Route::post('/nha-cung-cap/store', [NhaCungCapController::class, 'store']);
-
-    Route::get('/nha-cung-cap/edit/{id}', [NhaCungCapController::class, 'edit']);
-    Route::post('/nha-cung-cap/update/{id}', [NhaCungCapController::class, 'update']);
-    Route::get('/nha-cung-cap/delete/{id}', [NhaCungCapController::class, 'delete']);
-});
