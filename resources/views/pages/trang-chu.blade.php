@@ -64,6 +64,7 @@
                     <div class="d-inline-flex align-items-center">
                         <i class="fa fa-sync-alt fa-2x text-primary"></i>
                         <div class="ms-4">
+
                             <h6 class="text-uppercase mb-2">Free Return</h6>
                             <p class="mb-0">30 days money back guarantee!</p>
                         </div>
