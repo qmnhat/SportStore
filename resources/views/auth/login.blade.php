@@ -3,63 +3,131 @@
 @section('title', 'Đăng nhập')
 
 @section('content')
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-md-5">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7">
+            <div class="card border-0 shadow-lg">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h2 class="mb-2">
+                            <i class="fas fa-sign-in-alt text-primary me-2"></i>Đăng nhập
+                        </h2>
+                        <p class="text-muted">Đăng nhập vào tài khoản của bạn</p>
+                    </div>
 
-                <div class="card shadow-sm border-0">
-                    <div class="card-body p-4">
+                    @if (session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    @endif
 
-                        <h4 class="text-center mb-4">
-                            <i class="fa fa-sign-in-alt me-2"></i>Đăng nhập
-                        </h4>
+                    @if ($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong><i class="fas fa-exclamation-circle me-2"></i>Lỗi!</strong>
+                            <ul class="mb-0 mt-2">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
 
-                        {{-- Hiển thị lỗi chung --}}
-                        @if (session('error'))
-                            <div class="alert alert-danger">
-                                {{ session('error') }}
-                            </div>
-                        @endif
+                    <form action="/dang-nhap" method="POST" novalidate>
+                        @csrf
 
-                        <form method="POST" action="/dang-nhap">
-                            @csrf
+                        <div class="mb-3">
+                            <label for="Email" class="form-label">
+                                <i class="fas fa-envelope text-primary me-2"></i>Email
+                            </label>
+                            <input type="email" class="form-control" id="Email" name="Email" value="{{ old('Email') }}" placeholder="Nhập email của bạn" required>
+                        </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" name="Email" class="form-control" value="{{ old('Email') }}"
-                                    required>
-                                @error('Email')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Mật khẩu</label>
-                                <input type="password" name="MatKhau" class="form-control" required>
-                                @error('MatKhau')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-                            <div class="d-grid mb-3">
-                                <button class="btn btn-primary">
-                                    Đăng nhập
+                        <div class="mb-3">
+                            <label for="MatKhau" class="form-label">
+                                <i class="fas fa-lock text-primary me-2"></i>Mật khẩu
+                            </label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="MatKhau" name="MatKhau" placeholder="Nhập mật khẩu của bạn" required>
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="fas fa-eye"></i>
                                 </button>
                             </div>
+                        </div>
 
-                            <div class="text-center">
-                                <small>
-                                    Chưa có tài khoản?
-                                    <a href="/dang-ky">Đăng ký</a>
-                                </small>
-                            </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold mb-3">
+                            <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập
+                        </button>
 
-                        </form>
+                        <div class="d-flex align-items-center mb-3">
+                            <hr class="flex-grow-1">
+                            <span class="mx-2 text-muted small">HOẶC</span>
+                            <hr class="flex-grow-1">
+                        </div>
 
-                    </div>
+                        <p class="text-center text-muted mb-0">
+                            Chưa có tài khoản?
+                            <a href="/dang-ky" class="text-primary text-decoration-none fw-bold">Đăng ký ngay</a>
+                        </p>
+                    </form>
                 </div>
+            </div>
 
+            <div class="text-center mt-3">
+                <small class="text-muted">
+                    Cần trợ giúp?
+                    <a href="#" class="text-primary text-decoration-none">Liên hệ hỗ trợ</a>
+                </small>
             </div>
         </div>
     </div>
+</div>
+
+<script>
+    document.getElementById('togglePassword')?.addEventListener('click', function () {
+        const passwordInput = document.getElementById('MatKhau');
+        const toggleButton = this;
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleButton.innerHTML = '<i class="fas fa-eye-slash"></i>';
+        } else {
+            passwordInput.type = 'password';
+            toggleButton.innerHTML = '<i class="fas fa-eye"></i>';
+        }
+    });
+</script>
+
+<style>
+    .card {
+        border-radius: 10px;
+        animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-control:focus {
+        border-color: #ff6b6b;
+        box-shadow: 0 0 0 0.2rem rgba(255, 107, 107, 0.25);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    }
+</style>
 @endsection
