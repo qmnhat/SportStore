@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 
 // Trang chủ
 Route::get('/', function () {
@@ -15,6 +16,8 @@ Route::get('/san-pham', function () {
 Route::get('/chi-tiet', function () {
     return view('products.chi-tiet');
 });
+
+Route::post('/chat/send', [ChatController::class, 'send'])->name('chat.send');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {

@@ -60,6 +60,7 @@
     @yield('content')
 
     @include('partials.footer')
+    @include('partials.chat-widget')
 
     <a href="#" class="btn btn-primary btn-lg-square back-to-top"><i class="fa fa-arrow-up"></i></a>
 
